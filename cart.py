@@ -93,10 +93,17 @@ def compare_dirs(emsg, dir_a, dir_b):
 
         if len(diffs):
             print("\n*ERR: " + emsg + " - different results for file '" + dir_a + "/" + afile + "' -VERSUS- '" + dir_b + "/" + afile + "'")
-            print("------------- DIFF OUTPUT ------")
+            print("-----------------------------------------------------------")
+            print("                 DIFF  OUTPUT                              ")
+            print("-----------------------------------------------------------")
+            print(diff_cmd)
+            print("-----------------------------------------------------------")
+
             for line in diffs:
                 print(line, end="")
-            print("\n------ In the above output, '>' == lines in the latest test run, '<' == lines that were in test archive file.")
+            print("-----------------------------------------------------------")
+            print("> : latest test run")
+            print("< :  in expected results archive.\n") 
             exit(0)
 
 
@@ -106,6 +113,9 @@ def validate(emsg, fp_archive, temp_dir, resdir):
     #print("about to execute : " + temp_unarc_cmd)
     #print("press enter")
     #input()
+    print(temp_unarc_cmd)
+    print('enter...')
+    input()
 
     res = os.system(temp_unarc_cmd)
 
@@ -601,8 +611,9 @@ if os.path.isfile(CART_INPUT_FILE):
     os.remove(CART_INPUT_FILE)
     if os.path.isfile(CART_INPUT_FILE):
         print("\n*ERR: I was not able to remove file '" + CART_INPUT_FILE + "'")
+        exit(0)
 
-os.remove(VCCK_PROGRAM_TEMP)
+#os.remove(VCCK_PROGRAM_TEMP)
 
 safe_rec_del(TEMP_ARCHIVE_UNPACK_DIR)
 os.mkdir(TEMP_ARCHIVE_UNPACK_DIR)
@@ -627,9 +638,6 @@ if OPERATION == "create":
         print("\n*ERR: problems when trying to create archive.  Error executing: " + tar_create_cmd)
         exit(0)
 
-    #print("about to validate. hit enter")
-    #input()
-
     if not validate("The archive was not created successfully. ", new_archive, TEMP_ARCHIVE_UNPACK_DIR, TEST_RESULT_DIR):
         pass
 
@@ -640,9 +648,6 @@ else:
     if not os.path.isfile(existing_archive):
         print("\n*ERR: Archive '" + existing_archive + "' does not exist.  Did you run a 'create' yet?")
         exit(0)
-
-    print("aboto ***TOOO*  validate...")
-    input()
 
     validate("\n* * * Regression testing FAILED !!!! ", existing_archive, TEMP_ARCHIVE_UNPACK_DIR, TEST_RESULT_DIR)    
     print("\n---------------------------------------------------")
