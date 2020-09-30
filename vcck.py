@@ -66,22 +66,12 @@ for argindex in range(len(sys.argv)):
         _CART_INPUT_FILE = mo.group(2)
 
 ###################################################################################################################
-
-print("VCCK --- TESTING: " + str(TESTING))
 if TESTING:
     print("_CART_FILEDB = " + str(_CART_FILEDB))
     print("_CART_INPUT_FILE = " + _CART_INPUT_FILE)
 
-###############################################  CART AUTO GENERATED 
-# __CART_TESTING_VARIABLES__
-# ^-- do not remove the above comment. also, make sure it is always AFTER 'TESTING = False' above.
 
-def func_a(x):
-    #CART_INCLUDE_v1.000_file1.py
-    #CART_INCLUDE_v1.000_file2.py
-    #CART_INCLUDE_v1.300_file1.py
-    #CART_INCLUDE_v1.300_file2.py
-    pass
+#CART_INCLUDE_v1.000_file1.py
 
 cart_input_lines = None
 
@@ -90,16 +80,13 @@ if TESTING == True:
         cart_input_lines = cart_input_fh.readlines()
 
 while True:
-    _CART_INPUT_LINE_NUMBER += 1
-    #################
-    #################
-    #################
-
+    
     if TESTING:
+        _CART_INPUT_LINE_NUMBER += 1
+
         #__CART_REPLACED_LINE_05_DO_NOT_REMOVE_THIS_LINE
 
         if _CART_INPUT_LINE_NUMBER == len(cart_input_lines):
-            print("DONE!!!")
             break
 
         lui = cart_input_lines[_CART_INPUT_LINE_NUMBER].strip()
@@ -109,9 +96,6 @@ while True:
         if lui == ".":
             break
 
-    ###
-    ###
-    func_a(lui)
     print("PROCESSING LINE : [" + lui + "]")
 
 #__CART_REPLACED_LINE_06_DO_NOT_REMOVE_THIS_LINE

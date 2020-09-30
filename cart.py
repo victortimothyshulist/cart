@@ -4,8 +4,8 @@ import sys
 import re
 
 TEMP_ARCHIVE_UNPACK_DIR = "_temp_arc_unpack"
-VCCK_PROGRAM = "./fake-vcck.py"
-VCCK_PROGRAM_TEMP = "./fake-vcck-cart-temp.py"
+VCCK_PROGRAM = "./vcck.py"
+VCCK_PROGRAM_TEMP = "./vcck-cart-temp.py"
 
 TEST_RESULT_DIR = "results_cart_tests"
 
