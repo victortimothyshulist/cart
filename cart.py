@@ -28,6 +28,45 @@ if res !=0 :
 
 os.mkdir(TEST_RESULT_DIR)
 
+def sort_all_files(thedir):
+    # sort all files in directory <thedir> recursively.
+
+    for entry in os.listdir(thedir):
+        entry_fp = thedir + "/" + entry
+
+        if os.path.isdir(entry_fp):
+            sort_all_files(entry_fp)
+        else:
+
+            mo = re.match('^(.+)/(.+)$', entry_fp)
+            if not bool(mo): continue
+
+            dirpart = mo.group(1)
+            filename = mo.group(2)
+            temp_sorted_filename = dirpart + "/" + filename + ".ts"
+            sort_cmd = "sort " + entry_fp + " > " + temp_sorted_filename
+            res = os.system(sort_cmd)
+
+            if res != 0:
+                print("*ERR: problem executing '" + sort_cmd + "'")
+
+            try:
+                os.remove(entry_fp)
+
+                if os.path.isfile(entry_fp):
+                    print("*ERR: error could not remove file '" + entry_fp + "'")
+                    exit(0)
+
+            except Exception as ex:
+                    print("*ERR: error while trying to remove file '" + entry_fp + "'" + str(ex))
+
+            os.rename(temp_sorted_filename, entry_fp)
+
+            if os.path.isfile(temp_sorted_filename):
+                print("*ERR: could not rename file '" + temp_sorted_filename + "' to '" + entry_fp + "'")
+                exit(0)
+
+
 def get_file_list_rec(base, theset, thedir):
     for entry in os.listdir(thedir):
         entry_fp = thedir + "/" + entry
@@ -631,6 +670,8 @@ if OPERATION == "create":
             print("\n*ERR: I was not able to remove the file '" + new_archive + "' from last run!\n")
             exit(0)
 
+    sort_all_files(TEST_RESULT_DIR)
+
     tar_create_cmd = "tar -C " + TEST_RESULT_DIR + " -czf " + new_archive + " ."
     res = os.system(tar_create_cmd)
 
@@ -649,8 +690,10 @@ else:
         print("\n*ERR: Archive '" + existing_archive + "' does not exist.  Did you run a 'create' yet?")
         exit(0)
 
+    sort_all_files(TEST_RESULT_DIR)
     validate("\n* * * Regression testing FAILED !!!! ", existing_archive, TEMP_ARCHIVE_UNPACK_DIR, TEST_RESULT_DIR)    
     print("\n---------------------------------------------------")
     print("* Regression testing *PASSED*")
     print("---------------------------------------------------")
+
 

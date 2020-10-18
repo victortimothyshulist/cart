@@ -27,7 +27,7 @@ def cartlog(area, message):
 
     if not known_area:
         print("\n*ERR: called cartlog() with unknown area ('" + area + "').  Check your config file for valid areas.\n")
-        exit(0)
+        exit(1)
 
     if ref == None:
         try:
@@ -38,7 +38,7 @@ def cartlog(area, message):
         except Exception as ex:
             print("\n\n*ERR: cannot open file '" + cartlogdirandfile + "' for writing.\n")
             print("You probably called cartlog() in the wrong place, such as after _CART_INPUT_LINE_NUMBER was incremented past its maximum value.\n")
-            exit(0)
+            exit(1)
 
     ref.write(message + "\n")
 
@@ -71,8 +71,6 @@ if TESTING:
     print("_CART_INPUT_FILE = " + _CART_INPUT_FILE)
 
 
-#CART_INCLUDE_v1.000_file1.py
-
 cart_input_lines = None
 
 if TESTING == True:
@@ -90,6 +88,7 @@ while True:
             break
 
         lui = cart_input_lines[_CART_INPUT_LINE_NUMBER].strip()
+        #CART_INCLUDE_v1.000_file1.py
     else:
         lui = input()
 
