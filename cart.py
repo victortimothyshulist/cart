@@ -2,7 +2,9 @@
 import os
 import sys
 import re
+import datetime
 
+DIR_STATE = "dir_states"
 TEMP_ARCHIVE_UNPACK_DIR = "_temp_arc_unpack"
 VCCK_PROGRAM = "./vcck.py"
 VCCK_PROGRAM_TEMP = "./vcck-cart-temp.py"
@@ -27,6 +29,39 @@ if res !=0 :
     exit(0)
 
 os.mkdir(TEST_RESULT_DIR)
+
+if not os.path.isdir(DIR_STATE):
+    os.mkdir(DIR_STATE)
+    if not os.path.isdir(DIR_STATE):
+        print("\n*ERR: was not able to create directory '" + DIR_STATE + "'")
+        exit(1)
+
+
+def backup_existing():
+    epoch = str(datetime.datetime.now())
+    epoch = epoch.replace(' ','_')
+    epoch = epoch.replace(':','_')
+    epoch = epoch.replace('-','_')
+    epoch = epoch.replace('.','_')
+
+    dirs_to_inc_in_bu = ''
+    any = False
+
+    for backupdir in ('conversation-history', 'sessions', 'tls_csv', 'interpretations', 'compiled-classes'):
+        if os.path.isdir(backupdir):
+            dirs_to_inc_in_bu += backupdir + '/. '
+            any = True
+
+    if not any: return
+
+    backup_dir_cmd = "tar czf " + DIR_STATE + "/" + epoch + ".tar.gz " + dirs_to_inc_in_bu
+    re = os.system(backup_dir_cmd)
+
+    print(str(any) + " > " + backup_dir_cmd)
+
+    if re != 0:
+        print("\n*ERR: problem backing up directory state")
+        exit(1)
 
 def sort_all_files(thedir):
     # sort all files in directory <thedir> recursively.
@@ -322,6 +357,8 @@ if os.path.isfile(TEST_PKG_FP) == False:
     print("\n*ERR: file does not exist: '" + TEST_PKG_FP + "'.\n")
     exit(0)
 
+
+backup_existing()
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")
 print("OPERATION: " + OPERATION + "\n")
 
