@@ -225,7 +225,7 @@ def safe_rec_del(thedir: str) -> None:
     rec_del_cmd = "rm -rf " + thedir_stripped
     res = os.system(rec_del_cmd)
 
-    print(rec_del_cmd)
+    #print(rec_del_cmd)
     if res != 0:
         print("\n*ERR: problem executing '" + rec_del_cmd + "'")
         exit(0)
@@ -357,8 +357,11 @@ if os.path.isfile(TEST_PKG_FP) == False:
     print("\n*ERR: file does not exist: '" + TEST_PKG_FP + "'.\n")
     exit(0)
 
-
 backup_existing()
+
+for dirtoclear in ("conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
+    safe_rec_del(dirtoclear)
+
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")
 print("OPERATION: " + OPERATION + "\n")
 
