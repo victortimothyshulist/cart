@@ -4,6 +4,8 @@ import sys
 import re
 import datetime
 
+CURRENT_LIST = list()
+CURRENT = False
 DIR_STATE = "dir_states"
 TEMP_ARCHIVE_UNPACK_DIR = "_temp_arc_unpack"
 VCCK_PROGRAM = "./vcck.py"
@@ -232,6 +234,8 @@ def safe_rec_del(thedir: str) -> None:
 
 
 def load_config(file: str, dir: str) -> None:
+    oncurrent = False
+
     data = list() 
     filedb = None
     areas = set()
@@ -240,6 +244,10 @@ def load_config(file: str, dir: str) -> None:
 
         for line in fh.readlines():
             sline = line.strip()
+
+            if sline == '[]':
+                oncurrent = True
+                continue
 
             if sline == "": continue
             if sline[0] == '#': continue
@@ -279,6 +287,7 @@ def load_config(file: str, dir: str) -> None:
             item = mo.group(2)
 
             if type == "[":
+                oncurrent = False 
                 if filedb != None:
                     data.append(filedb)
 
@@ -294,6 +303,10 @@ def load_config(file: str, dir: str) -> None:
                 filedb['input_ordered_list'] = list()
 
             else:
+                if oncurrent:
+                    CURRENT_LIST.append(item)
+                    continue
+
                 if filedb == None:
                     print("\n*ERR: input specified but no state file given - line is '" + sline + "\n")
                     exit(0)
@@ -332,10 +345,11 @@ if len(sys.argv) != 3:
 OPERATION = sys.argv[2]
 OPERATION = OPERATION.lower()
 
-if (OPERATION != "create") and (OPERATION != "test"):
-    print("\n* * * * ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create' or 'test'")
-    print("-Press enter-")
-    input()
+if (OPERATION == "current"):
+    CURRENT = True
+
+if (OPERATION != "create") and (OPERATION != "test") and (OPERATION != "current"):
+    print("\n*ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create', 'test', or 'current'")
     usage()
 
 TEST_PKG = sys.argv[1]
@@ -357,10 +371,10 @@ if os.path.isfile(TEST_PKG_FP) == False:
     print("\n*ERR: file does not exist: '" + TEST_PKG_FP + "'.\n")
     exit(0)
 
-backup_existing()
-
-for dirtoclear in ("conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
-    safe_rec_del(dirtoclear)
+if not CURRENT:
+    backup_existing()
+    for dirtoclear in ("conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
+        safe_rec_del(dirtoclear)
 
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")
 print("OPERATION: " + OPERATION + "\n")
@@ -372,7 +386,7 @@ if len(areas) == 0:
     print("\n*ERR: config file does not specify any areas.   Please add 'areas=' line.\n")
     exit(0)
 
-# CREATE CART-runnable version of vcck k
+# CREATE CART-runnable version of vcck
 # OH = output handle
 
 if os.path.isfile(VCCK_PROGRAM_TEMP):
@@ -556,6 +570,43 @@ if os.path.isfile(TEMP_CONTENTS_FILE):
     if os.path.isfile(TEMP_CONTENTS_FILE):
         print("\n*ERR: I cannot seem to remove the file '" + TEMP_CONTENTS_FILE + "'.\n")
         exit(0)
+
+if CURRENT:
+    outforcurrent = TEST_RESULT_DIR + "/current"
+    os.mkdir(outforcurrent)
+
+    if not os.path.isdir(outforcurrent):
+        print("\n*ERR: was not able to create '" + outforcurrent + "'")
+        exit(1)
+
+    with open(CART_INPUT_FILE, 'w') as fh:
+        lineind = 0
+
+        for line in CURRENT_LIST:
+            fh.write(line + "\n")
+            dir_filedb_linenum = outforcurrent + "/" + str(lineind)
+            os.mkdir(dir_filedb_linenum)
+            lineind += 1
+
+    make_exec_cmd = "chmod +x " + VCCK_PROGRAM_TEMP
+    res = os.system(make_exec_cmd)
+
+    if res != 0:
+        print("\n*ERR: problem executing '" + make_exec_cmd + "'")
+        exit(1)
+
+    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T current:" + CART_INPUT_FILE
+    print(vcck_start_cmd)
+
+    res = os.system(vcck_start_cmd)
+
+    if res != 0:
+        print("\n*ERR: problem running VCCK ('" + vcck_start_cmd + "')")
+        exit(1)
+
+    print("\nDone.  Output from cartlog() calls placed in results_cart_tests/current\n")
+    print("Directory state wasn't changed.\n")
+    exit(0)
 
 
 for filedbid in range(len(tp)):

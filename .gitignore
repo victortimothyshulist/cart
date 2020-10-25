@@ -5,4 +5,8 @@ testpackages
 diff.txt
 new-file
 orig/
+dir_states/
+temp_cart_input.txt
+vcck-cart-temp.py
+
 
