@@ -49,14 +49,18 @@ def backup_existing():
     dirs_to_inc_in_bu = ''
     any = False
 
-    for backupdir in ('conversation-history', 'sessions', 'tls_csv', 'interpretations', 'compiled-classes'):
+    for backupdir in ('shared-lists', 'conversation-history', 'sessions', 'tls_csv', 'interpretations', 'compiled-classes'):
         if os.path.isdir(backupdir):
             dirs_to_inc_in_bu += backupdir + '/. '
             any = True
 
+    backup_dir_cmd = "tar czf " + DIR_STATE + "/" + epoch + ".tar.gz " + dirs_to_inc_in_bu
+    if os.path.isfile("template_words_file.data"):
+        backup_dir_cmd += "template_words_file.data"
+        any = True
+
     if not any: return
 
-    backup_dir_cmd = "tar czf " + DIR_STATE + "/" + epoch + ".tar.gz " + dirs_to_inc_in_bu
     re = os.system(backup_dir_cmd)
 
     print(str(any) + " > " + backup_dir_cmd)
@@ -373,7 +377,10 @@ if os.path.isfile(TEST_PKG_FP) == False:
 
 if not CURRENT:
     backup_existing()
-    for dirtoclear in ("conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
+    if os.path.isfile('template_words_file.data'):
+        os.remove('template_words_file.data')
+
+    for dirtoclear in ("shared-lists", "conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
         safe_rec_del(dirtoclear)
 
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")

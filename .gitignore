@@ -9,4 +9,8 @@ dir_states/
 temp_cart_input.txt
 vcck-cart-temp.py
 
+conversation-history/
+do
+shared-lists/
+template_words_file.data
 
