@@ -38,6 +38,18 @@ if not os.path.isdir(DIR_STATE):
         print("\n*ERR: was not able to create directory '" + DIR_STATE + "'")
         exit(1)
 
+def cleanup_dir():
+    for file in ("template_words_file.data", "no-interpretations.data", "llog"):
+            if os.path.isfile(file):
+                os.remove(file)
+
+                if os.path.isfile(file):
+                    print("*ERR: could not remove file '" + file + "'")
+                    exit(1)
+
+    for dirtoclear in ("response-interpretations", "cached-lcc-factors","shared-lists", "conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
+        safe_rec_del(dirtoclear)
+
 
 def backup_existing():
     epoch = str(datetime.datetime.now())
@@ -49,7 +61,7 @@ def backup_existing():
     dirs_to_inc_in_bu = ''
     any = False
 
-    for backupdir in ('shared-lists', 'conversation-history', 'sessions', 'tls_csv', 'interpretations', 'compiled-classes'):
+    for backupdir in ('response-interpretations', 'cached-lcc-factors', 'shared-lists', 'conversation-history', 'sessions', 'tls_csv', 'interpretations', 'compiled-classes'):
         if os.path.isdir(backupdir):
             dirs_to_inc_in_bu += backupdir + '/. '
             any = True
@@ -377,17 +389,8 @@ if os.path.isfile(TEST_PKG_FP) == False:
 
 if not CURRENT:
     backup_existing()
+    cleanup_dir()
 
-    for file in ("template_words_file.data", "no-interpretations.data", "llog"):
-            if os.path.isfile(file):
-                os.remove(file)
-
-                if os.path.isfile(file):
-                    print("*ERR: could not remove file '" + file + "'")
-                    exit(1)
-
-    for dirtoclear in ("response-interpretations", "cached-lcc-factors","shared-lists", "conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
-        safe_rec_del(dirtoclear)
 
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")
 print("OPERATION: " + OPERATION + "\n")
@@ -792,6 +795,7 @@ if OPERATION == "create":
     if not validate("The archive was not created successfully. ", new_archive, TEMP_ARCHIVE_UNPACK_DIR, TEST_RESULT_DIR):
         pass
 
+    cleanup_dir()
     print("\n*Great! Expected test result archive created successfully.: " + new_archive + "\n")
 
 else:
@@ -805,5 +809,8 @@ else:
     print("\n---------------------------------------------------")
     print("* Regression testing *PASSED*")
     print("---------------------------------------------------")
+    cleanup_dir()
+
+
 
 
