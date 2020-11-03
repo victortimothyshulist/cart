@@ -194,8 +194,8 @@ def validate(emsg, fp_archive, temp_dir, resdir):
     #print("press enter")
     #input()
     print(temp_unarc_cmd)
-    print('enter...')
-    input()
+    #print('enter...')
+    #input()
 
     res = os.system(temp_unarc_cmd)
 
@@ -618,7 +618,7 @@ if CURRENT:
 
 for filedbid in range(len(tp)):
     print("Next filedb.  Hit enter to continue:")
-    input()
+    #input()
 
     for file in prev_files:
         
@@ -637,7 +637,8 @@ for filedbid in range(len(tp)):
             exit(0)
 
     prev_files = set()
-
+    
+    print("----------------------------------------------------------------------------------")
     print("Using State Files in: " + str(filedbid) + ", Db: " + tp[filedbid]['filename']) 
     tar_contents_cmd = "tar tzf " + FILES_IN + "/" + TEST_PKG_NO_EXT + "/" + tp[filedbid]['filename'] + " > " + TEMP_CONTENTS_FILE
 
@@ -674,6 +675,11 @@ for filedbid in range(len(tp)):
     if res != 0:
         print("\n*ERR: Problem when executing: '" + unarchive_cmd + " (make sure you verify cleanup of un-archived files)\n")
         exit(0)
+
+    res = os.system("sync")
+    if res != 0:
+        print("\n*ERR: problem running 'sync'.")
+        exit(1)
  
     if os.path.isfile(CART_INPUT_FILE):
         os.remove(CART_INPUT_FILE)
@@ -708,8 +714,8 @@ for filedbid in range(len(tp)):
         print("\n*ERR: problem running VCCK ('" + vcck_start_cmd + "')")
         exit(0)
     
-print("-ready to remove files. Press enter.")
-input()
+#print("-ready to remove files. Press enter.")
+#input()
 
 for file in prev_files:
     
