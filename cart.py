@@ -377,10 +377,16 @@ if os.path.isfile(TEST_PKG_FP) == False:
 
 if not CURRENT:
     backup_existing()
-    if os.path.isfile('template_words_file.data'):
-        os.remove('template_words_file.data')
 
-    for dirtoclear in ("shared-lists", "conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
+    for file in ("template_words_file.data", "no-interpretations.data", "llog"):
+            if os.path.isfile(file):
+                os.remove(file)
+
+                if os.path.isfile(file):
+                    print("*ERR: could not remove file '" + file + "'")
+                    exit(1)
+
+    for dirtoclear in ("response-interpretations", "cached-lcc-factors","shared-lists", "conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
         safe_rec_del(dirtoclear)
 
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")
