@@ -4,6 +4,8 @@ import sys
 import re
 import datetime
 
+STATE_DIRS = ("response-interpretations", "cached-lcc-factors", "shared-lists", "conversation-history", "sessions", "tls_csv", "interpretations", "compiled-classes")
+
 CURRENT_LIST = list()
 CURRENT = False
 DIR_STATE = "dir_states"
@@ -47,7 +49,7 @@ def cleanup_dir():
                     print("*ERR: could not remove file '" + file + "'")
                     exit(1)
 
-    for dirtoclear in ("response-interpretations", "cached-lcc-factors","shared-lists", "conversation-history",  "sessions", "tls_csv", "interpretations", "compiled-classes"):
+    for dirtoclear in STATE_DIRS:
         safe_rec_del(dirtoclear)
 
 
@@ -61,7 +63,7 @@ def backup_existing():
     dirs_to_inc_in_bu = ''
     any = False
 
-    for backupdir in ('response-interpretations', 'cached-lcc-factors', 'shared-lists', 'conversation-history', 'sessions', 'tls_csv', 'interpretations', 'compiled-classes'):
+    for backupdir in STATE_DIRS:
         if os.path.isdir(backupdir):
             dirs_to_inc_in_bu += backupdir + '/. '
             any = True
