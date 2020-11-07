@@ -441,7 +441,7 @@ leading_space_id_04 = ''
 leading_space_id_05 = ''
 leading_space_id_06 = ''
 
-find_include_regex  = r"^(\s*)#\s*CART_INCLUDE_" + TEST_PKG_NO_EXT + "_(\w+\.py)$"
+find_include_regex  = r"^(\s*)#\s*CART_INCLUDE_" + TEST_PKG_NO_EXT + "_(.+\.py)$"
 
 for linenum in range(len(code_lines)):
     stline = code_lines[linenum].rstrip()
