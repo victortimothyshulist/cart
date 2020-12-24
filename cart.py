@@ -622,6 +622,7 @@ if CURRENT:
         print("\n*ERR: problem running VCCK ('" + vcck_start_cmd + "')")
         exit(1)
 
+    sort_all_files(TEST_RESULT_DIR)
     print("\nDone.  Output from cartlog() calls placed in results_cart_tests/current\n")
     print("Directory state wasn't changed.\n")
     exit(0)
