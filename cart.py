@@ -6,7 +6,6 @@ import datetime
 
 STATE_DIRS = ("response-interpretations", "cached-lcc-factors", "shared-lists", "conversation-history", "sessions", "tls_csv", "interpretations", "compiled-classes")
 
-CURRENT_LIST = list()
 CURRENT = False
 DIR_STATE = "dir_states"
 TEMP_ARCHIVE_UNPACK_DIR = "_temp_arc_unpack"
@@ -252,7 +251,6 @@ def safe_rec_del(thedir: str) -> None:
 
 
 def load_config(file: str, dir: str) -> None:
-    oncurrent = False
 
     data = list() 
     filedb = None
@@ -262,10 +260,6 @@ def load_config(file: str, dir: str) -> None:
 
         for line in fh.readlines():
             sline = line.strip()
-
-            if sline == '[]':
-                oncurrent = True
-                continue
 
             if sline == "": continue
             if sline[0] == '#': continue
@@ -305,7 +299,7 @@ def load_config(file: str, dir: str) -> None:
             item = mo.group(2)
 
             if type == "[":
-                oncurrent = False 
+             
                 if filedb != None:
                     data.append(filedb)
 
@@ -321,9 +315,6 @@ def load_config(file: str, dir: str) -> None:
                 filedb['input_ordered_list'] = list()
 
             else:
-                if oncurrent:
-                    CURRENT_LIST.append(item)
-                    continue
 
                 if filedb == None:
                     print("\n*ERR: input specified but no state file given - line is '" + sline + "\n")
@@ -343,9 +334,13 @@ def load_config(file: str, dir: str) -> None:
 
 
 def usage():
-    print("\n*Usage: cart.py <config_file> <operation>")
-    print("\n<operation> is either 'create' or 'test' (no apostrope, case is insensitive).")
-    print("<config_file> - a file inside '" + CONF_DIR + "' (The '.conf' suffix is optional)\n\n") 
+    print("\n*Usage: cart.py <config_file> <operation>\n")
+    print("<config_file> - a file inside '" + CONF_DIR + "' (The '.conf' suffix is optional)\n") 
+    print("<operation> is either of:\n")
+    print("\t'create' - create a new expected results file.")
+    print("\t'test' - run tests and compare results now to previously created expected results file.")
+    print("\t\d+  - pass an integer as <operation> to preserve current directories/files and run inputs for FILE STATE DB given as the integer passed in")
+    print("\n")
     exit(0)
 
 
@@ -363,7 +358,11 @@ if len(sys.argv) != 3:
 OPERATION = sys.argv[2]
 OPERATION = OPERATION.lower()
 
-if (OPERATION == "current"):
+mo = re.match('^\d+$', OPERATION)
+
+if bool(mo):
+    _CART_FILEDB = OPERATION
+    OPERATION = "current"
     CURRENT = True
 
 if (OPERATION != "create") and (OPERATION != "test") and (OPERATION != "current"):
@@ -590,7 +589,7 @@ if os.path.isfile(TEMP_CONTENTS_FILE):
         exit(0)
 
 if CURRENT:
-    outforcurrent = TEST_RESULT_DIR + "/current"
+    outforcurrent = TEST_RESULT_DIR + "/" + str(_CART_FILEDB)
     os.mkdir(outforcurrent)
 
     if not os.path.isdir(outforcurrent):
@@ -600,7 +599,7 @@ if CURRENT:
     with open(CART_INPUT_FILE, 'w') as fh:
         lineind = 0
 
-        for line in CURRENT_LIST:
+        for line in tp[int(_CART_FILEDB)]['input_ordered_list']:
             fh.write(line + "\n")
             dir_filedb_linenum = outforcurrent + "/" + str(lineind)
             os.mkdir(dir_filedb_linenum)
@@ -613,7 +612,7 @@ if CURRENT:
         print("\n*ERR: problem executing '" + make_exec_cmd + "'")
         exit(1)
 
-    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T current:" + CART_INPUT_FILE
+    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + str(_CART_FILEDB) + ":" + CART_INPUT_FILE
     print(vcck_start_cmd)
 
     res = os.system(vcck_start_cmd)
