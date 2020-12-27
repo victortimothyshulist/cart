@@ -364,8 +364,7 @@ if bool(mo):
     _CART_FILEDB = OPERATION
     OPERATION = "current"
     CURRENT = True
-
-if (OPERATION != "create") and (OPERATION != "test") and (OPERATION != "current"):
+elif (OPERATION != "create") and (OPERATION != "test"):
     print("\n*ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create', 'test', or \d+")
     usage()
 
