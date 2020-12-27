@@ -366,7 +366,7 @@ if bool(mo):
     CURRENT = True
 
 if (OPERATION != "create") and (OPERATION != "test") and (OPERATION != "current"):
-    print("\n*ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create', 'test', or 'current'")
+    print("\n*ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create', 'test', or \d+")
     usage()
 
 TEST_PKG = sys.argv[1]
