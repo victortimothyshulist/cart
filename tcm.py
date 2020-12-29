@@ -43,11 +43,12 @@ def get_files(VERSION):
 
 def usage():
     print("\nUsage:\n")
-    print("\t./tcm.py <version> [create|clear|verify|install] <name>\n") 
+    print("\t./tcm.py <version> [create|clear|verify|install|edit] <name> [path/to/myfile]\n") 
     print("\t\t<version> : a version file in ./testpackages/* (without the '.conf' extension)")
     print("\n\t\tcreate : creates a new File State Database file (*.tar.gz)")
     print("\t\tclear : clears out all files and directories for a given version")
     print("\t\tverify : Checks if a given File State database tar.gz file contains all files and directories it supposed to.)")
+    print("\t\tedit : extracts <name>.tar.gz and replaces 'path/to/myfile' (inside the tar.gz) with file 'myfile' in current directory.")
     print("\t\tinstall : unzips and untars the <name> file into ./vcck (from testpackages/files/v1.000/<name>.tar.gz)")
     print("\n\t\t<name> : name of file to make.") 
     print("\n")
@@ -72,7 +73,7 @@ def safe_rec_del(thedir: str) -> None:
     return ""
 
 
-def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
+def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
     (err, CONFIG, STATE_DIRS, STATE_FILES, DIRSET, FILESET) = get_files(VERSION)
 
     errors = list()
@@ -82,7 +83,21 @@ def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
         errors.append(err)
         return (errors, warnings) 
 
-    if OPERATION == 'clear':
+    if OPERATION == 'edit':
+        print("in run(). . edit.. PATH_AND_FILE - [" + PATH_AND_FILE + "]")
+        mo = re.match('^/(.+)$', PATH_AND_FILE)
+        _PATH = ""
+        _FILE = ""
+        if bool(mo):
+            PATH_AND_FILE = mo.group(1)
+        else:
+            errors.append("Path passed in for 'edit' does not start with '/'")
+            return (errors, warnings)
+
+        print("> > [" + PATH_AND_FILE + "]")
+        return (errors, warnings)
+
+    elif OPERATION == 'clear':
 
         for dir in STATE_DIRS:
             err = safe_rec_del(dir)
@@ -132,6 +147,11 @@ def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
 
     elif OPERATION == 'install':
         arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+
+        if not os.path.isfile(arcname):
+            errors.append(arcname + " does not exist.")
+            return (errors, warnings)
+
         cmd = "tar zxf " + arcname + " -C ."
 
         res = os.system(cmd)
@@ -139,10 +159,15 @@ def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
             errors.append("Problem running '" + cmd + "' - " + str(res))
             return (errors, warnings)
 
-        return run('verify', VERSION, NAME, OVER_RIDE_DIR)
+        return run('verify', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
 
     elif OPERATION == 'verify':
         arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+
+        if not os.path.isfile(arcname):
+            errors.append(arcname + " does not exist.")
+            return (errors, warnings)
+
         outfile = '_temp_out.txt'
 
         if os.path.isfile(outfile):
@@ -200,12 +225,25 @@ def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if __name__  == '__main__':
-    if (len(sys.argv) != 3) and (len(sys.argv) != 4):
+    if (len(sys.argv) != 3) and (len(sys.argv) != 4) and (len(sys.argv) != 5):
         usage()
 
     VERSION = sys.argv[1]
     OPERATION = sys.argv[2]
     NAME = ""
+    PATH_AND_FILE = ""
+
+    if len(sys.argv) == 5:
+        PATH_AND_FILE = sys.argv[4]
+        NAME = sys.argv[3]
+
+    if len(sys.argv) == 5 and OPERATION != 'edit':
+        print("\n*ERR: only time 4 arguments are allowed is when OPERATION is 'edit'.\n")
+        sys.exit(0)
+
+    if OPERATION == 'edit' and len(sys.argv) != 5:
+        print("\n*ERR: When OPERATION is 'edit', you need 4 arguments.\n")
+        sys.exit(0)
 
     if len(sys.argv) == 4:
         NAME = sys.argv[3]
@@ -213,20 +251,22 @@ if __name__  == '__main__':
     print("\nVERSION: " + str(VERSION))
     print("OPERATION: " + str(OPERATION))
     print("NAME: " + str(NAME))
+    if PATH_AND_FILE != "":
+        print("PATH_AND_FILE: " + str(PATH_AND_FILE))
 
     if OPERATION == "clear" and NAME != "":
         print("\n*ERR: do not provide <name> when operation is 'clear'\n")
         sys.exit(0)
 
-    if OPERATION != 'verify' and OPERATION != 'clear' and OPERATION != 'create' and OPERATION != 'install':
-        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be 'create', 'clear', 'install', or 'verify'\n")
+    if OPERATION != 'edit' and OPERATION != 'verify' and OPERATION != 'clear' and OPERATION != 'create' and OPERATION != 'install':
+        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be either 'create', 'clear', 'install', 'edit' or 'verify'\n")
         usage()
 
-    if ((OPERATION == 'verify') or (OPERATION == 'create') or (OPERATION == 'install')) and (NAME == "" ):
-        print("\n*ERR: for create, install and verify - you must specify a <name>")
+    if ((OPERATION == 'edit') or (OPERATION == 'verify') or (OPERATION == 'create') or (OPERATION == 'install')) and (NAME == "" ):
+        print("\n*ERR: for create, install, edit and verify - you must specify a <name>")
         usage()
 
-    (errors, warnings) = run(OPERATION, VERSION, NAME)
+    (errors, warnings) = run(OPERATION, VERSION, NAME, PATH_AND_FILE)
 
     if len(errors) == 0 and len(warnings) == 0:
         print("\nCompleted successfully.\n")

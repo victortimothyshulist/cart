@@ -1,5 +1,13 @@
 #!/usr/bin/python3.7
 
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+# -if you want to include  tcm.py in another script, this is a test script for doing that.
+
 import tcm 
 import os
 import sys
@@ -27,7 +35,7 @@ if __name__  == '__main__':
     if ((OPERATION == 'verify') or (OPERATION == 'make') or (OPERATION == 'install')) and (NAME == "" ):
         print("\n*ERR: for make and install - you must specify a <name>")
 
-    (errors, warnings) = tcm.run(OPERATION, VERSION, NAME, DIR_STATES)
+    (errors, warnings) = tcm.run(OPERATION, VERSION, NAME, "", DIR_STATES)
 
     if len(errors) == 0:
         print("\nCompleted successfully.\n")
