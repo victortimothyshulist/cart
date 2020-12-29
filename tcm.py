@@ -84,17 +84,38 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         return (errors, warnings) 
 
     if OPERATION == 'edit':
-        print("in run(). . edit.. PATH_AND_FILE - [" + PATH_AND_FILE + "]")
         mo = re.match('^/(.+)$', PATH_AND_FILE)
         _PATH = ""
         _FILE = ""
+
         if bool(mo):
             PATH_AND_FILE = mo.group(1)
         else:
             errors.append("Path passed in for 'edit' does not start with '/'")
             return (errors, warnings)
 
-        print("> > [" + PATH_AND_FILE + "]")
+        mo = re.match('^(.+)/(.+)$', PATH_AND_FILE)
+        if not bool(mo):
+            # ok, it is a single filename at root.
+            _FILE = PATH_AND_FILE
+            _PATH = '/'
+        else:
+            # there is a path and a filename...
+            _PATH = '/' + mo.group(1)
+            _FILE = mo.group(2)
+
+        if not os.path.isfile(_FILE):
+            errors.append("Filename given ('" + _FILE + "') of path ('" + PATH_AND_FILE + "') does not exist in current directory.  Please create it.")
+            return (errors, warnings)
+
+        (er, wr) = run('install', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
+        
+        for entry in er:
+            errors.append(entry)
+
+        for entry in wr:
+            warnings.append(entry)
+
         return (errors, warnings)
 
     elif OPERATION == 'clear':
