@@ -13,4 +13,6 @@ conversation-history/
 do
 shared-lists/
 template_words_file.data
+__pycache__/
+_temp_out.txt
 

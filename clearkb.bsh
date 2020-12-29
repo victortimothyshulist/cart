@@ -1,18 +1,2 @@
-#!/usr/bin/bash
-
-rm -rf conversation-history/
-rm -rf sessions/
-rm -rf tls_csv/
-rm -rf interpretations/
-rm -rf compiled-classes/
-rm -f template_words_file.data
-rm -rf cached-lcc-factors/
-rm -rf response-interpretations/
-rm -rf no-interpretations.data
-rm -f llog
-
-echo "Done."
-
-
-
+./fsdb.py v1.000 clear
 

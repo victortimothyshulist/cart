@@ -13,8 +13,9 @@ def get_files(VERSION):
     STATE_FILES = ()
 
     CF = CONFIG + "/" + VERSION + ".conf"
+
     if not os.path.isfile(CF):
-        return("Config file ('"  + CF + "') does not exist.", CONFIG, STATE_DIRS, STATE_FILES)
+        return("Config file ('"  + CF + "') does not exist.", CONFIG, STATE_DIRS, STATE_FILES, set(), set())
     
     try:
         
@@ -24,6 +25,8 @@ def get_files(VERSION):
                 if bool(mo):
                     type = mo.group(1)
                     info = mo.group(2)
+                    info = info.strip()
+                    info = info.replace(' ', '')
 
                     if type == 'dir':
                         STATE_DIRS = info.split(',')
@@ -31,16 +34,20 @@ def get_files(VERSION):
                         STATE_FILES = info.split(',')
 
     except Exception as ex:
-        return("\n*ERR: cannot open file '" + CF + "': " + str(ex), CONFIG, STATE_DIRS, STATE_FILES)
+        return("\n*ERR: cannot open file '" + CF + "': " + str(ex), CONFIG, STATE_DIRS, STATE_FILES , set(), set())
 
-    return ("", CONFIG, STATE_DIRS, STATE_FILES)
+    DIRSET = set(STATE_DIRS)
+    FILESET = set(STATE_FILES)
+
+    return ("", CONFIG, STATE_DIRS, STATE_FILES, DIRSET, FILESET)
 
 def usage():
     print("\nUsage:\n")
-    print("\tfsdb <version> [make|clear|install] <name>\n") 
+    print("\t./tcm.py <version> [create|clear|verify|install] <name>\n") 
     print("\t\t<version> : a version file in ./testpackages/* (without the '.conf' extension)")
-    print("\n\t\tmake : creates a new File State Database file (*.tar.gz)")
+    print("\n\t\tcreate : creates a new File State Database file (*.tar.gz)")
     print("\t\tclear : clears out all files and directories for a given version")
+    print("\t\tverify : Checks if a given File State database tar.gz file contains all files and directories it supposed to.)")
     print("\t\tinstall : unzips and untars the <name> file into ./vcck (from testpackages/files/v1.000/<name>.tar.gz)")
     print("\n\t\t<name> : name of file to make.") 
     print("\n")
@@ -66,7 +73,7 @@ def safe_rec_del(thedir: str) -> None:
 
 
 def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
-    (err, CONFIG, STATE_DIRS, STATE_FILES) = get_files(VERSION)
+    (err, CONFIG, STATE_DIRS, STATE_FILES, DIRSET, FILESET) = get_files(VERSION)
 
     errors = list()
     warnings = list()
@@ -90,7 +97,7 @@ def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
 
         return (errors, warnings) 
     
-    elif OPERATION == 'make':
+    elif OPERATION == 'create':
         arcname = ""
 
         if OVER_RIDE_DIR == "":
@@ -126,13 +133,70 @@ def run(OPERATION, VERSION, NAME, OVER_RIDE_DIR = ""):
     elif OPERATION == 'install':
         arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
         cmd = "tar zxf " + arcname + " -C ."
+
         res = os.system(cmd)
         if res != 0:
             errors.append("Problem running '" + cmd + "' - " + str(res))
-       
+            return (errors, warnings)
+
+        return run('verify', VERSION, NAME, OVER_RIDE_DIR)
+
+    elif OPERATION == 'verify':
+        arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+        outfile = '_temp_out.txt'
+
+        if os.path.isfile(outfile):
+            os.remove(outfile)
+            if os.path.isfile(outfile):
+                errors.append("Cannot remove file '" + outfile + "'")
+                return (errors, warnings)
+
+        cmd = "tar ztf " + arcname + " > " + outfile
+        res = os.system(cmd)
+
+        if res != 0:
+            errors.append("Problem running '" + cmd + "' - " + str(res))
+            return (errors, warnings)
+        
+        if not os.path.isfile(outfile):
+            errors.append("Ran command '" + cmd + "' but yet file '" + outfile + " doesn't exist!")
+            return (errors, warnings)
+
+        top_level_dirs_seen = set()
+        top_level_files_seen = set()
+
+        try:
+            with open(outfile, 'r') as fh:
+                for line in fh:
+                    line = line.strip()
+
+                    mo = re.match('^(\.\/)(.*)', line)
+                    if bool(mo):
+                        line = mo.group(2)
+
+                    # if no '/' in it at all, then it is a top level file.
+                    # otherwise, get the top level directory.
+                    mo = re.match('^(.+?)/.*', line)
+                    if not bool(mo):
+                        top_level_files_seen.add(line)
+                    else:
+                        top_level_dirs_seen.add(mo.group(1))
+
+        except Exception as ex:
+            errors.append("Can't open file '" + outfile + "'; " + str(ex))
+            return (errors, warnings)
+
+        dir_diff = DIRSET.difference(top_level_dirs_seen)
+        file_diff = FILESET.difference(top_level_files_seen)
+
+        for missing in dir_diff:
+            warnings.append("Directory: '" + missing + "' missing from archive.")
+
+        for missing in file_diff:
+            warnings.append("File: '" + missing + "' missing from archive.")
+
         return (errors, warnings) 
 
- 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if __name__  == '__main__':
@@ -154,12 +218,12 @@ if __name__  == '__main__':
         print("\n*ERR: do not provide <name> when operation is 'clear'\n")
         sys.exit(0)
 
-    if OPERATION != 'clear' and OPERATION != 'make' and OPERATION != 'install':
-        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be 'make', 'clear',  or 'install'\n")
+    if OPERATION != 'verify' and OPERATION != 'clear' and OPERATION != 'create' and OPERATION != 'install':
+        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be 'create', 'clear', 'install', or 'verify'\n")
         usage()
 
-    if ((OPERATION == 'make') or (OPERATION == 'install')) and (NAME == "" ):
-        print("\n*ERR: for make and install - you must specify a <name>")
+    if ((OPERATION == 'verify') or (OPERATION == 'create') or (OPERATION == 'install')) and (NAME == "" ):
+        print("\n*ERR: for create, install and verify - you must specify a <name>")
         usage()
 
     (errors, warnings) = run(OPERATION, VERSION, NAME)
@@ -176,9 +240,6 @@ if __name__  == '__main__':
             print("\n*WARNINGS:\n")
             for warning in warnings: 
                 print("\t" + warning + "\n")
-
-        usage()
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 

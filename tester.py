@@ -1,6 +1,6 @@
 #!/usr/bin/python3.7
 
-import fsdb
+import tcm 
 import os
 import sys
 
@@ -8,7 +8,7 @@ DIR_STATES = "dir_states"
 
 if __name__  == '__main__':
     if (len(sys.argv) != 3) and (len(sys.argv) != 4):
-        print("baaaaaaaaaaaaaaaad usage !") 
+        print("Bad usage !") 
 
     VERSION = sys.argv[1]
     OPERATION = sys.argv[2]
@@ -21,13 +21,13 @@ if __name__  == '__main__':
         print("\n*ERR: do not provide <name> when operation is 'clear'\n")
         sys.exit(0)
 
-    if OPERATION != 'clear' and OPERATION != 'make' and OPERATION != 'install':
-        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be 'make', 'clear',  or 'install'\n")
+    if OPERATION != 'verify' and OPERATION != 'clear' and OPERATION != 'make' and OPERATION != 'install':
+        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be 'make', 'clear',  or 'install', or 'verify'\n")
 
-    if ((OPERATION == 'make') or (OPERATION == 'install')) and (NAME == "" ):
+    if ((OPERATION == 'verify') or (OPERATION == 'make') or (OPERATION == 'install')) and (NAME == "" ):
         print("\n*ERR: for make and install - you must specify a <name>")
 
-    (errors, warnings) = fsdb.run(OPERATION, VERSION, NAME, DIR_STATES)
+    (errors, warnings) = tcm.run(OPERATION, VERSION, NAME, DIR_STATES)
 
     if len(errors) == 0:
         print("\nCompleted successfully.\n")
