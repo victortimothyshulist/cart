@@ -1,0 +1,19 @@
+
+
+
+right now CART does all  its stuff with its own code.. . 
+
+
+but CART instead should just reuse  TCM..
+
+              see   /home/victor/cart/calling_tcm_from_another_script.py  
+
+for an example of how to do this.
+
+This way we could get those warning messages from TCM  piped through to CART.
+
+
+		-- not a big deal for now though since you'll get the messages when using TCM.
+
+just something to think about.
+
