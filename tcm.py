@@ -3,10 +3,12 @@ import os
 import sys
 import re
 
+UPDATE_DIR = "./updates"
+
 # Please verify CONFIG variable (in get_files() below) is accurate.
 
 def get_files(VERSION):
-
+    state_seen = set()
     CONFIG = "testpackages"
 
     STATE_DIRS = ()
@@ -28,6 +30,10 @@ def get_files(VERSION):
                     info = info.strip()
                     info = info.replace(' ', '')
 
+                    if info == '':
+                        return("No values given for 'state_" + type + "s' in config file.", CONFIG, STATE_DIRS, STATE_FILES, set(), set())
+                    state_seen.add(type)
+
                     if type == 'dir':
                         STATE_DIRS = info.split(',')
                     else:
@@ -38,6 +44,9 @@ def get_files(VERSION):
 
     DIRSET = set(STATE_DIRS)
     FILESET = set(STATE_FILES)
+
+    if ('dir' not in state_seen) or ('file' not in state_seen):
+        return("Either 'state_dirs' and/or 'state_files' not mentioned in your config file.", CONFIG, STATE_DIRS, STATE_FILES, DIRSET, FILESET)
 
     return ("", CONFIG, STATE_DIRS, STATE_FILES, DIRSET, FILESET)
 
@@ -55,6 +64,7 @@ def usage():
     sys.exit(0)
 
 def safe_rec_del(thedir: str) -> None:
+    
     thedir_stripped = thedir.strip()
     
     mo = re.match('^[a-zA-Z].*', thedir)
@@ -78,6 +88,12 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 
     errors = list()
     warnings = list()
+
+    if not os.path.isdir(UPDATE_DIR):
+        os.mkdir(UPDATE_DIR)
+        if not os.path.isdir(UPDATE_DIR):
+            errors.append("Cannot create directory: '" + UPDATE_DIR + "'")
+            return (errors, warnings)
 
     if err != "":
         errors.append(err)
@@ -104,8 +120,12 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
             _PATH = '/' + mo.group(1)
             _FILE = mo.group(2)
 
-        if not os.path.isfile(_FILE):
-            errors.append("Filename given ('" + _FILE + "') of path ('" + PATH_AND_FILE + "') does not exist in current directory.  Please create it.")
+        _SRC_FILE = UPDATE_DIR + "/" + _FILE
+
+        print(_PATH + " :: " + _FILE + "::" + _SRC_FILE)
+
+        if not os.path.isfile(_SRC_FILE):
+            errors.append("Filename given ('" + _FILE + "') of path ('" + PATH_AND_FILE + "') does not exist in '" + UPDATE_DIR + "' directory.  Please create it.")
             return (errors, warnings)
 
         (er, wr) = run('install', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
@@ -113,10 +133,17 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         for entry in er:
             errors.append(entry)
 
+        if len(errors):
+            return (errors, warnings)
+
         for entry in wr:
             warnings.append(entry)
 
-        copy_cmd = "cp ./" + _FILE + " ." + _PATH + "/" + _FILE
+        copy_cmd = "cp ./" + _SRC_FILE + " ." + _PATH + "/" + _FILE
+        if not os.path.isdir("./" + _PATH):
+            errors.append("'" + _PATH + "' does not exist in archive '" + NAME + "'")
+            return (errors, warnings)
+
         print(copy_cmd)
         res = os.system(copy_cmd)
 
@@ -131,7 +158,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 
         for entry in wr:
             warnings.append(entry)
-
+        
         (er, wr) = run('clear', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
 
         for entry in er:
@@ -158,6 +185,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         return (errors, warnings) 
     
     elif OPERATION == 'create':
+ 
         arcname = ""
 
         if OVER_RIDE_DIR == "":
@@ -236,6 +264,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         top_level_files_seen = set()
 
         try:
+            
             with open(outfile, 'r') as fh:
                 for line in fh:
                     line = line.strip()
@@ -292,7 +321,7 @@ if __name__  == '__main__':
 
     if len(sys.argv) == 4:
         NAME = sys.argv[3]
-
+    
     print("\nVERSION: " + str(VERSION))
     print("OPERATION: " + str(OPERATION))
     print("NAME: " + str(NAME))
