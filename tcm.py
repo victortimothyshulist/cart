@@ -116,6 +116,30 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         for entry in wr:
             warnings.append(entry)
 
+        copy_cmd = "cp ./" + _FILE + " ." + _PATH + "/" + _FILE
+        print(copy_cmd)
+        res = os.system(copy_cmd)
+
+        if res != 0:
+            errors.append("Problem running command '" + copy_cmd + "'")
+            return (errors, warnings)
+
+        (er, wr) = run('create', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
+
+        for entry in er:
+            errors.append(entry)
+
+        for entry in wr:
+            warnings.append(entry)
+
+        (er, wr) = run('clear', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
+
+        for entry in er:
+            errors.append(entry)
+
+        for entry in wr:
+            warnings.append(entry)
+
         return (errors, warnings)
 
     elif OPERATION == 'clear':
