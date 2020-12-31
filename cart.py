@@ -264,6 +264,9 @@ def load_config(file: str, dir: str) -> None:
             if sline == "": continue
             if sline[0] == '#': continue
 
+            mo = re.match('^(state_dirs|state_files)\s*=.*', sline)
+            if bool(mo): continue
+
             mo = re.match('^areas\s*=\s*(.+?)\s*$', sline)
 
             if bool(mo):
