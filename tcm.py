@@ -308,6 +308,9 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if __name__  == '__main__':
+    if len(sys.argv) != 3 and len(sys.argv) != 4:
+       usage()
+       sys.exit(0)
 
     VERSION = sys.argv[1]
     OPERATION = sys.argv[2]
@@ -330,6 +333,8 @@ if __name__  == '__main__':
         NAME = VERSION
         print("PATH_AND_FILE: " + PATH_AND_FILE)
         print("NAME: " + NAME + "\n")
+    elif OPERATION != 'clear':
+        NAME = sys.argv[3]
     
     (errors, warnings) = run(OPERATION, VERSION, NAME, PATH_AND_FILE)
 
