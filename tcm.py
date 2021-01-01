@@ -114,7 +114,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         if not bool(mo):
             # ok, it is a single filename at root.
             _FILE = PATH_AND_FILE
-            _PATH = '/'
+            _PATH = ''
         else:
             # there is a path and a filename...
             _PATH = '/' + mo.group(1)
@@ -122,50 +122,59 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 
         _SRC_FILE = UPDATE_DIR + "/" + _FILE
 
-        print(_PATH + " :: " + _FILE + "::" + _SRC_FILE)
+        #print(_PATH + " :: " + _FILE + "::" + _SRC_FILE)
 
         if not os.path.isfile(_SRC_FILE):
             errors.append("Filename given ('" + _FILE + "') of path ('" + PATH_AND_FILE + "') does not exist in '" + UPDATE_DIR + "' directory.  Please create it.")
             return (errors, warnings)
 
-        (er, wr) = run('install', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
-        
-        for entry in er:
-            errors.append(entry)
+        TEMPDIR = "temp_dir_for_edit"
+       
+        err = safe_rec_del(TEMPDIR)
+        if err != "":
+            errors.append(err)
 
-        if len(errors):
+        os.mkdir(TEMPDIR)
+        if not os.path.isdir(TEMPDIR):
+            errors.append("Was not able to create directory '" + TEMPDIR + "'")
+          
+        arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+
+        if not os.path.isfile(arcname):
+            errors.append(arcname + " does not exist.")
             return (errors, warnings)
 
-        for entry in wr:
-            warnings.append(entry)
+        cmd = "tar zxf " + arcname + " -C " + TEMPDIR
+        res = os.system(cmd)
 
-        copy_cmd = "cp ./" + _SRC_FILE + " ." + _PATH + "/" + _FILE
-        if not os.path.isdir("./" + _PATH):
+        if res != 0:
+            errors.append("Problem running '" + cmd + "' - " + str(res))
+            return (errors, warnings)
+
+        print("_PATH = [" + _PATH + "]")
+        print("_FILE = [" + _FILE + "]")
+
+        editdst = TEMPDIR + _PATH 
+        copy_cmd = "cp " + _SRC_FILE + " ./" + editdst + "/" + _FILE
+   
+        print(copy_cmd)
+
+        if not os.path.isdir(editdst):
             errors.append("'" + _PATH + "' does not exist in archive '" + NAME + "'")
             return (errors, warnings)
-
-        print(copy_cmd)
+     
         res = os.system(copy_cmd)
 
         if res != 0:
             errors.append("Problem running command '" + copy_cmd + "'")
             return (errors, warnings)
 
-        (er, wr) = run('create', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
+        cmd = "tar czf " + arcname + " -C " + TEMPDIR + " ."
+        res = os.system(cmd)
 
-        for entry in er:
-            errors.append(entry)
-
-        for entry in wr:
-            warnings.append(entry)
-        
-        (er, wr) = run('clear', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
-
-        for entry in er:
-            errors.append(entry)
-
-        for entry in wr:
-            warnings.append(entry)
+        if res != 0:
+            errors.append("Problem running command '" + cmd + "': " + str(res))
+            return (errors, warnings)
 
         return (errors, warnings)
 
@@ -299,47 +308,29 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if __name__  == '__main__':
-    if (len(sys.argv) != 3) and (len(sys.argv) != 4) and (len(sys.argv) != 5):
-        usage()
 
     VERSION = sys.argv[1]
     OPERATION = sys.argv[2]
     NAME = ""
     PATH_AND_FILE = ""
 
-    if len(sys.argv) == 5:
-        PATH_AND_FILE = sys.argv[4]
-        NAME = sys.argv[3]
-
-    if len(sys.argv) == 5 and OPERATION != 'edit':
-        print("\n*ERR: only time 4 arguments are allowed is when OPERATION is 'edit'.\n")
-        sys.exit(0)
-
-    if OPERATION == 'edit' and len(sys.argv) != 5:
-        print("\n*ERR: When OPERATION is 'edit', you need 4 arguments.\n")
-        sys.exit(0)
-
-    if len(sys.argv) == 4:
-        NAME = sys.argv[3]
-    
     print("\nVERSION: " + str(VERSION))
     print("OPERATION: " + str(OPERATION))
-    print("NAME: " + str(NAME))
-    if PATH_AND_FILE != "":
-        print("PATH_AND_FILE: " + str(PATH_AND_FILE))
 
-    if OPERATION == "clear" and NAME != "":
-        print("\n*ERR: do not provide <name> when operation is 'clear'\n")
+    if OPERATION != 'clear' and len(sys.argv) != 4:
+        print("\n*ERR: wrong number of arguments for '" + OPERATION + "' operation.\n")
         sys.exit(0)
 
-    if OPERATION != 'edit' and OPERATION != 'verify' and OPERATION != 'clear' and OPERATION != 'create' and OPERATION != 'install':
-        print("\n*ERR: invalid operation given ('" + str(OPERATION) + "'); It must be either 'create', 'clear', 'install', 'edit' or 'verify'\n")
-        usage()
+    if OPERATION == 'clear' and len(sys.argv) != 3:
+        print("\n*ERR: wrong number of arguments for 'clear' operation.\n")
+        sys.exit(0)
 
-    if ((OPERATION == 'edit') or (OPERATION == 'verify') or (OPERATION == 'create') or (OPERATION == 'install')) and (NAME == "" ):
-        print("\n*ERR: for create, install, edit and verify - you must specify a <name>")
-        usage()
-
+    if OPERATION == 'edit':
+        PATH_AND_FILE = sys.argv[3]
+        NAME = VERSION
+        print("PATH_AND_FILE: " + PATH_AND_FILE)
+        print("NAME: " + NAME + "\n")
+    
     (errors, warnings) = run(OPERATION, VERSION, NAME, PATH_AND_FILE)
 
     if len(errors) == 0 and len(warnings) == 0:
@@ -354,6 +345,4 @@ if __name__  == '__main__':
             print("\n*WARNINGS:\n")
             for warning in warnings: 
                 print("\t" + warning + "\n")
-
-
 
