@@ -308,33 +308,39 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 if __name__  == '__main__':
-    if len(sys.argv) != 3 and len(sys.argv) != 4:
+
+    if 'VERSION' not in os.environ.keys():
+        print("\n'VERSION' environment variable not set.\n")
+        sys.exit(0)
+
+    VERSION = os.environ['VERSION']
+
+    if len(sys.argv) != 2 and len(sys.argv) != 3:
        usage()
        sys.exit(0)
 
-    VERSION = sys.argv[1]
-    OPERATION = sys.argv[2]
+    OPERATION = sys.argv[1]
     NAME = ""
     PATH_AND_FILE = ""
 
     print("\nVERSION: " + str(VERSION))
     print("OPERATION: " + str(OPERATION))
 
-    if OPERATION != 'clear' and len(sys.argv) != 4:
+    if OPERATION != 'clear' and len(sys.argv) != 3:
         print("\n*ERR: wrong number of arguments for '" + OPERATION + "' operation.\n")
         sys.exit(0)
 
-    if OPERATION == 'clear' and len(sys.argv) != 3:
+    if OPERATION == 'clear' and len(sys.argv) != 2:
         print("\n*ERR: wrong number of arguments for 'clear' operation.\n")
         sys.exit(0)
 
     if OPERATION == 'edit':
-        PATH_AND_FILE = sys.argv[3]
+        PATH_AND_FILE = sys.argv[2]
         NAME = VERSION
         print("PATH_AND_FILE: " + PATH_AND_FILE)
         print("NAME: " + NAME + "\n")
     elif OPERATION != 'clear':
-        NAME = sys.argv[3]
+        NAME = sys.argv[2]
     
     (errors, warnings) = run(OPERATION, VERSION, NAME, PATH_AND_FILE)
 
