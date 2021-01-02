@@ -52,9 +52,8 @@ def get_files(VERSION):
 
 def usage():
     print("\nUsage:\n")
-    print("\t./tcm.py <version> [create|clear|verify|install|edit] <name> [path/to/myfile]\n") 
-    print("\t\t<version> : a version file in ./testpackages/* (without the '.conf' extension)")
-    print("\n\t\tcreate : creates a new File State Database file (*.tar.gz)")
+    print("\t./tcm.py [create|clear|verify|install|edit] <name> [path/to/myfile]\n") 
+    print("\t\tcreate : creates a new File State Database file (*.tar.gz)")
     print("\t\tclear : clears out all files and directories for a given version")
     print("\t\tverify : Checks if a given File State database tar.gz file contains all files and directories it supposed to.)")
     print("\t\tedit : extracts <name>.tar.gz and replaces 'path/to/myfile' (inside the tar.gz) with file 'myfile' in current directory.")
@@ -311,6 +310,10 @@ if __name__  == '__main__':
 
     if 'VERSION' not in os.environ.keys():
         print("\n'VERSION' environment variable not set.\n")
+        print("Set it to a version file in ./testpackages/* (without the '.conf' extension)")
+        print("\nSet it with export, example:")
+        print('export VERSION="v1.000"')
+        print("\n")
         sys.exit(0)
 
     VERSION = os.environ['VERSION']
