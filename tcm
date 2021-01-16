@@ -7,6 +7,29 @@ UPDATE_DIR = "./updates"
 
 # Please verify CONFIG variable (in get_files() below) is accurate.
 
+def mkdir_p(path):
+    if((path[0] != '.') and (path[0] != '/')):
+        return "The path passed to mkdir_p() must start with either '.' or '/'.  Path passed in was: [" + path + "]"
+    curr = ""
+ 
+    if path[0] == '.':
+        curr = "."
+        path = path[1:]
+
+    path = path[1:]
+    parts = path.split("/")
+    conpath = curr
+    
+    try:
+        for part in parts:
+            conpath += ("/" + part)
+            if os.path.isdir(conpath): continue
+            os.mkdir(conpath)
+    except Exception as ex:
+        return str(ex)
+    return ""
+
+
 def get_files(VERSION):
     state_seen = set()
     CONFIG = "testpackages"
@@ -156,11 +179,13 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         editdst = TEMPDIR + _PATH 
         copy_cmd = "cp " + _SRC_FILE + " ./" + editdst + "/" + _FILE
    
-        print(copy_cmd)
-
         if not os.path.isdir(editdst):
-            errors.append("'" + _PATH + "' does not exist in archive '" + NAME + "'")
-            return (errors, warnings)
+            # _PATH does not exist in archive NAME, so create it
+            err = mkdir_p("./" + editdst)
+     
+            if err != '':
+                errors.append(err)
+                return (errors, warnings)
      
         res = os.system(copy_cmd)
 
