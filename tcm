@@ -252,12 +252,17 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         return (errors, warnings) 
 
     elif OPERATION == 'install':
-        arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
-
+        
+        already_has_suffix = re.match('^.+\.tar\.gz$', NAME)
+        if not bool(already_has_suffix):
+            arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+        else:
+            arcname = CONFIG + "/files/" + VERSION + "/" + NAME
+        
         if not os.path.isfile(arcname):
             errors.append(arcname + " does not exist.")
             return (errors, warnings)
-
+        
         cmd = "tar zxf " + arcname + " -C ."
 
         res = os.system(cmd)
@@ -268,7 +273,12 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         return run('verify', VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR)
 
     elif OPERATION == 'verify':
-        arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+        already_has_suffix = re.match('^.+\.tar\.gz$', NAME)
+
+        if not bool(already_has_suffix):
+            arcname = CONFIG + "/files/" + VERSION + "/" + NAME + ".tar.gz"
+        else:
+            arcname = CONFIG + "/files/" + VERSION + "/" + NAME
 
         if not os.path.isfile(arcname):
             errors.append(arcname + " does not exist.")
