@@ -350,7 +350,7 @@ def usage():
     print("<operation> is either of:\n")
     print("\t'create' - create a new expected results file.")
     print("\t'test' - run tests and compare results now to previously created expected results file.")
-    print("\t\d+  - pass an integer as <operation> to preserve current directories/files and run inputs for FILE STATE DB given as the integer passed in")
+    print("\t-(FSDB name in config file) - to preserve current directories/files and run inputs for FILE STATE DB *.tar.gz file given (match with FSDB filename in square brackets in your config file. Note, a dash before the name.")
     print("\n")
     exit(0)
 
@@ -369,14 +369,26 @@ if len(sys.argv) != 3:
 OPERATION = sys.argv[2]
 OPERATION = OPERATION.lower()
 
-mo = re.match('^\d+$', OPERATION)
+filename_no_ext_fsdb = ""
+filename_with_ext_fsdb = ""
+
+mo = re.match('^-(.+)$', OPERATION)
 
 if bool(mo):
-    _CART_FILEDB = OPERATION
     OPERATION = "current"
     CURRENT = True
+    temp_name = mo.group(1)
+
+    mo2 = re.match('^(.+?)\.tar\.gz$', temp_name)
+    if bool(mo2):
+        filename_with_ext_fsdb = temp_name
+        filename_no_ext_fsdb = mo2.group(1)
+    else:
+        filename_with_ext_fsdb = temp_name + '.tar.gz'
+        filename_no_ext_fsdb = temp_name
+
 elif (OPERATION != "create") and (OPERATION != "test"):
-    print("\n*ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create', 'test', or \d+")
+    print("\n*ERR: the operation you specified ('" + OPERATION + "') is not valid. Must be either 'create', 'test', or a FSDB in your config file (prefixed with a dash).")
     usage()
 
 TEST_PKG = sys.argv[1]
@@ -599,7 +611,7 @@ if os.path.isfile(TEMP_CONTENTS_FILE):
         exit(0)
 
 if CURRENT:
-    outforcurrent = TEST_RESULT_DIR + "/" + str(_CART_FILEDB)
+    outforcurrent = TEST_RESULT_DIR + "/" + filename_no_ext_fsdb
     os.mkdir(outforcurrent)
 
     if not os.path.isdir(outforcurrent):
@@ -609,10 +621,23 @@ if CURRENT:
     with open(CART_INPUT_FILE, 'w') as fh:
         lineind = 0
 
+        _CART_FILEDB = -1 
+        for i in range(len(tp)):
+            if tp[i]['filename'] == (filename_no_ext_fsdb + '.tar.gz'):
+                _CART_FILEDB = i
+                break
+
+        if _CART_FILEDB == -1:
+            print("\n*ERR: '" + filename_no_ext_fsdb + "' doesn't exist in your config file!\n")
+            exit(0)
+        
         for line in tp[int(_CART_FILEDB)]['input_ordered_list']:
             fh.write(line + "\n")
             dir_filedb_linenum = outforcurrent + "/" + str(lineind)
             os.mkdir(dir_filedb_linenum)
+            if not os.path.isdir(dir_filedb_linenum):
+                print("*ERR: wasn't able to create '" + dir_filedb_linenum + "'.\n")
+                exit(0)
             lineind += 1
 
     make_exec_cmd = "chmod +x " + VCCK_PROGRAM_TEMP
@@ -622,7 +647,7 @@ if CURRENT:
         print("\n*ERR: problem executing '" + make_exec_cmd + "'")
         exit(1)
 
-    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + str(_CART_FILEDB) + ":" + CART_INPUT_FILE
+    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
     print(vcck_start_cmd)
 
     res = os.system(vcck_start_cmd)
@@ -632,7 +657,7 @@ if CURRENT:
         exit(1)
 
     sort_all_files(TEST_RESULT_DIR)
-    print("\nDone.  Output from cartlog() calls placed in results_cart_tests/current\n")
+    print("\nDone.  Output from cartlog() calls placed in " + outforcurrent + "\n")
     print("Directory state wasn't changed.\n")
     exit(0)
 
@@ -708,17 +733,26 @@ for filedbid in range(len(tp)):
             print("\n*ERR: cannot remove file '" + CART_INPUT_FILE + "' from last run.")
             exit(0)
 
-    dir_filedbid = TEST_RESULT_DIR + "/" + str(filedbid)
+    filename_no_ext_fsdb = tp[filedbid]['filename'] 
+    mo = re.match('^(.+)\.tar.gz$', filename_no_ext_fsdb)
+    if bool(mo):
+        filename_no_ext_fsdb = mo.group(1) 
+
+    dir_filedbid = TEST_RESULT_DIR + "/" + filename_no_ext_fsdb
     os.mkdir(dir_filedbid)
 
+    if not os.path.isdir(dir_filedbid):
+        print("\n*ERR: could not create directory: '" + dir_filedbid + "'")
+        exit(1)
+    
     with open(CART_INPUT_FILE, 'w') as fh:
         lineind = 0
+     
         for line in tp[filedbid]['input_ordered_list']:
             fh.write(line + "\n")
             dir_filedb_linenum = dir_filedbid + "/" + str(lineind)
             os.mkdir(dir_filedb_linenum)
             lineind += 1 
-
 
     make_exec_cmd = "chmod +x " + VCCK_PROGRAM_TEMP
     res = os.system(make_exec_cmd)
@@ -726,7 +760,16 @@ for filedbid in range(len(tp)):
         print("\n*ERR: problem executing '" + make_exec_cmd + "'")
         exit(0)
 
-    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + str(filedbid) + ":" + CART_INPUT_FILE
+    filedbname = tp[filedbid]['filename']
+    
+    mo = re.match('^(.+?).tar.gz$', filedbname)
+    if bool(mo):
+        filename_no_ext_fsdb = mo.group(1)
+    else:
+        print("\n*ERR: strange name: '" + filedbname + "' - should end with tar.gz")
+        exit(0)
+
+    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
     print(vcck_start_cmd)
     
     res = os.system(vcck_start_cmd)

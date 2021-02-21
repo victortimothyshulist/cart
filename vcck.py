@@ -56,7 +56,7 @@ for argindex in range(len(sys.argv)):
             exit(0)
 
         FILEDB_AND_LUI_FN = sys.argv[argindex + 1]
-        mo = re.match('^(\d+|current):(.+)$', FILEDB_AND_LUI_FN)
+        mo = re.match('^(.+):(.+)$', FILEDB_AND_LUI_FN)
 
         if not bool(mo):
             print("ERR: command line arguments are invalid: value for -T argument ('" + FILEDB_AND_LUI_FN + "'), doesn't match the regex (\d+):(.+)\n")
@@ -89,6 +89,8 @@ while True:
 
         lui = cart_input_lines[_CART_INPUT_LINE_NUMBER].strip()
         #CART_INCLUDE_v1.100_file1.py
+        #CART_INCLUDE_v1.100_file2.py
+        #CART_INCLUDE_v1.100_file3.py
     else:
         lui = input()
 
