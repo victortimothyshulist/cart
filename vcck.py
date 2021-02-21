@@ -16,6 +16,7 @@ _CART_RESULTS_DIR = "results_cart_tests" # must be same as in cart.py
 #__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE
 
 def cartlog(area, message):
+
     #__CART_REPLACED_LINE_02_DO_NOT_REMOVE_THIS_LINE
 
     known_area = False
@@ -24,6 +25,8 @@ def cartlog(area, message):
     cartlogdirandfile = _CART_RESULTS_DIR + "/" + str(_CART_FILEDB) + "/" + str(_CART_INPUT_LINE_NUMBER) + "/" + area + ".res"
    
     #__CART_REPLACED_LINE_03_DO_NOT_REMOVE_THIS_LINE
+
+    #__CART_REPLACED_LINE_07_DO_NOT_REMOVE_THIS_LINE
 
     if not known_area:
         print("\n*ERR: called cartlog() with unknown area ('" + area + "').  Check your config file for valid areas.\n")
