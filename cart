@@ -4,6 +4,30 @@ import sys
 import re
 import datetime
 
+VERSION = ""
+CONF_DIR = "./testpackages"
+
+def usage():
+    print("\n*Usage: cart.py <config_file> <operation>\n")
+    print("<config_file> - a file inside '" + CONF_DIR + "' (The '.conf' suffix is optional)")
+    print("\tconfig_file - can be passed as argument OR fetched from enviorment variable 'VERSION'\n")
+    print("<operation> is either of:\n")
+    print("\t'create' - create a new expected results file.")
+    print("\t'test' - run tests and compare results now to previously created expected results file.")
+    print("\t-(FSDB name in config file) - to preserve current directories/files and run inputs for FILE STATE DB *.tar.gz file given (match with FSDB filename in square brackets in your config file. Note, a dash before the name.")
+    print("\n")
+    exit(0)
+
+if len(sys.argv) == 2:
+    if 'VERSION'  in os.environ.keys():
+        VERSION = os.environ['VERSION']
+        sys.argv.insert(1, VERSION)
+    else:
+        usage()
+        print("\n*ERR: called with only one argument but no 'VERSION' environment variable set.  To call with a single argument please set 'VERSION' environment variable.\n\n")
+elif len(sys.argv) != 3:
+    usage()
+
 STATE_DIRS = ("response-interpretations", "cached-lcc-factors", "shared-lists", "conversation-history", "sessions", "tls_csv", "interpretations", "compiled-classes")
 
 CURRENT = False
@@ -385,27 +409,12 @@ def load_config(file: str, dir: str) -> None:
     return (areas, data, areatofsset)
 
 
-def usage():
-    print("\n*Usage: cart.py <config_file> <operation>\n")
-    print("<config_file> - a file inside '" + CONF_DIR + "' (The '.conf' suffix is optional)\n") 
-    print("<operation> is either of:\n")
-    print("\t'create' - create a new expected results file.")
-    print("\t'test' - run tests and compare results now to previously created expected results file.")
-    print("\t-(FSDB name in config file) - to preserve current directories/files and run inputs for FILE STATE DB *.tar.gz file given (match with FSDB filename in square brackets in your config file. Note, a dash before the name.")
-    print("\n")
-    exit(0)
-
-
-CONF_DIR = "./testpackages"
 FILES_IN = CONF_DIR + "/" + "files"
 
 create_dir_if_not_exist(CONF_DIR)
 create_dir_if_not_exist(FILES_IN)
 
 CART_INPUT_FILE = "temp_cart_input.txt"
-
-if len(sys.argv) != 3:
-    usage()
 
 OPERATION = sys.argv[2]
 OPERATION = OPERATION.lower()
@@ -434,6 +443,9 @@ elif (OPERATION != "create") and (OPERATION != "test"):
 
 TEST_PKG = sys.argv[1]
 TEST_PKG_NO_EXT = ""
+
+print("------------- VERSION: " + TEST_PKG)
+print("------------- OPERATION: " + OPERATION)
 
 if TEST_PKG[-5::] != '.conf':
     TEST_PKG_FP = CONF_DIR + "/" + TEST_PKG + ".conf"

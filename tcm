@@ -82,7 +82,7 @@ def usage():
     print("\t\tedit : extracts <name>.tar.gz and replaces 'path/to/myfile' (inside the tar.gz) with file 'myfile' in current directory.")
     print("\t\tinstall : unzips and untars the <name> file into ./vcck (from testpackages/files/v1.000/<name>.tar.gz)")
     print("\n\t\t<name> : name of file to make.") 
-    print("\n")
+    print("\n\t\tDELETE: not yet implemented. In future we are thinking of having 'tcm edit -/path/to/myfile'.  The negative sign would mean remove 'myfile' from that path.\n")
     sys.exit(0)
 
 def safe_rec_del(thedir: str) -> None:
