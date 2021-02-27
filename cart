@@ -444,7 +444,7 @@ elif (OPERATION != "create") and (OPERATION != "test"):
 TEST_PKG = sys.argv[1]
 TEST_PKG_NO_EXT = ""
 
-print("------------- VERSION: " + TEST_PKG)
+print("\n------------- VERSION: " + TEST_PKG)
 print("------------- OPERATION: " + OPERATION)
 
 if TEST_PKG[-5::] != '.conf':
@@ -733,6 +733,10 @@ if CURRENT:
     print("Directory state wasn't changed.\n")
     exit(0)
 
+
+if len(tp) == 0:
+    print("* No file state databases defined in your configuration file. Exiting now.\n")
+    exit(0)
 
 for filedbid in range(len(tp)):
     print("Next filedb.  Hit enter to continue:")
