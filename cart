@@ -714,8 +714,10 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_08 + 'if bool(mo_swp):')
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t* * * CART TESTING PAUSED * * *")')
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t - press enter to continue -")')
-        test_code_lines.append(leading_space_id_08 + '    input()')
         test_code_lines.append(leading_space_id_08 + '    lui = mo_swp.group(1)')
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\tAfter you press enter, VCCK will process:")')
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t\t" + lui)')
+        test_code_lines.append(leading_space_id_08 + '    input()')
 
     elif linenum in cart_includes.keys():
         ind_ws = cart_includes[linenum][0]
