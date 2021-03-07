@@ -303,14 +303,25 @@ def load_config(file: str, dir: str) -> None:
     filedb = None
     areas = set()
     areatofsset = dict()   
+ 
+    LWP = False # LWP = last was pause.
+    sline = ""
 
     with open(file, 'r') as fh:
 
         for line in fh.readlines():
-            sline = line.strip()
 
-            if sline == "": continue
-            if sline[0] == '#': continue
+            templine = line.strip()
+            if templine == "": continue
+            if templine[0] == '#': continue
+
+            sline = templine
+
+            mo = re.match('^"\s*/', sline)
+
+            if bool(mo):
+                print("\n*ERR: not allowed to pass symbols to VCCK. Bad line is '" + sline + "'\n")
+                exit(1)
 
             mo = re.match('^(state_dirs|state_files)\s*=.*', sline)
             if bool(mo): continue
@@ -354,11 +365,17 @@ def load_config(file: str, dir: str) -> None:
                 item = mo.group(2)
 
             if type == "[":
-             
+               
+                item_wp = ""
+ 
                 if filedb != None:
+                    if LWP:
+                        filedb['input_ordered_list'].append('/PAUSE')
                     data.append(filedb)
 
                 filedb = dict()
+
+                LWP = False
 
                 # seperate filename and list of areas...
                 mo_area_fsdbs = re.match('^(.+):(.+)$', item)
@@ -400,17 +417,31 @@ def load_config(file: str, dir: str) -> None:
                     print("\n*ERR: input specified but no state file given - line is '" + sline + "\n")
                     exit(0)
                 else:
-                    if type == '/PAUSE':
-                        filedb['input_ordered_list'].append(type)
+                    if type == '/PAUSE' and LWP:
+                        print("\n*ERR: cannot have two /PAUSE commands in a row!\n")
+                        exit(1)
 
-                    elif item in filedb['input_set']:
+                    if type == '/PAUSE' and LWP == False:
+                        LWP = True
+                        continue
+
+                    item_wp = item
+
+                    if LWP:
+                        item = "/PAUSE:" + item 
+
+                    LWP = False
+
+                    if item_wp in filedb['input_set']:
                         print("\n*ERR: same input repeated for filedb (" + filedb['filename'] + ")! line is '" + sline + "'.\n")
                         exit(0)
                     else:
-                        filedb['input_set'].add(item)
+                        filedb['input_set'].add(item_wp)
                         filedb['input_ordered_list'].append(item)
-
+        
     if filedb != None:
+        if sline == '/PAUSE':
+            filedb['input_ordered_list'].append('/PAUSE')
         data.append(filedb)
 
     return (areas, data, areatofsset)
@@ -678,6 +709,13 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t - press enter to continue -")')
         test_code_lines.append(leading_space_id_08 + '    input()')
         test_code_lines.append(leading_space_id_08 + '    continue')
+
+        test_code_lines.append(leading_space_id_08 + 'mo_swp = re.match("^/PAUSE:(.+)$", lui)')
+        test_code_lines.append(leading_space_id_08 + 'if bool(mo_swp):')
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t* * * CART TESTING PAUSED * * *")')
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t - press enter to continue -")')
+        test_code_lines.append(leading_space_id_08 + '    input()')
+        test_code_lines.append(leading_space_id_08 + '    lui = mo_swp.group(1)')
 
     elif linenum in cart_includes.keys():
         ind_ws = cart_includes[linenum][0]
