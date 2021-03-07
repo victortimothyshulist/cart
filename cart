@@ -342,12 +342,16 @@ def load_config(file: str, dir: str) -> None:
 
             type = None
             mo = re.match('^\s*([\["])\s*(.+?)\s*[\]"]\s*$', sline)
-            if not bool(mo):
-                print("\n*ERR: syntax error with line '" + sline + " - must be inside square brackets OR inside quotes -- square brackets to specify a file state database and quotes for LUI to process.\n")
+
+            if (not bool(mo)) and (sline != '/PAUSE'):
+                print("\n*ERR: syntax error with line '" + sline + "' - must be inside square brackets OR inside quotes -- square brackets to specify a file state database and quotes for LUI to process OR '/PAUSE'.\n")
                 exit(0)
 
-            type = mo.group(1)
-            item = mo.group(2)
+            if sline == '/PAUSE':
+                type = '/PAUSE'
+            else: 
+                type = mo.group(1)
+                item = mo.group(2)
 
             if type == "[":
              
@@ -396,7 +400,10 @@ def load_config(file: str, dir: str) -> None:
                     print("\n*ERR: input specified but no state file given - line is '" + sline + "\n")
                     exit(0)
                 else:
-                    if item in filedb['input_set']:
+                    if type == '/PAUSE':
+                        filedb['input_ordered_list'].append(type)
+
+                    elif item in filedb['input_set']:
                         print("\n*ERR: same input repeated for filedb (" + filedb['filename'] + ")! line is '" + sline + "'.\n")
                         exit(0)
                     else:
@@ -511,6 +518,7 @@ line_number_of_id_04 = None
 line_number_of_id_05 = None
 line_number_of_id_06 = None
 line_number_of_id_07 = None
+line_number_of_id_08 = None
 
 leading_space_id_01 = ''
 leading_space_id_02 = ''
@@ -519,6 +527,7 @@ leading_space_id_04 = ''
 leading_space_id_05 = ''
 leading_space_id_06 = ''
 leading_space_id_07 = ''
+leading_space_id_08 = ''
 
 find_include_regex  = r"^(\s*)#\s*CART_INCLUDE_" + TEST_PKG_NO_EXT + "_(.+\.py)$"
 
@@ -579,6 +588,12 @@ for linenum in range(len(code_lines)):
         line_number_of_id_07 = linenum
         leading_space_id_07 = mo.group(1)
 
+    mo = re.match('^(\s*)#\s*__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE\s*$', stline)
+    if bool(mo):
+        line_number_of_id_08 = linenum
+        leading_space_id_08 = mo.group(1)
+
+
 if line_number_of_id_01 == None:
     print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
@@ -605,6 +620,10 @@ if line_number_of_id_06 == None:
 
 if line_number_of_id_07 == None:
     print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_07_DO_NOT_REMOVE_THIS_LINE'\n")
+    exit(0)
+
+if line_number_of_id_08 == None:
+    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 # create source code for CART-runnable version of vcck !
@@ -652,6 +671,13 @@ for linenum in range(len(code_lines)):
     elif linenum == line_number_of_id_07:
         for area_valid_line in cart_area_to_fsdb_validation_code:
             test_code_lines.append(leading_space_id_07 + area_valid_line)
+
+    elif linenum == line_number_of_id_08:
+        test_code_lines.append(leading_space_id_08 + 'if(lui == "/PAUSE"):' + "\n") 
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t* * * CART TESTING PAUSED * * *")')
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t - press enter to continue -")')
+        test_code_lines.append(leading_space_id_08 + '    input()')
+        test_code_lines.append(leading_space_id_08 + '    continue')
 
     elif linenum in cart_includes.keys():
         ind_ws = cart_includes[linenum][0]
