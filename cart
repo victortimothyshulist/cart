@@ -7,6 +7,29 @@ import datetime
 VERSION = ""
 CONF_DIR = "./testpackages"
 
+
+def sort_file(infile, outfile):
+    if not os.path.isfile(infile):
+        print("sort_file() called with non-existant file: " + infile)
+        sys.exit(1)
+
+    fcontents = list()
+
+    try:
+        with open(infile, 'r') as fh:
+            fcontents = fh.readlines()
+
+        fcontents.sort()
+
+        with open(outfile, 'w') as fo:
+            for oline in fcontents:
+                fo.write(oline)
+
+    except Exception as ex:
+        print("Exception thrown while running function sort_file(): " + str(ex))
+        sys.exit(1)
+
+
 def usage():
     print("\n*Usage: cart.py <config_file> <operation>\n")
     print("<config_file> - a file inside '" + CONF_DIR + "' (The '.conf' suffix is optional)")
@@ -137,11 +160,8 @@ def sort_all_files(thedir):
             dirpart = mo.group(1)
             filename = mo.group(2)
             temp_sorted_filename = dirpart + "/" + filename + ".ts"
-            sort_cmd = "sort " + entry_fp + " > " + temp_sorted_filename
-            res = os.system(sort_cmd)
 
-            if res != 0:
-                print("*ERR: problem executing '" + sort_cmd + "'")
+            sort_file(entry_fp, temp_sorted_filename)
 
             try:
                 os.remove(entry_fp)

@@ -1,0 +1,13 @@
+
+In order for a CART test to be considered PASSED, we need CART itself to of courese say "PASSED"
+
+	but !!
+
+	we should also make sure that VCCK itself has no "ERR" in its logs !!
+
+
+	So !
+
+	CART should display perhaps any lines with "ERR" in them from VCCK's log before saying passed.
+--
+
