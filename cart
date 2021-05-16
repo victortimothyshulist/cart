@@ -876,7 +876,13 @@ for filedbid in range(len(tp)):
                 prev_files.add(mo.group(1))
             else:
                 prev_files.add(sline)
- 
+
+    if os.path.isfile("last-lcc-cache-build.data"):
+        os.remove("last-lcc-cache-build.data")
+        if os.path.isfile("last-lcc-cache-build.data"):
+            print("\n\n* * * could not remove old 'last-lcc-cache-build.data' file !\n\nTerminating ! please investigate!\n")
+            sys.exit(1)
+
     unarchive_cmd = "tar xzf " + FILES_IN + "/" + TEST_PKG_NO_EXT + "/" + tp[filedbid]['filename']
 
     res = os.system(unarchive_cmd)

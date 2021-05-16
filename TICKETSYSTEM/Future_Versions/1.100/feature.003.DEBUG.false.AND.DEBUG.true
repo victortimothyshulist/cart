@@ -1,0 +1,18 @@
+
+VCCK right now just has a variable, 'DEBUGGING' at top of script that is manually changed in the code itself from
+  True to False or vice versa,
+
+
+This should be set via a variable..... (yes, this is a feature of VCCK not CART),  but then once that feature is
+
+added, then CART should run ALL TESTS on VCCK,  
+
+	-- once with DEBUGGING = True
+
+	-- then a second time, ALL TESTS, but this time wiht DEBUGGING = False
+
+--
+
+pass only if  *BOTH*   Debugging ON and OFF !
+--
+
