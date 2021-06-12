@@ -75,17 +75,17 @@ def get_files(VERSION):
 
 def usage():
     print("\nUsage:\n")
-    print("\t./tcm.py [create|clear|verify|install|edit] <name> [path/to/myfile]\n") 
+    print("\t./tcm.py [create|clear|verify|install|edit|delete] <name> [path/to/myfile]\n") 
     print("\t\tlist : display list of all (*.tar.gz) files for current VERSION.")
     print("\t\tcreate : creates a new File State Database file (*.tar.gz)")
     print("\t\tclear : clears out all files and directories for a given version")
     print("\t\tverify : Checks if a given File State database tar.gz file contains all files and directories it supposed to.)")
     print("\t\tedit : extracts <VERSION>.tar.gz and replaces 'path/to/myfile' (inside the tar.gz) with file 'myfile' in current directory.")
     print("\t\tinstall : unzips and untars the <name> file into ./vcck (from testpackages/files/v1.000/<name>.tar.gz)")
+    print("\t\tdelete : removes path/to/myfile from the ERAF (<VERSION>.tar.gz)")
     print("\n\t\t<name> : name of file to make (only for FSDBS, and only with 'create', 'verify' and 'install' operations).") 
-    print("\n\t\tDELETE: not yet implemented. In future we are thinking of having 'tcm edit -/path/to/myfile'.  The negative sign would mean remove 'myfile' from that path.\n")
-    print("\t\tNOTE: 'edit' is only to edit the Expected Results archive --- NOT FSDBs.  To edit an FSDB, just do: (a) tcm install <myfsdb>; then (b) change file system, then (c) tcm create <myfsdb>.\n")
-    print("\t\tFor 'edit', the version is taken from the VERSION environment variable. So only path comes after 'edit'\n")
+    print("\n\t\tNOTE: 'edit' and 'delete' is only to edit the Expected Results archive --- NOT FSDBs.  To edit an FSDB, just do: (a) tcm install <myfsdb>; then (b) change file system, then (c) tcm create <myfsdb>.\n")
+    print("\t\tFor 'edit' & 'delete', the version is taken from the VERSION environment variable. So only path comes after 'edit'\n")
     sys.exit(0)
 
 def safe_rec_del(thedir: str) -> None:
