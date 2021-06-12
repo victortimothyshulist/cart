@@ -124,7 +124,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         errors.append(err)
         return (errors, warnings) 
 
-    if OPERATION == 'edit':
+    if OPERATION == 'edit' or OPERATION == 'delete':
         mo = re.match('^/(.+)$', PATH_AND_FILE)
         _PATH = ""
         _FILE = ""
@@ -132,7 +132,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         if bool(mo):
             PATH_AND_FILE = mo.group(1)
         else:
-            errors.append("Path passed in for 'edit' does not start with '/'")
+            errors.append("Path passed in does not start with '/'")
             return (errors, warnings)
 
         mo = re.match('^(.+)/(.+)$', PATH_AND_FILE)
@@ -147,11 +147,10 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
 
         _SRC_FILE = UPDATE_DIR + "/" + _FILE
 
-        #print(_PATH + " :: " + _FILE + "::" + _SRC_FILE)
-
-        if not os.path.isfile(_SRC_FILE):
-            errors.append("Filename given ('" + _FILE + "') of path ('" + PATH_AND_FILE + "') does not exist in '" + UPDATE_DIR + "' directory.  Please create it.")
-            return (errors, warnings)
+        if OPERATION == 'edit':
+            if not os.path.isfile(_SRC_FILE):
+                errors.append("Filename given ('" + _FILE + "') of path ('" + PATH_AND_FILE + "') does not exist in '" + UPDATE_DIR + "' directory.  Please create it.")
+                return (errors, warnings)
 
         TEMPDIR = "temp_dir_for_edit"
        
@@ -176,25 +175,37 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
             errors.append("Problem running '" + cmd + "' - " + str(res))
             return (errors, warnings)
 
-        print("_PATH = [" + _PATH + "]")
-        print("_FILE = [" + _FILE + "]")
+        #print("_PATH = [" + _PATH + "]")
+        #print("_FILE = [" + _FILE + "]")
 
         editdst = TEMPDIR + _PATH 
-        copy_cmd = "cp " + _SRC_FILE + " ./" + editdst + "/" + _FILE
-   
-        if not os.path.isdir(editdst):
-            # _PATH does not exist in archive NAME, so create it
-            err = mkdir_p("./" + editdst)
-     
-            if err != '':
-                errors.append(err)
-                return (errors, warnings)
-     
-        res = os.system(copy_cmd)
 
-        if res != 0:
-            errors.append("Problem running command '" + copy_cmd + "'")
-            return (errors, warnings)
+        if OPERATION == 'edit':
+            copy_cmd = "cp " + _SRC_FILE + " ./" + editdst + "/" + _FILE
+   
+            if not os.path.isdir(editdst):
+                # _PATH does not exist in archive NAME, so create it
+                err = mkdir_p("./" + editdst)
+     
+                if err != '':
+                    errors.append(err)
+                    return (errors, warnings)
+     
+            res = os.system(copy_cmd)
+            if res != 0:
+                errors.append("Problem running command '" + copy_cmd + "'")
+                return (errors, warnings)
+
+        else:
+            # ok, delete instead...
+            if not os.path.isfile(editdst + "/" + _FILE):
+                errors.append(_PATH + "/" + _FILE + ": does not even exist in the ERAF !")
+            else:
+                os.remove(editdst + "/" + _FILE)
+                if os.path.isfile(editdst + "/" + _FILE):
+                    errors.append("Could not remove file from archive.")
+
+        if len(errors) > 0: return (errors, warnings)
 
         cmd = "tar czf " + arcname + " -C " + TEMPDIR + " ."
         res = os.system(cmd)
@@ -369,6 +380,10 @@ if __name__  == '__main__':
     NAME = ""
     PATH_AND_FILE = ""
 
+    if OPERATION != 'list' and OPERATION != 'create' and OPERATION != 'clear' and OPERATION != 'verify' and OPERATION != 'edit' and OPERATION != 'install' and OPERATION != 'delete':
+        print("\n*INVALID operation specified ('" + OPERATION + "')\n")
+        sys.exit(1)
+
     print("\nVERSION: " + str(VERSION))
     print("OPERATION: " + str(OPERATION))
 
@@ -395,7 +410,7 @@ if __name__  == '__main__':
         print("\n*ERR: wrong number of arguments for 'clear' operation.\n")
         sys.exit(0)
 
-    if OPERATION == 'edit':
+    if OPERATION == 'edit' or OPERATION == 'delete':
         PATH_AND_FILE = sys.argv[2]
         NAME = VERSION
         print("PATH_AND_FILE: " + PATH_AND_FILE)
