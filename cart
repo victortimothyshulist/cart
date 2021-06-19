@@ -893,7 +893,10 @@ for filedbid in range(len(tp)):
             print("\n\n* * * could not remove old 'template_words_file.data' file !\n\nTerminating ! please investigate!\n")
             sys.exit(1)
 
-    # TODO -- ABOVE... ^^^
+    res = os.system("tcm clear")
+    if res != 0:
+        print("\n*ERR: problem running 'tcm clear'")
+        exit(0)
 
     unarchive_cmd = "tar xzf " + FILES_IN + "/" + TEST_PKG_NO_EXT + "/" + tp[filedbid]['filename']
 
