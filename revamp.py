@@ -19,6 +19,13 @@ print("This will only apply to CART TEST case FSDBs and ERAF for version 1.000 -
 print("every time CART runs VCCK")
 print("\n--- press <RETURN> to continue...")
 input()
+print("Oh! one other thing! VCCK v1.000 has a feature where ALL L-lines of a direct class must have identical SET of VNAVs.")
+print("If the existing FSDBs that this script (revamp.py) recompiles violates that rule, it doesn't care.")
+print("\nThat is, this script will allow a 'do' source file to contain L-lines that each have different vnav sets.")
+print("This should be okay though since those 'violating direct classes' are only used in the context of running VCCK under CART (and only for those specific FSDBS).")
+print("And VCCK only cares about this rule when compiling 'do' files, not when they are already compiled.")
+print("\n--- press <RETURN> to continue...")
+input()
 
 TEMP = "/home/victor/vcck/temp"
 VERSION = "v1.000"
