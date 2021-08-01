@@ -1,4 +1,4 @@
-#!/usr/bin/python3.7
+#!/bin/python3
 import os
 import sys
 import re
@@ -570,6 +570,8 @@ line_number_of_id_05 = None
 line_number_of_id_06 = None
 line_number_of_id_07 = None
 line_number_of_id_08 = None
+line_number_of_id_09 = None
+line_number_of_id_10 = None
 
 leading_space_id_01 = ''
 leading_space_id_02 = ''
@@ -579,6 +581,8 @@ leading_space_id_05 = ''
 leading_space_id_06 = ''
 leading_space_id_07 = ''
 leading_space_id_08 = ''
+leading_space_id_09 = ''
+leading_space_id_10 = ''
 
 find_include_regex  = r"^(\s*)#\s*CART_INCLUDE_" + TEST_PKG_NO_EXT + "_(.+\.py)$"
 
@@ -644,6 +648,16 @@ for linenum in range(len(code_lines)):
         line_number_of_id_08 = linenum
         leading_space_id_08 = mo.group(1)
 
+    mo = re.match('^(\s*)#\s*__CART_REPLACED_LINE_09_DO_NOT_REMOVE_THIS_LINE\s*$', stline)
+    if bool(mo):
+        line_number_of_id_09 = linenum
+        leading_space_id_09 = mo.group(1)
+
+    mo = re.match('^(\s*)#\s*__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE\s*$', stline)
+    if bool(mo):
+        line_number_of_id_10 = linenum
+        leading_space_id_10 = mo.group(1)
+
 
 if line_number_of_id_01 == None:
     print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE'\n")
@@ -675,6 +689,14 @@ if line_number_of_id_07 == None:
 
 if line_number_of_id_08 == None:
     print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE'\n")
+    exit(0)
+
+if line_number_of_id_09 == None:
+    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_09_DO_NOT_REMOVE_THIS_LINE'\n")
+    exit(0)
+
+if line_number_of_id_10 == None:
+    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 # create source code for CART-runnable version of vcck !
@@ -738,6 +760,19 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\tAfter you press enter, VCCK will process:")')
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t\t" + lui)')
         test_code_lines.append(leading_space_id_08 + '    input()')
+
+    elif linenum == line_number_of_id_09:
+        test_code_lines.append(leading_space_id_09 + 'for file in sorted(os.listdir(CART_RAW_DO)):')
+        test_code_lines.append(leading_space_id_09 + '   _src_file = "\\"" + CART_RAW_DO + "/" + file + "\\""')
+        test_code_lines.append(leading_space_id_09 + '   _cart_do_file_cur_line = re.match(\'^do\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
+        test_code_lines.append(leading_space_id_09 + '   if bool(_cart_do_file_cur_line):')
+        test_code_lines.append(leading_space_id_09 + '      os.system("mv " + _src_file + " " + doFile)')
+        test_code_lines.append(leading_space_id_09 + '      if process_direct_object_file(in_mem_loto, doFile):')
+        test_code_lines.append(leading_space_id_09 + '         direct_classes = load_all_dc()')
+        test_code_lines.append(leading_space_id_09 + '         (known_terms, vnav_tables) = load_loto()')
+
+    elif linenum == line_number_of_id_10:
+        test_code_lines.append(leading_space_id_10 + 'CART_RAW_DO = "cart_raw_do"')        
 
     elif linenum in cart_includes.keys():
         ind_ws = cart_includes[linenum][0]

@@ -1,23 +1,5 @@
-dir_state_a_dir_1/
-dir_state_a_dir_2/
-tls_csv/
-fake-vcck-cart-temp.py
-results_cart_tests
-testpackages
-diff.txt
-new-file
-orig/
-dir_states/
-temp_cart_input.txt
-vcck-cart-temp.py
-conversation-history/
-do
-shared-lists/
-template_words_file.data
-__pycache__/
-_temp_out.txt
-temp_dir_for_edit/
-updates/
-_temp_arc_unpack/
+__pycache__/.
+testpackages/.
+updates/.
 
 

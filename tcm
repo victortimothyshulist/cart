@@ -409,12 +409,10 @@ if __name__  == '__main__':
 
     if VERSION != "v1.000" and (OPERATION == 'clear' or OPERATION == 'create') and not os.path.isdir(RAW_DO_DIR):
         os.mkdir(RAW_DO_DIR)
-        if os.path.isdir(RAW_DO_DIR):
-            print("\n* RAW_DO_DIR ('" + RAW_DO_DIR + "') did not exist, I created it.\n")                
-        else:
+        
+        if not os.path.isdir(RAW_DO_DIR):
             print("\n* RAW_DO_DIR ('" + RAW_DO_DIR + "') does not exist.  I tried to create it but failed.\n")    
-
-        sys.exit(0)
+            sys.exit(0)
 
     if OPERATION != 'list' and OPERATION != 'create' and OPERATION != 'clear' and OPERATION != 'verify' and OPERATION != 'edit' and OPERATION != 'install' and OPERATION != 'delete':
         print("\n*INVALID operation specified ('" + OPERATION + "')\n")

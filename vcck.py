@@ -1,9 +1,13 @@
-#!/usr/bin/python3.7
+#!/bin/python3
 import os
 import sys
 import re
 
 ###########################################  INTERFACE CODE TO CART ################################################
+#__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE
+
+doFile = './do'
+in_mem_loto = None
 
 DEBUGGING = False
 TESTING = False
@@ -14,6 +18,21 @@ _CART_INPUT_LINE_NUMBER = -1
 _CART_RESULTS_DIR = "results_cart_tests" # must be same as in cart.py
 
 #__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE
+
+def load_loto():
+    pass
+
+
+def load_all_dc():
+    pass
+
+
+def process_direct_object_file(x,y):
+    print('process_direct_object_file, press <RETURN!!!!!!!!> to continue...')
+    input()
+    os.remove("do")
+    pass
+
 
 def cartlog(area, message):
 
@@ -90,18 +109,19 @@ while True:
         if _CART_INPUT_LINE_NUMBER == len(cart_input_lines):
             break
 
+        #__CART_REPLACED_LINE_09_DO_NOT_REMOVE_THIS_LINE
+
         lui = cart_input_lines[_CART_INPUT_LINE_NUMBER].strip()
         #__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE
         
         #CART_INCLUDE_v1.100_file1.py
-        #CART_INCLUDE_v1.100_file2.py
-        #CART_INCLUDE_v1.100_file3.py
     else:
         lui = input()
 
         if lui == ".":
             break
 
+    pass
     print("PROCESSING LINE : [" + lui + "]")
 
 #__CART_REPLACED_LINE_06_DO_NOT_REMOVE_THIS_LINE
