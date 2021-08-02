@@ -761,15 +761,16 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t\t" + lui)')
         test_code_lines.append(leading_space_id_08 + '    input()')
 
-    elif linenum == line_number_of_id_09:
-        test_code_lines.append(leading_space_id_09 + 'for file in sorted(os.listdir(CART_RAW_DO)):')
-        test_code_lines.append(leading_space_id_09 + '   _src_file = "\\"" + CART_RAW_DO + "/" + file + "\\""')
-        test_code_lines.append(leading_space_id_09 + '   _cart_do_file_cur_line = re.match(\'^do\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
-        test_code_lines.append(leading_space_id_09 + '   if bool(_cart_do_file_cur_line):')
-        test_code_lines.append(leading_space_id_09 + '      os.system("mv " + _src_file + " " + doFile)')
-        test_code_lines.append(leading_space_id_09 + '      if process_direct_object_file(in_mem_loto, doFile):')
-        test_code_lines.append(leading_space_id_09 + '         direct_classes = load_all_dc()')
-        test_code_lines.append(leading_space_id_09 + '         (known_terms, vnav_tables) = load_loto()')
+    elif linenum == line_number_of_id_09:        
+        test_code_lines.append(leading_space_id_09 + 'if os.path.exists(CART_RAW_DO):')
+        test_code_lines.append(leading_space_id_09 + '   for file in sorted(os.listdir(CART_RAW_DO)):')
+        test_code_lines.append(leading_space_id_09 + '      _src_file = "\\"" + CART_RAW_DO + "/" + file + "\\""')
+        test_code_lines.append(leading_space_id_09 + '      _cart_do_file_cur_line = re.match(\'^do\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
+        test_code_lines.append(leading_space_id_09 + '      if bool(_cart_do_file_cur_line):')
+        test_code_lines.append(leading_space_id_09 + '         os.system("mv " + _src_file + " " + doFile)')
+        test_code_lines.append(leading_space_id_09 + '         if process_direct_object_file(in_mem_loto, doFile):')
+        test_code_lines.append(leading_space_id_09 + '            direct_classes = load_all_dc()')
+        test_code_lines.append(leading_space_id_09 + '            (known_terms, vnav_tables) = load_loto()')
 
     elif linenum == line_number_of_id_10:
         test_code_lines.append(leading_space_id_10 + 'CART_RAW_DO = "cart_raw_do"')        
