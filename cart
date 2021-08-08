@@ -525,6 +525,11 @@ if not CURRENT:
     backup_existing()
     cleanup_dir()
 
+if OPERATION == 'create':
+    print("\nAre you done testing ALL inputs for the first FSDB? Do not run 'create' until you have.")
+    print("\nIf you have not, hit <CONTROL>-c now.  You are only allowed running 'create' ONCE EVER for a given version !")
+    print("Otherise, press <RETURN> to continue.\n")
+    input()
 
 print('\n--------------- RUNNING TEST PACKAGE: ' + TEST_PKG_NO_EXT + " ---------------\n")
 print("OPERATION: " + OPERATION + "\n")
@@ -1050,6 +1055,11 @@ if not os.path.isdir(TEMP_ARCHIVE_UNPACK_DIR):
 
 if OPERATION == "create":
     new_archive = CONF_DIR + "/files/" + TEST_PKG_NO_EXT + "/" + TEST_PKG_NO_EXT + ".tar.gz"
+    if os.path.isfile(new_archive):
+        print("\n*ERR: refusing to overwrite " + new_archive + "!  You can only run 'create' ONCE EVER for a given version! Safety feature!")
+        print("\nthe ERAF (expected results archive file) could become compromised.  Instead of running 'create', use 'tcm edit' or 'tcm delete' to change the ERAF.")
+        print("\nYes, of course you can go behind my back and delete the file, but please don't.  Or really think it over!\n")
+        exit(0)
 
     if os.path.isfile(new_archive):
         os.remove(new_archive)
