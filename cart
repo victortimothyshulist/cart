@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/bin/python3 
 import os
 import sys
 import re
@@ -51,13 +51,10 @@ if len(sys.argv) == 2:
 elif len(sys.argv) != 3:
     usage()
 
-STATE_DIRS = ("response-interpretations", "cached-lcc-factors", "shared-lists", "conversation-history", "sessions", "tls_csv", "interpretations", "compiled-classes")
-
 CURRENT = False
-DIR_STATE = "dir_states"
 TEMP_ARCHIVE_UNPACK_DIR = "_temp_arc_unpack"
-VCCK_PROGRAM = "./vcck.py"
-VCCK_PROGRAM_TEMP = "./vcck-cart-temp.py"
+CONALAUN_PROGRAM = "./conalaun.py"
+CONALAUN_PROGRAM_TEMP = "./conalaun-cart-temp.py"
 
 TEST_RESULT_DIR = "results_cart_tests"
 
@@ -80,12 +77,6 @@ if res !=0 :
 
 os.mkdir(TEST_RESULT_DIR)
 
-if not os.path.isdir(DIR_STATE):
-    os.mkdir(DIR_STATE)
-    if not os.path.isdir(DIR_STATE):
-        print("\n*ERR: was not able to create directory '" + DIR_STATE + "'")
-        exit(1)
-
 
 def create_area_validation_code(area_to_fsdbs):
     py_code = list() 
@@ -100,49 +91,6 @@ def create_area_validation_code(area_to_fsdbs):
 
     return py_code 
 
-
-def cleanup_dir():
-    for file in ("template_words_file.data", "no-interpretations.data", "llog"):
-            if os.path.isfile(file):
-                os.remove(file)
-
-                if os.path.isfile(file):
-                    print("*ERR: could not remove file '" + file + "'")
-                    exit(1)
-
-    for dirtoclear in STATE_DIRS:
-        safe_rec_del(dirtoclear)
-
-
-def backup_existing():
-    epoch = str(datetime.datetime.now())
-    epoch = epoch.replace(' ','_')
-    epoch = epoch.replace(':','_')
-    epoch = epoch.replace('-','_')
-    epoch = epoch.replace('.','_')
-
-    dirs_to_inc_in_bu = ''
-    any = False
-
-    for backupdir in STATE_DIRS:
-        if os.path.isdir(backupdir):
-            dirs_to_inc_in_bu += backupdir + '/. '
-            any = True
-
-    backup_dir_cmd = "tar czf " + DIR_STATE + "/" + epoch + ".tar.gz " + dirs_to_inc_in_bu
-    if os.path.isfile("template_words_file.data"):
-        backup_dir_cmd += "template_words_file.data"
-        any = True
-
-    if not any: return
-
-    re = os.system(backup_dir_cmd)
-
-    print(str(any) + " > " + backup_dir_cmd)
-
-    if re != 0:
-        print("\n*ERR: problem backing up directory state")
-        exit(1)
 
 def sort_all_files(thedir):
     # sort all files in directory <thedir> recursively.
@@ -340,7 +288,7 @@ def load_config(file: str, dir: str) -> None:
             mo = re.match('^"\s*/', sline)
 
             if bool(mo):
-                print("\n*ERR: not allowed to pass symbols to VCCK. Bad line is '" + sline + "'\n")
+                print("\n*ERR: not allowed to pass symbols to CONALAUN. Bad line is '" + sline + "'\n")
                 exit(1)
 
             mo = re.match('^areas\s*=\s*(.+?)\s*$', sline)
@@ -520,7 +468,6 @@ if os.path.isfile(TEST_PKG_FP) == False:
 
 if not CURRENT:
     backup_existing()
-    cleanup_dir()
 
 if OPERATION == 'create':
     print("\nAre you done testing ALL inputs for the first FSDB? Do not run 'create' until you have.")
@@ -541,24 +488,24 @@ if len(areas) == 0:
 
 cart_area_to_fsdb_validation_code = create_area_validation_code(areatofsset)
 
-# CREATE CART-runnable version of vcck
+# CREATE CART-runnable version of conalaun
 # OH = output handle
 
-if os.path.isfile(VCCK_PROGRAM_TEMP):
-    os.remove(VCCK_PROGRAM_TEMP)
-    if os.path.isfile(VCCK_PROGRAM_TEMP):
-        print("\n*ERR: I cannot seem to remove the file '" + VCCK_PROGRAM_TEMP + "'.\n")
+if os.path.isfile(CONALAUN_PROGRAM_TEMP):
+    os.remove(CONALAUN_PROGRAM_TEMP)
+    if os.path.isfile(CONALAUN_PROGRAM_TEMP):
+        print("\n*ERR: I cannot seem to remove the file '" + CONALAUN_PROGRAM_TEMP + "'.\n")
         exit(0)
 
 code_lines = list()
 test_code_lines = list()
 
 try:
-    with open(VCCK_PROGRAM, 'r') as IH:
+    with open(CONALAUN_PROGRAM, 'r') as IH:
         code_lines = IH.readlines()
 
 except Exception as ex:
-    print("\n*ERR: cannot read in the VCCK program code in '" + VCCK_PROGRAM + "' - " + str(ex))
+    print("\n*ERR: cannot read in the CONALAUN program code in '" + CONALAUN_PROGRAM + "' - " + str(ex))
     exit(0)
 
 
@@ -662,46 +609,46 @@ for linenum in range(len(code_lines)):
 
 
 if line_number_of_id_01 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_02 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_02_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_02_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_03 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_03_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_03_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_04 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_04_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_04_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_05 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_05_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_05_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_06 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_06_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_06_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_07 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_07_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_07_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_08 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_09 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_09_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_09_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
 if line_number_of_id_10 == None:
-    print("\n*ERR: Anchor text missing in VCCK source code!!! Missing line '__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE'\n")
+    print("\n*ERR: Anchor text missing in CONALAUN source code!!! Missing line '__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE'\n")
     exit(0)
 
-# create source code for CART-runnable version of vcck !
+# create source code for CART-runnable version of conalaun !
 
 for linenum in range(len(code_lines)):
     stline = code_lines[linenum].rstrip()
@@ -759,15 +706,15 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t* * * CART TESTING PAUSED * * *")')
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t - press enter to continue -")')
         test_code_lines.append(leading_space_id_08 + '    lui = mo_swp.group(1)')
-        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\tAfter you press enter, VCCK will process:")')
+        test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\tAfter you press enter, CONALAUN will process:")')
         test_code_lines.append(leading_space_id_08 + '    print("\\n\\t\\t\t" + lui)')
         test_code_lines.append(leading_space_id_08 + '    input()')
 
     elif linenum == line_number_of_id_09:        
-        test_code_lines.append(leading_space_id_09 + 'if os.path.exists(CART_RAW_DO):')
-        test_code_lines.append(leading_space_id_09 + '   for file in sorted(os.listdir(CART_RAW_DO)):')
-        test_code_lines.append(leading_space_id_09 + '      _src_file = "\\"" + CART_RAW_DO + "/" + file + "\\""')
-        test_code_lines.append(leading_space_id_09 + '      _cart_do_file_cur_line = re.match(\'^do\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
+        test_code_lines.append(leading_space_id_09 + 'if os.path.exists(CART_RAW_ICO):')
+        test_code_lines.append(leading_space_id_09 + '   for file in sorted(os.listdir(CART_RAW_ICO)):')
+        test_code_lines.append(leading_space_id_09 + '      _src_file = "\\"" + CART_RAW_ICO + "/" + file + "\\""')
+        test_code_lines.append(leading_space_id_09 + '      _cart_do_file_cur_line = re.match(\'^ico\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
         test_code_lines.append(leading_space_id_09 + '      if bool(_cart_do_file_cur_line):')
         test_code_lines.append(leading_space_id_09 + '         os.system("mv " + _src_file + " " + doFile)')
         test_code_lines.append(leading_space_id_09 + '         if process_direct_object_file(in_mem_loto, doFile):')
@@ -775,7 +722,7 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_09 + '            (known_terms, vnav_tables) = load_loto()')
 
     elif linenum == line_number_of_id_10:
-        test_code_lines.append(leading_space_id_10 + 'CART_RAW_DO = "cart_raw_do"')        
+        test_code_lines.append(leading_space_id_10 + 'CART_RAW_ICO = "cart_raw_ico"')
 
     elif linenum in cart_includes.keys():
         ind_ws = cart_includes[linenum][0]
@@ -786,15 +733,15 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(stline)
 
 try:
-    with open(VCCK_PROGRAM_TEMP,'w') as FH:
+    with open(CONALAUN_PROGRAM_TEMP,'w') as FH:
         for cline in test_code_lines:
             FH.write(cline + "\n")
 
 except Exception as ex:
-    print("\n*ERR: issues creating '" + VCCK_PROGRAM_TEMP + "' - " + str(ex))
+    print("\n*ERR: issues creating '" + CONALAUN_PROGRAM_TEMP + "' - " + str(ex))
     exit(0)
 
-# Done - creating cart runnable vcck.
+# Done - creating cart runnable conalaun.
 
 # prev_files = all files from previous tar.gz file. to clean up, so we don't mix up files from 2 different *.tar.gz files.
 prev_files = set()
@@ -836,20 +783,20 @@ if CURRENT:
                 exit(0)
             lineind += 1
 
-    make_exec_cmd = "chmod +x " + VCCK_PROGRAM_TEMP
+    make_exec_cmd = "chmod +x " + CONALAUN_PROGRAM_TEMP
     res = os.system(make_exec_cmd)
 
     if res != 0:
         print("\n*ERR: problem executing '" + make_exec_cmd + "'")
         exit(1)
 
-    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
-    print(vcck_start_cmd)
+    conalaun_start_cmd = CONALAUN_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
+    print(conalaun_start_cmd)
 
-    res = os.system(vcck_start_cmd)
+    res = os.system(conalaun_start_cmd)
 
     if res != 0:
-        print("\n*ERR: problem running VCCK ('" + vcck_start_cmd + "')")
+        print("\n*ERR: problem running CONALAUN ('" + conalaun_start_cmd + "')")
         exit(1)
 
     sort_all_files(TEST_RESULT_DIR)
@@ -975,7 +922,7 @@ for filedbid in range(len(tp)):
             os.mkdir(dir_filedb_linenum)
             lineind += 1 
 
-    make_exec_cmd = "chmod +x " + VCCK_PROGRAM_TEMP
+    make_exec_cmd = "chmod +x " + CONALAUN_PROGRAM_TEMP
     res = os.system(make_exec_cmd)
     if res != 0:
         print("\n*ERR: problem executing '" + make_exec_cmd + "'")
@@ -990,13 +937,13 @@ for filedbid in range(len(tp)):
         print("\n*ERR: strange name: '" + filedbname + "' - should end with tar.gz")
         exit(0)
 
-    vcck_start_cmd = VCCK_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
-    print(vcck_start_cmd)
+    conalaun_start_cmd = CONALAUN_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
+    print(conalaun_start_cmd)
     
-    res = os.system(vcck_start_cmd)
+    res = os.system(conalaun_start_cmd)
     
     if res != 0:
-        print("\n*ERR: problem running VCCK ('" + vcck_start_cmd + "')")
+        print("\n*ERR: problem running CONALAUN ('" + conalaun_start_cmd + "')")
         exit(0)
     
 #print("-ready to remove files. Press enter.")
@@ -1019,8 +966,8 @@ for file in prev_files:
         exit(0)
 
 
-temp_file = "vcck-cart-temp.py"
-orig_file = "vcck.py"
+temp_file = "conalaun-cart-temp.py"
+orig_file = "conalaun.py"
 
 if os.path.exists(temp_file):
     try:
@@ -1041,7 +988,7 @@ if os.path.isfile(CART_INPUT_FILE):
         print("\n*ERR: I was not able to remove file '" + CART_INPUT_FILE + "'")
         exit(0)
 
-#os.remove(VCCK_PROGRAM_TEMP)
+#os.remove(CONALAUN_PROGRAM_TEMP)
 
 safe_rec_del(TEMP_ARCHIVE_UNPACK_DIR)
 os.mkdir(TEMP_ARCHIVE_UNPACK_DIR)
@@ -1079,7 +1026,6 @@ if OPERATION == "create":
         print("*ERROR: Failed to create The expected results archive !!!!!!!!!!!! Bad!")
         sys.exit(0)
 
-    cleanup_dir()
     print("\n*Great! Expected test result archive created successfully.: " + new_archive + "\n")
 
 else:
@@ -1095,10 +1041,8 @@ else:
     if valres == True:
         print("\n---------------------------------------------------")
         print("* Regression testing * PASSED *")
-        print("---------------------------------------------------")
-        cleanup_dir()
+        print("---------------------------------------------------")        
     else:
         print("\n---------------------------------------------------")
-        print("* Regression testing * F A I L E D*")
+        print("*** Regression testing failed ***")
         print("---------------------------------------------------")
-
