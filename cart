@@ -343,9 +343,6 @@ def load_config(file: str, dir: str) -> None:
                 print("\n*ERR: not allowed to pass symbols to VCCK. Bad line is '" + sline + "'\n")
                 exit(1)
 
-            mo = re.match('^(state_dirs|state_files)\s*=.*', sline)
-            if bool(mo): continue
-
             mo = re.match('^areas\s*=\s*(.+?)\s*$', sline)
 
             if bool(mo):
