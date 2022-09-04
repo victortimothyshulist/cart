@@ -215,6 +215,7 @@ def run(OPERATION, VERSION, NAME, PATH_AND_FILE, OVER_RIDE_DIR = ""):
         return (errors, warnings) 
         
     elif OPERATION == 'install':
+        safe_rec_del(RAW_ICO_DIR)
         
         already_has_suffix = re.match('^.+\.tar\.gz$', NAME)
         if not bool(already_has_suffix):
