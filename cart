@@ -6,7 +6,7 @@ import datetime
 
 VERSION = ""
 CONF_DIR = "./testpackages"
-
+CART_RAW_ICO = 'cart_raw_ico'
 
 def sort_file(infile, outfile):
     if not os.path.isfile(infile):
@@ -46,8 +46,8 @@ if len(sys.argv) == 2:
         VERSION = os.environ['VERSION']
         sys.argv.insert(1, VERSION)
     else:
-        usage()
         print("\n*ERR: called with only one argument but no 'VERSION' environment variable set.  To call with a single argument please set 'VERSION' environment variable.\n\n")
+        usage()        
 elif len(sys.argv) != 3:
     usage()
 
@@ -466,9 +466,6 @@ if os.path.isfile(TEST_PKG_FP) == False:
     print("\n*ERR: file does not exist: '" + TEST_PKG_FP + "'.\n")
     exit(0)
 
-if not CURRENT:
-    backup_existing()
-
 if OPERATION == 'create':
     print("\nAre you done testing ALL inputs for the first FSDB? Do not run 'create' until you have.")
     print("\nIf you have not, hit <CONTROL>-c now.  You are only allowed running 'create' ONCE EVER for a given version !")
@@ -716,8 +713,8 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_09 + '      _src_file = "\\"" + CART_RAW_ICO + "/" + file + "\\""')
         test_code_lines.append(leading_space_id_09 + '      _cart_do_file_cur_line = re.match(\'^ico\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
         test_code_lines.append(leading_space_id_09 + '      if bool(_cart_do_file_cur_line):')
-        test_code_lines.append(leading_space_id_09 + '         os.system("mv " + _src_file + " " + doFile)')
-        test_code_lines.append(leading_space_id_09 + '         if process_direct_object_file(in_mem_loto, doFile):')
+        test_code_lines.append(leading_space_id_09 + '         os.system("mv " + _src_file + " " + icoFile)')
+        test_code_lines.append(leading_space_id_09 + '         if process_direct_object_file(in_mem_loto, icoFile):')
         test_code_lines.append(leading_space_id_09 + '            direct_classes = load_all_dc()')
         test_code_lines.append(leading_space_id_09 + '            (known_terms, vnav_tables) = load_loto()')
 
@@ -742,16 +739,6 @@ except Exception as ex:
     exit(0)
 
 # Done - creating cart runnable conalaun.
-
-# prev_files = all files from previous tar.gz file. to clean up, so we don't mix up files from 2 different *.tar.gz files.
-prev_files = set()
-TEMP_CONTENTS_FILE = "state_file_contents.txt"
-
-if os.path.isfile(TEMP_CONTENTS_FILE):
-    os.remove(TEMP_CONTENTS_FILE)
-    if os.path.isfile(TEMP_CONTENTS_FILE):
-        print("\n*ERR: I cannot seem to remove the file '" + TEMP_CONTENTS_FILE + "'.\n")
-        exit(0)
 
 if CURRENT:
     outforcurrent = TEST_RESULT_DIR + "/" + filename_no_ext_fsdb
@@ -810,82 +797,20 @@ if len(tp) == 0:
     exit(0)
 
 for filedbid in range(len(tp)):
-    print("Next filedb.  Hit enter to continue:")
-    #input()
+    
+    safe_rec_del(CART_RAW_ICO)
+    os.mkdir(CART_RAW_ICO)
 
-    for file in prev_files:
-        
-        file = file.strip()
-
-        if file[0] == '/' or file[0] == '.':
-            # directory to remove should not start with / or .
-            print("*ERR: ** NO ** refusing to run 'rm -rf " + file + "'")
-            exit(0)
-
-        rm_cmd = "rm -rf " + file
-        #print(rm_cmd)
-        res = os.system(rm_cmd)
-        if res != 0:
-            print("\n*ERR: trying to execute " + rm_cmd + "'")
-            exit(0)
-
-    prev_files = set()
+    if not os.path.isdir(CART_RAW_ICO):
+        print("\n*ERR: problem clearing out contents of directory '" + CART_RAW_ICO + "'")
+        exit(0)
     
     print("----------------------------------------------------------------------------------")
-    print("Using State Files in: " + str(filedbid) + ", Db: " + tp[filedbid]['filename']) 
-    tar_contents_cmd = "tar tzf " + FILES_IN + "/" + TEST_PKG_NO_EXT + "/" + tp[filedbid]['filename'] + " > " + TEMP_CONTENTS_FILE
-
-    res = os.system(tar_contents_cmd)
- 
-    if res != 0:
-        print("\n*ERR: Problem when executing: '" + tar_contents_cmd + " (make sure you verify cleanup of un-archived files)\n")
-        exit(0)
-
-    if not os.path.isfile(TEMP_CONTENTS_FILE):
-        print("\n*ERR: The content listing file was not created ('" + TEMP_CONTENTS_FILE + "').\n")
-        exit(0)
-
-    with open(TEMP_CONTENTS_FILE, 'r') as fh:
-        for line in fh:
-            sline = line.strip()
-
-            mo = re.match('^\./(.*)$', sline)
-            if bool(mo):
-                sline = mo.group(1)
-
-            if sline == '': continue
-            if sline[0] == '.': continue
-
-            mo = re.match('^(.+?)/.*$', sline)
-            if bool(mo):
-                prev_files.add(mo.group(1))
-            else:
-                prev_files.add(sline)
-
-    # TODO
-    # TODO TODO -- CART  *should*  use TCM.. for  "tcm clear", "tcm install", "tcm create"... it doesn't but it should .. so that we don't have to repeat code here that TCM does.
-    # TCM was created after CART, so that's why this situtation exists, but this should be remedied later by having CART use TCM.
-
-    if os.path.isfile("last-lcc-cache-build.data"):
-        os.remove("last-lcc-cache-build.data")
-        if os.path.isfile("last-lcc-cache-build.data"):
-            print("\n\n* * * could not remove old 'last-lcc-cache-build.data' file !\n\nTerminating ! please investigate!\n")
-            sys.exit(1)
-
-    if os.path.isfile("template_words_file.data"):
-        os.remove("template_words_file.data")
-        if os.path.isfile("template_words_file.data"):
-            print("\n\n* * * could not remove old 'template_words_file.data' file !\n\nTerminating ! please investigate!\n")
-            sys.exit(1)
-
-    res = os.system("tcm clear")
-    if res != 0:
-        print("\n*ERR: problem running 'tcm clear'")
-        exit(0)
-
+    print("Using ICO files in: " + str(filedbid) + ", Db: " + tp[filedbid]['filename']) 
+    
     unarchive_cmd = "tar xzf " + FILES_IN + "/" + TEST_PKG_NO_EXT + "/" + tp[filedbid]['filename']
-
     res = os.system(unarchive_cmd)
+
     if res != 0:
         print("\n*ERR: Problem when executing: '" + unarchive_cmd + " (make sure you verify cleanup of un-archived files)\n")
         exit(0)
@@ -946,25 +871,11 @@ for filedbid in range(len(tp)):
         print("\n*ERR: problem running CONALAUN ('" + conalaun_start_cmd + "')")
         exit(0)
     
-#print("-ready to remove files. Press enter.")
-#input()
-
-for file in prev_files:
-    
-    file = file.strip()
-
-    if file[0] == '/' or file[0] == '.':
-        # directory to remove should not start with / or .
-        print("*ERR: ** NO **  refusing to run 'rm -rf " + file + "'")
-        exit(0)
-
-    rm_cmd = "rm -rf " + file
-    #print(rm_cmd) 
-    res = os.system(rm_cmd)
-    if res != 0:
-        print("\n*ERR: trying to execute '" + rm_cmd + "'")
-        exit(0)
-
+safe_rec_del(CART_RAW_ICO)
+os.mkdir(CART_RAW_ICO)
+if not os.path.isdir(CART_RAW_ICO):
+    print("\n*ERR: problem clearing out '" + CART_RAW_ICO + "'")
+    exit(0)
 
 temp_file = "conalaun-cart-temp.py"
 orig_file = "conalaun.py"
@@ -980,15 +891,11 @@ if os.path.exists(temp_file):
     print("*ERR: I was unable to remove previous file '" + temp_file + "' - Stopping the testing.")
     exit()
 
-os.remove(TEMP_CONTENTS_FILE)
-
 if os.path.isfile(CART_INPUT_FILE):
     os.remove(CART_INPUT_FILE)
     if os.path.isfile(CART_INPUT_FILE):
         print("\n*ERR: I was not able to remove file '" + CART_INPUT_FILE + "'")
         exit(0)
-
-#os.remove(CONALAUN_PROGRAM_TEMP)
 
 safe_rec_del(TEMP_ARCHIVE_UNPACK_DIR)
 os.mkdir(TEMP_ARCHIVE_UNPACK_DIR)
@@ -1004,12 +911,6 @@ if OPERATION == "create":
         print("\nthe ERAF (expected results archive file) could become compromised.  Instead of running 'create', use 'tcm edit' or 'tcm delete' to change the ERAF.")
         print("\nYes, of course you can go behind my back and delete the file, but please don't.  Or really think it over!\n")
         exit(0)
-
-    if os.path.isfile(new_archive):
-        os.remove(new_archive)
-        if os.path.isfile(new_archive):
-            print("\n*ERR: I was not able to remove the file '" + new_archive + "' from last run!\n")
-            exit(0)
 
     sort_all_files(TEST_RESULT_DIR)
 

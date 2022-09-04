@@ -6,7 +6,7 @@ import re
 ###########################################  INTERFACE CODE TO CART ################################################
 #__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE
 
-doFile = './do'
+icoFile = './do'
 in_mem_loto = None
 
 DEBUGGING = False
