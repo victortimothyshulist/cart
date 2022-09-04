@@ -1,3 +1,12 @@
 __pycache__/.
 testpackages/
+testpackages/v1.000.conf
+temp_cart_input.txt
 updates/
+conalaun-cart-temp.py
+.gitignore
+cart_raw_ico/
+conalaun.py
+results_cart_tests/.
+
+

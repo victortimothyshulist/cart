@@ -29,7 +29,7 @@ def load_all_dc():
 
 def process_direct_object_file(x,y):
     print('process_direct_object_file, press <RETURN!!!!!!!!> to continue...')
-    input()
+    #input()
     os.remove("do")
     pass
 
