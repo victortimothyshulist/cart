@@ -144,32 +144,29 @@ def get_file_list_rec(base, theset, thedir):
 
 
 def compare_dirs(dir_a, dir_b):
+    any_file_diffs = False
+
     files_a = set()
     files_b = set()
 
     get_file_list_rec(dir_a, files_a, dir_a)
     get_file_list_rec(dir_b, files_b, dir_b)
 
-    issues = list()
-
     for file_in_a in files_a:
         if not file_in_a in files_b:
-            issues.append("\n*ERR: File: '" + file_in_a + "' is in '" + dir_a + "', but not in '" + dir_b + "'")
+            print("\n*ERR: File: '" + file_in_a + "' is in '" + dir_a + "', but not in '" + dir_b + "'")
+            any_file_diffs = True
 
     for file_in_b in files_b:
         if not file_in_b in files_a:
-            issues.append("\n**ERR: File: '" + file_in_b + "' is in '" + dir_b + "', but not in '" + dir_a + "'")
-
-    if len(issues):
-        for issue in issues:
-            print(issue)
-        return False
-
+            print("\n**ERR: File: '" + file_in_b + "' is in '" + dir_b + "', but not in '" + dir_a + "'")
+            any_file_diffs = True
+    
     DIFF_FN = "diff.txt"
-    any_file_diffs = False
-
+    
     for afile in files_a:
-
+        if not os.path.exists(dir_b + "/" + afile): continue
+        
         if os.path.isfile(DIFF_FN):
             os.remove(DIFF_FN)
             if os.path.isfile(DIFF_FN):
