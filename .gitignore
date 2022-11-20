@@ -1,20 +1,5 @@
-__pycache__/.
-testpackages/
-testpackages/v1.000.conf
-temp_cart_input.txt
-updates/
-conalaun-cart-temp.py
-.gitignore
-cart_raw_ico/
-conalaun.py
-conalaun.conf
-results_cart_tests/
-setupdb.py
-sr_list.inf
-ico_compiler.py
+*
+!cart
+!tcm
+!testpackages/*
 
-
-testpackages/v1.000.conf
-temp_dir_for_edit/henry/0/bobx.res
-logs/conalaun.log
-conalaun.py
