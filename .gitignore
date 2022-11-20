@@ -1,5 +1,15 @@
-*
-!cart
-!tcm
-!testpackages/*
+groups/*
+results_cart_tests
+_temp_arc_unpack
+sr_list.inf
+resetdb.py
+setupdb.py
+logs
+cart_dump_table.py
+conalaun.py
+conalaun.conf
+ico_compiler.py
+.gitignore.swp
+
+
 
