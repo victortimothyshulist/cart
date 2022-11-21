@@ -1,0 +1,136 @@
+victor@fedora cart]$ cart test
+
+------------- VERSION: v1.000
+------------- OPERATION: test
+
+--------------- RUNNING TEST PACKAGE: v1.000 ---------------
+
+OPERATION: test
+
+----------------------------------------------------------------------------------
+Using ICO files in: 0, Db: smol.tar.gz
+./conalaun-cart-temp.py -T smol:temp_cart_input.txt
+
+--- Control-C to exit ---(User Guide Later)---
+--- Later: add a feature that verifiies all tables exist before exiting
+Dropping database...
+Creating database...
+
+* Successfully created Vulcan database 'conalaun_testing '!
+_CART_FILEDB = smol
+_CART_INPUT_FILE = temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 1, Db: concepts.tar.gz
+./conalaun-cart-temp.py -T concepts:temp_cart_input.txt
+
+--- Control-C to exit ---(User Guide Later)---
+--- Later: add a feature that verifiies all tables exist before exiting
+Dropping database...
+Creating database...
+
+* Successfully created Vulcan database 'conalaun_testing '!
+_CART_FILEDB = concepts
+_CART_INPUT_FILE = temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 2, Db: synandgroups.tar.gz
+./conalaun-cart-temp.py -T synandgroups:temp_cart_input.txt
+
+--- Control-C to exit ---(User Guide Later)---
+--- Later: add a feature that verifiies all tables exist before exiting
+Dropping database...
+Creating database...
+
+* Successfully created Vulcan database 'conalaun_testing '!
+_CART_FILEDB = synandgroups
+_CART_INPUT_FILE = temp_cart_input.txt
+tar -xzf ./testpackages/files/v1.000/v1.000.tar.gz -C _temp_arc_unpack
+
+**ERR: File: 'smol/1/testa.res' is in 'results_cart_tests', but not in '_temp_arc_unpack'
+
+**ERR: File: 'synandgroups/0/testa.res' is in 'results_cart_tests', but not in '_temp_arc_unpack'
+
+**ERR: File: 'smol/0/testa.res' is in 'results_cart_tests', but not in '_temp_arc_unpack'
+
+**ERR: File: 'smol/2/testa.res' is in 'results_cart_tests', but not in '_temp_arc_unpack'
+
+**ERR: File: 'concepts/0/testa.res' is in 'results_cart_tests', but not in '_temp_arc_unpack'
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synrrtosr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synrrtosr.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/synrrtosr.res results_cart_tests/synandgroups/0/synrrtosr.res > diff.txt
+-----------------------------------------------------------
+1,4c1,4
+< 001|000|IT|N|N|
+< 001|000|victor shulist|Y|N|
+< 001|002|IT|N|Y|
+< 001|002|victor shulist|Y|Y|
+---
+> 001|000|IT|N|Y|
+> 001|000|victor shulist|Y|Y|
+> 001|001|IT|N|N|
+> 001|001|victor shulist|Y|N|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synrrtorr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synrrtorr.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/synrrtorr.res results_cart_tests/synandgroups/0/synrrtorr.res > diff.txt
+-----------------------------------------------------------
+1,2c1,2
+< 001|000|001|Y|
+< 001|000|002|N|
+---
+> 001|001|000|N|
+> 001|001|002|Y|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/rrgroupmemberconditions.res' -VERSUS- 'results_cart_tests/synandgroups/0/rrgroupmemberconditions.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/rrgroupmemberconditions.res results_cart_tests/synandgroups/0/rrgroupmemberconditions.res > diff.txt
+-----------------------------------------------------------
+1,2c1,2
+< 001|001|dog|Y|
+< 001|002|dog|N|
+---
+> 001|000|dog|N|
+> 001|002|dog|Y|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/rrcatalogue.res' -VERSUS- 'results_cart_tests/synandgroups/0/rrcatalogue.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/rrcatalogue.res results_cart_tests/synandgroups/0/rrcatalogue.res > diff.txt
+-----------------------------------------------------------
+1,3c1,3
+< 001|000|c|
+< 001|001|a|
+< 001|002|b|
+---
+> 001|000|b|
+> 001|001|c|
+> 001|002|a|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+---------------------------------------------------
+*** Regression testing failed ***
+---------------------------------------------------
+[victor@fedora cart]$ 
+

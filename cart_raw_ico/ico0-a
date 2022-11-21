@@ -1,0 +1,23 @@
+line a:dog
+
+++ line b:place and c:place
+a is in dog
+b is not in dog
+HE is in dog
+SHE is not in dog
+HE is syn IT
+SHE is not syn IT
+SHE is syn "melanie_shulist"
+HE is not syn "melanie_shulist"
+b is syn IT
+c is not syn IT
+b is syn "victor_shulist"
+c is not syn "victor_shulist"
+c is syn a
+c is not syn b
+
+"hi there"
+
+
+
+
