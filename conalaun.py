@@ -46,12 +46,12 @@ def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FIL
                             for val in group_members_to_add[grp]: 
                                 val = val.replace("_", " ")
                                 GF.write(val + "\n")                                
-                                logging.info("Added '" + val + "' to group '" + grp + "'.")                                
+                                logging.info("Added '" + val + "' to group '" + grp + "'.")                                                                
 
                 except Exception as ex:                    
                     logging.error("Problem with updating group memberships.  Error was: " + str(ex))
                     myconn.rollback()
-                    return (False, ico_last_mod)
+                    return (False, ico_last_mod, groupinfo)
                     
                 myconn.commit()
                 os.remove(CLASS_FILE_NAME)
@@ -62,15 +62,15 @@ def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FIL
                     logging.info("Some members added to groups, thus reloading all group members for all groups.")
                     groupinfo = load_group_contents(GROUP_DIR_NAME)
 
-                return (True, ico_last_mod)
+                return (True, ico_last_mod, groupinfo)
             else:
                 ico_last_mod = os.path.getmtime(CLASS_FILE_NAME)
-                return (False, ico_last_mod)
+                return (False, ico_last_mod, groupinfo)
         else:            
             logging.info("I won't bother trying to reprocess the ICO.  The last time I tried, it failed, and you haven't changed the file yet.")
-            return (False, ico_last_mod)
+            return (False, ico_last_mod, groupinfo)
     else:
-        return (False, ico_last_mod)
+        return (False, ico_last_mod, groupinfo)
 
 
 def cartlog(area, message):
@@ -259,7 +259,7 @@ while True:
         except KeyboardInterrupt as ex:
             break
 
-    (parsed_ico_okay, ico_last_mod) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME)
+    (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME)
     #CART_INCLUDE_v1.000_dump_tables.py
     #CART_INCLUDE_v1.000_dump_groups.py
 

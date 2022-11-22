@@ -1,0 +1,13 @@
+one my cojack lulu:puppy@GOODDOG bojack template tom: xox victor:person and this and that car:object or this stuff ottawa:place
+two my cojack lulu:puppy@GOODDOG bojack template tom:person@victor_shulist xox victor:person and this and that car:object or this stuff ottawa:place
+
++ aa my template victor: and this and that car:
+- bb my template victor:person@HE and this and that car:object@THAT bbb cc dd ottawa:place@PLACE
+++ cc my template victor: and this and that car: dog cat bob:person@melanie_shulist  horse 
+-- dd my template victor: and this and that car:object
+
+++ bb my template victor: and this and that car: bbb cc dd ottawa:
+> my template ?victor: and this and that =car:
+"xxx yyy my template victor: and this and that car:object"
+
+
