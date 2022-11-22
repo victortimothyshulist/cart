@@ -352,3 +352,59 @@
 2022-11-22 11:33:16,361 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'good' to group 'wife'.
 2022-11-22 11:33:16,440 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
 2022-11-22 11:33:16,440 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:10:45,297 INFO in function <module>(), (Line# 249) Program starting.
+2022-11-22 12:11:22,289 INFO in function <module>(), (Line# 309) Succesfully connected to database 'conalaun_testing'
+2022-11-22 12:11:22,289 INFO in function <module>(), (Line# 316) Succesfully created group directory: 'groups'
+2022-11-22 12:11:22,450 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 't' to group 'dog'.
+2022-11-22 12:11:22,451 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'gracie poo' to group 'dog'.
+2022-11-22 12:11:22,451 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'pip' to group 'wifey'.
+2022-11-22 12:11:22,451 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'bob barker' to group 'xx'.
+2022-11-22 12:11:22,451 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'b' to group 'yy'.
+2022-11-22 12:11:22,451 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'good' to group 'wife'.
+2022-11-22 12:11:22,523 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:11:22,523 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:11:22,523 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:11:22,756 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:11:22,756 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:11:22,777 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'lulu' to group 'puppy'.
+2022-11-22 12:11:22,777 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'bob' to group 'person'.
+2022-11-22 12:11:22,777 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'tom' to group 'person'.
+2022-11-22 12:11:22,777 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'victor' to group 'person'.
+2022-11-22 12:11:22,777 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'car' to group 'object'.
+2022-11-22 12:11:22,777 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'ottawa' to group 'place'.
+2022-11-22 12:11:22,897 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:11:22,897 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:11:22,898 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:11:22,903 INFO in function <module>(), (Line# 510) Program terminating.
+2022-11-22 12:11:23,402 INFO in function <module>(), (Line# 249) Program starting.
+2022-11-22 12:12:00,362 INFO in function <module>(), (Line# 309) Succesfully connected to database 'conalaun_testing'
+2022-11-22 12:12:00,363 INFO in function <module>(), (Line# 316) Succesfully created group directory: 'groups'
+2022-11-22 12:12:00,529 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'bourget' to group 'place'.
+2022-11-22 12:12:00,529 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'ottawa' to group 'place'.
+2022-11-22 12:12:00,530 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'vic' to group 'person'.
+2022-11-22 12:12:00,530 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'bob' to group 'person'.
+2022-11-22 12:12:00,642 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:12:00,643 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:12:00,643 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:12:00,660 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'dd' to group 'band'.
+2022-11-22 12:12:00,660 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'cc' to group 'dog'.
+2022-11-22 12:12:01,145 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:12:01,146 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:12:01,146 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:12:01,150 INFO in function <module>(), (Line# 510) Program terminating.
+2022-11-22 12:12:01,516 INFO in function <module>(), (Line# 249) Program starting.
+2022-11-22 12:12:36,998 INFO in function <module>(), (Line# 309) Succesfully connected to database 'conalaun_testing'
+2022-11-22 12:12:36,998 INFO in function <module>(), (Line# 316) Succesfully created group directory: 'groups'
+2022-11-22 12:12:37,278 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'a' to group 'dog'.
+2022-11-22 12:12:37,278 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'c' to group 'place'.
+2022-11-22 12:12:37,278 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'b' to group 'place'.
+2022-11-22 12:12:37,356 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:12:37,356 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:12:37,357 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:12:37,375 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'bbb' to group 'person'.
+2022-11-22 12:12:37,375 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'ccc' to group 'person'.
+2022-11-22 12:12:37,375 INFO in function process_ico_file_if_it_exists(), (Line# 49) Added 'ddd' to group 'coolperson'.
+2022-11-22 12:12:37,499 INFO in function process_ico_file_if_it_exists(), (Line# 59) Successfully processed an ICO file.
+2022-11-22 12:12:37,499 INFO in function process_ico_file_if_it_exists(), (Line# 62) Some members added to groups, thus reloading all group members for all groups.
+2022-11-22 12:12:37,499 INFO in function reload_all_ICOs_from_DB(), (Line# 15) *** Reloading all ICOs - from Disk to RAM.
+2022-11-22 12:12:37,503 INFO in function <module>(), (Line# 510) Program terminating.
