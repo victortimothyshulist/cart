@@ -712,7 +712,7 @@ for linenum in range(len(code_lines)):
         test_code_lines.append(leading_space_id_09 + '      _cart_do_file_cur_line = re.match(\'^ico\' + str(_CART_INPUT_LINE_NUMBER) + \'-.*$\', file)')
         test_code_lines.append(leading_space_id_09 + '      if bool(_cart_do_file_cur_line):')
         test_code_lines.append(leading_space_id_09 + '         os.system("mv " + _src_file + " " + icoFile)')
-        test_code_lines.append(leading_space_id_09 + '         (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME)')
+        test_code_lines.append(leading_space_id_09 + '         (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR)')
         test_code_lines.append(leading_space_id_09 + '         if parsed_ico_okay: reload_all_ICOs_from_DB(logging)')
 
     elif linenum == line_number_of_id_10:
