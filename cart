@@ -448,6 +448,9 @@ TEST_PKG_NO_EXT = ""
 print("\n------------- VERSION: " + TEST_PKG)
 print("------------- OPERATION: " + OPERATION)
 
+print("* * * * If you have just copied CART and CONALAUN to Linux box, make sure you have done a 'dos2unix' on all scripts!\nPress enter:\n")
+input()
+
 if TEST_PKG[-5::] != '.conf':
     TEST_PKG_FP = CONF_DIR + "/" + TEST_PKG + ".conf"
     TEST_PKG_NO_EXT = TEST_PKG

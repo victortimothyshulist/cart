@@ -1,7 +1,3 @@
-#!/usr/bin/python
-
-import resetdb
-
-resetdb.create(True)
-
+os.system("chmod +x ./clearKB.py")
+os.system("./clearKB.py -YES")
 
