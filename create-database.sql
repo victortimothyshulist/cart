@@ -87,3 +87,20 @@ CREATE TABLE `<DB_NAME>`.`syn_sr_to_sr` (
    `second_sr_is_cons` CHAR NOT NULL,
    `polarity` CHAR NOT NULL
 );
+CREATE TABLE `<DB_NAME>`.`global_term_catalogue` (
+  `termid` INT NOT NULL AUTO_INCREMENT,
+  `term_text` VARCHAR(80) NOT NULL,
+  PRIMARY KEY (`termid`));
+CREATE TABLE `<DB_NAME>`.`char_pos_map` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `char_value` CHAR(1) NOT NULL,
+  `position_value` INT NOT NULL,
+  PRIMARY KEY (`id`));
+CREATE TABLE `<DB_NAME>`.`char_pos_term_id` (
+  `char_pos_map_ref` INT NOT NULL,
+  `term_id` INT NOT NULL
+  );
+CREATE TABLE `<DB_NAME>`.`identity` (
+  `name` CHAR(40) NULL,
+  `date_time_of_birth` DATETIME NULL,
+  `guid` TEXT(2400) NULL);

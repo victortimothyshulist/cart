@@ -1,3 +1,9 @@
-groups/
-_temp_arc_unpack/
-
+groups
+alt_text
+keys.txt
+__pycache__
+constant_strings.dat
+fast_string_scan.py.txt
+future wild ideas
+version.txt
+logs

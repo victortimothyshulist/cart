@@ -3,12 +3,61 @@ import ico_compiler
 import setupdb
 import mysql.connector
 import os
+import os.path
 import re
 import logging
 from logging.handlers import RotatingFileHandler
 import sys
 import cart_dump_table
-import resetdb
+import db_manager
+import term_manager
+import time
+
+
+def fetch_sr_code_lines(dn):
+    code_lines = dict()
+    files_in_sr_code_dir = list()
+
+    if os.path.isdir(dn):
+        for entry in os.listdir(dn):
+            if entry == "__pycache__": continue
+
+            if entry[-3:] != '.PY':
+                raise Exception("The entry '" + entry + "' in '" + dn + "' does not end with '.PY' - please fix.")
+
+            entry_without_py = entry[0:-3]
+            
+            mo = re.match('.*[a-z].*', entry)
+            if bool(mo):
+                raise Exception("The entry " + entry + " in '" + dn + r"' contains lowercase letters, that's not allowed, only UPPERCASE - Please correct the name of this file.")
+
+            mo = re.match('.*[^A-Z0-9_].*', entry_without_py)
+            if bool(mo):
+                raise Exception("The entry " + entry_without_py + " in '" + dn + r"' contains one or more charactors that are -not- 'A' to 'Z' or '0' to '9' or '_'.  Please correct the name of this file.")
+        
+            if not os.path.isfile(dn + "/" + entry):                
+                raise Exception("The entry '" + entry + "' in directory: '" + dn + "' is not a file.  Can only have files in this directory.")
+
+            files_in_sr_code_dir.append(entry_without_py)
+            
+            all_code_lines = ""
+            with open(dn + '/' + entry, 'r') as srfh:
+                for codeline in srfh.readlines():
+                    all_code_lines += codeline
+
+            code_lines[entry] = all_code_lines
+
+    if os.path.isfile(REG_SR_LIST_FILENAME):
+        os.remove(REG_SR_LIST_FILENAME)
+        if os.path.isfile(REG_SR_LIST_FILENAME):
+            raise Exception("I was not able to delete '" + REG_SR_LIST_FILENAME + "'")
+
+    with open(REG_SR_LIST_FILENAME, 'w') as fh:
+        for spec_rep in files_in_sr_code_dir:
+            special_replaceble_name = spec_rep.upper()            
+            fh.write(special_replaceble_name + "\n")
+
+    return code_lines                
 
 
 def reload_all_ICOs_from_DB(logging):
@@ -27,7 +76,8 @@ def reload_all_ICOs_from_DB(logging):
     # TO DO - write this in the future.
     pass
 
-def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME):
+
+def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR):
     # Return True if reload is necessary (if successfully processed an ICO), otherwise false.
     # So Return False if there was no ICO file waiting to be processed, or we failed to process it.  True if ICO file was there and we successfully processed.
     
@@ -56,11 +106,20 @@ def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FIL
                 myconn.commit()
                 os.remove(CLASS_FILE_NAME)
                 ico_last_mod = 0
-                logging.info("Successfully processed an ICO file.")                
+                logging.info("Successfully processed an ICO file.")
+
+                try:
+                    term_manager.update_fast_string_scan_cache(myconn, logging, CON_LIST_FILE, GROUP_DIR_NAME, ALT_TEXT_DIR)
+                except Exception:
+                    logging.error("There was an exception thrown in term_manager.update_fast_string_scan_cache() - program terminating.") 
+                    exit(0)
 
                 if len(group_members_to_add.keys()) > 0: 
                     logging.info("Some members added to groups, thus reloading all group members for all groups.")
-                    groupinfo = load_group_contents(GROUP_DIR_NAME)
+                    try:
+                        groupinfo = term_manager.load_group_contents(logging, GROUP_DIR_NAME)
+                    except Exception:
+                        exit(0)
 
                 return (True, ico_last_mod, groupinfo)
             else:
@@ -100,48 +159,22 @@ def cartlog(area, message):
             exit(1)
 
     ref.write(message + "\n")
-
-
-def load_group_contents(grp_dn):    
-    groupinfo = dict()
-
-    for gr_file in os.listdir(grp_dn):
-        orig_gr_file = gr_file
-        if not os.path.isfile(grp_dn + "/" + gr_file): continue
-        mo = re.match('^(.+)\.txt$', gr_file)
-        if not bool(mo): continue
-        gr_file = mo.group(1)
-        groupinfo[gr_file] = set()
-
-        with open(grp_dn + "/" + orig_gr_file, 'r') as GF:
-            for gr_entry in GF.readlines():
-                gr_entry = gr_entry.strip()
-                gr_entry = gr_entry.replace(" ", "_")
-                if gr_entry != "": groupinfo[gr_file].add(gr_entry)
-
-    return groupinfo
     
 
 def notes():
-    print("\nThe \"apostrope-s\" thing is NOT an issue for OUTPUT SIDE! just replace bob:'s with value of 'bob' - substring search/replace, without needing to split up line by spaces. Apostrope only allowed in TOLs anyway.")
-    print("\nFor apostrope-s on INPUT SIDE - very simple, just do a REGEX search [(\S)'s] and replace with:  [\\1 's] - square brackets not part of search/replace.  Once the LUI has a space inserted before all apostrope-s instance, it will match with ICO:I")    
-    print("\nfor user-guide: underscore -can- be part of an RR identifier.  Also group name can have underscore.")    
     print("\nTAKE care of the comment: #TO DO  TO DO TO DO --  Go and check that all \"return\" statements in this function return False for error and only when get to end of function do we return True")
-    print("\nTEST the encoding of star ('*') in a O-3 type line.  and put in user guide.")
     print("\nVIP: very important: for E.R. diagram explanation doc -- smol_variables table - for RR there is no entry, instead 'rr_relations' must be consulted.  *NO* rr_relations entry for O-4 (TOL) lines though. not needed")
     print("\nAlso note for ER explanation -- if the 'smol_variables' table has NULL for 'sr_name', then that variable is an RR, and the 'rr_relations' table should be consulted.")
-    print("\n*** ER diagram - 'o2_variables' now called 'smol_variables'")
     print("\nA concept may have ZERO constants - simply a single vnov:group ! Test that Conalaun accepts this and creates an interpretation (this is later, i know - Stage '2')")
-    print("\n>>>>>>>>>> LUI to be matched *ONLY* with 'I' line- *NOT* context lines. Context ONLY created/edited/deleted by SMOLs.")
     print("\n[Note (done)] - System will maintain a file 'constant_strings.dat' - distinct set of constant substrings found across all I-lines of all ICOs.  To be used as 'type-0' symbols for NovaGLI style LUI-2-interpretation creation.")
-    print("\n--NO hierarchical matching!! using novagli to create interpretations though!!!! and *NO* matching LUI with context -ONLY I-lines.")    
-    print("\n[Put in User Guide]: Literals inside quotes in SMOLs -- are auto converted to spaces)")
     print("\ncidref and tidref should be FOREIGN KEYS -- or indexes.. figure out the syntax for that!")
-    print("\n** [ DOCS reminder ] : remember, for a given RR, in relations table, only index:0 for I-line. [ b/c all I-lines must have same set of replaceables")
-    print("\n** [ DOCS reminder ] : for C2 lines - the 'exist' field (**IN class_text_lines'**) *IS NOT* used- instead the 'exist' field in *_group_member_conditions is used")    
     print("\n** NOTE: when rendering database entries for an ICO into 'textbox' for editing.. have to know where all places to convert spaces to underscores. (this is done, table 'class_text_lines' retains the underscores - but in other tables, the underscores are replaced by spaces)")
-    print("\nFor user-guide: what if you want a substring of LUI to match an SR? like 'SHE' ?  you can't have SRs (variable or literal) in I-lines, only C1, C2, and SMOLs.  So how to match? easy just use an RR then an 'is syn'.   victor:person (on your I-line), then a C2 line with 'victor is syn HE")
-    print("\n*We should re-use the function in vcck.py ('replace_with_actual_date' - 187 lines) to have 'auto-created' group 'date'.  System will not add any values to 'date' group.  It is auto created if deleted and created on start of program.  Also 'number' is auto created and matches \d+(\.\d*)?")    
+    print("\n*We should re-use the function in vcck.py ('replace_with_actual_date' - 187 lines) to have 'auto-created' group 'date'.  System will not add any values to 'date' group.  It is auto created if deleted and created on start of program.  Also 'number' is auto created and matches \d+(\.\d*)?")
+    print("\nShould go through all functions of ico_compiler.py and see if we are doing a 'close' on the cursor before ending the function.")
+    print("\n***** UPDATE ER diagram - new tables:  [ 'global_term_catalogue', 'char_pos_map' and 'char_pos_term_id' ]")
+    print("\nCYBER-SECURITY NOTE: in term_manager.build_lexicon() - text from groups and alt_text - gauard against SQL injection - replace all charactors that are -NOT- A-Z,a-z and 0-9 and dot --- with empty stirng")
+    print("\n** Need a new table, called 'self_info'.  And it will have the fields : (a) name (b) date_and_time_of_birth, and (c) soul.   Soul is the huge text blob.   'name' is your CE (conversational agent)'s name.. but that name can be in a syn-set (alt_text) so your CE can know all its nicknames")
+    print("\n")
 
 
 if __name__ != "__main__": exit
@@ -153,10 +186,12 @@ if not os.path.isdir(LOGGING_DIR):
         print("\n*ERR: Terminating: I cannot seem to create the directory '" + LOGGING_DIR + "'")
         exit(0)
 
-logging.basicConfig(encoding='utf-8', format='%(asctime)s %(levelname)s in function %(funcName)s(), (Line# %(lineno)d) %(message)s', level=logging.DEBUG, handlers=[RotatingFileHandler(LOGGING_DIR + '/conalaun.log', maxBytes=200*1024, backupCount=10, mode='a')],)
+logging.basicConfig(encoding='utf-8', format='%(asctime)s %(levelname)s in function %(funcName)s(), (Line# %(lineno)d) %(message)s', level=logging.DEBUG, handlers=[RotatingFileHandler(LOGGING_DIR + '/conalaun.log', maxBytes=110*1024, backupCount=15, mode='a')],)
 logging.info("Program starting.")
 
 #notes()
+#print("--------- press enter -----")
+#input()
 print("\n--- Control-C to exit ---(User Guide Later)---")
 
 ##################  INTERFACE CODE TO CART ##################
@@ -169,30 +204,33 @@ _CART_RESULTS_DIR = "results_cart_tests" # must be same as in cart.py
 #__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE
 
 CON_LIST_FILE = "constant_strings.dat"
+ALT_TEXT_DIR = "./alt_text"
 REG_SR_LIST_FILENAME = "sr_list.inf"
 CLASS_FILE_NAME = 'ico'  # ICO file - [I]nput, [C]ontext, [O]utput
 GROUP_DIR_NAME = 'groups'
+REG_SR_CODE_DIR = "./sr_code"
+SR_VARIABLES = dict()
 groupinfo = dict()
 
-config = resetdb.parse_conf(resetdb.CONF_FN)
-myconn = None
+db_manager.parse_conf()
 
 # The two includes below '#CART_INCLUDE_v1.000_init_db.py' and '#CART_INCLUDE_v1.000_clear_groups.py' should be for ALL versions of CONALAUN.
 #
 #CART_INCLUDE_v1.000_init_db.py
-#CART_INCLUDE_v1.000_clear_groups.py
 
-try:
-    myconn = mysql.connector.connect(host = config['DB_HOST'], user = config["DB_USER"], passwd = config['DB_PASSWORD'], database = config['DB_NAME'], autocommit = False)
+myconn = None
+
+try:    
+    myconn = mysql.connector.connect(host = db_manager.configuration['DB_HOST'], user = db_manager.configuration["DB_USER"], passwd = db_manager.configuration['DB_PASSWORD'], database = db_manager.configuration['DB_NAME'], autocommit = False)
 
 except mysql.connector.Error as e:
-    logging.critical("There was a problem connecting to the database '" + config['DB_NAME'] + "' : " + e.msg + " - Have you ran the ./setupdb.py script to create the database?")    
+    logging.critical("There was a problem connecting to the database '" + db_manager.configuration['DB_NAME'] + "' : " + e.msg + " - Have you ran the ./setupdb.py script to create the database?")    
     if myconn != None:
         if myconn.is_connected():
             myconn.close()
     exit(0)
 
-logging.info("Succesfully connected to database '" + config['DB_NAME'] + "'")
+logging.info("Succesfully connected to database '" + db_manager.configuration['DB_NAME'] + "'")
 if not os.path.isdir(GROUP_DIR_NAME):
     os.mkdir(GROUP_DIR_NAME)
     if not os.path.isdir(GROUP_DIR_NAME):        
@@ -201,7 +239,11 @@ if not os.path.isdir(GROUP_DIR_NAME):
     else:
         logging.info("Succesfully created group directory: '" + GROUP_DIR_NAME + "'")
 
-groupinfo = load_group_contents(GROUP_DIR_NAME)
+try:
+    groupinfo = term_manager.load_group_contents(logging, GROUP_DIR_NAME)
+except Exception:
+    exit(0)
+
 ico_last_mod = 0
 
 argv_last_index = len(sys.argv) - 1
@@ -226,6 +268,19 @@ for argindex in range(len(sys.argv)):
         _CART_INPUT_FILE = mo.group(2)
 
 ###################################################################################################################
+#
+#   START:  IN_DEV
+
+try:
+    term_manager.update_fast_string_scan_cache(myconn, logging, CON_LIST_FILE, GROUP_DIR_NAME, ALT_TEXT_DIR)
+except Exception:     
+    logging.error("There was an exception thrown in term_manager.update_fast_string_scan_cache() - program terminating.")    
+    exit(0)
+
+#
+##############   END:  IN_DEV
+
+
 cart_input_lines = None
 icoFile = 'ico'
 
@@ -249,22 +304,36 @@ while True:
         #__CART_REPLACED_LINE_09_DO_NOT_REMOVE_THIS_LINE
 
         lui = cart_input_lines[_CART_INPUT_LINE_NUMBER].strip()
+        lui = term_manager.adjust_for_apos_s(lui)
         #__CART_REPLACED_LINE_08_DO_NOT_REMOVE_THIS_LINE 
 
     else:    
         try:
             print("\n]", end="")
             lui = input()
-
+            lui = term_manager.adjust_for_apos_s(lui)
+            
         except KeyboardInterrupt as ex:
             break
 
-    (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME)
+    (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR)
     #CART_INCLUDE_v1.000_dump_tables.py
     #CART_INCLUDE_v1.000_dump_groups.py
 
     if parsed_ico_okay: reload_all_ICOs_from_DB(logging)
-             
+
+    try:
+        SR_CODE_LINES = fetch_sr_code_lines(REG_SR_CODE_DIR)
+
+        # Commenting out the next 4 lines--  I anticipate that we'll be passing dict "SR_CODE_LINES" to another function in another module to use.
+        #for SR_INFO in SR_CODE_LINES.items():
+        #    exec(SR_INFO[1])
+        #for K in SR_VARIABLES.keys():
+        #    print("Value of SR '" + K + "' = " + str(SR_VARIABLES[K]))
+                
+    except Exception as ex:
+        logging.error("There was an exception thrown while loading the Special Replaceable code modules: " + str(ex))
+    
 myconn.close()
 myconn = None
 #__CART_REPLACED_LINE_06_DO_NOT_REMOVE_THIS_LINE

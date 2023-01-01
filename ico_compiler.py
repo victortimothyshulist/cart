@@ -3,6 +3,7 @@ import os.path
 import re
 import mysql.connector
 import logging
+import term_manager
 
 
 def get_type(linein):
@@ -999,7 +1000,7 @@ def process_class_file(SR_FN, CLASS_FILE_NAME, myconn, groupinfo, group_members_
         linestr_strip = linestr.strip()            
         linestr_strip = re.sub('\t+', ' ', linestr_strip)
         linestr_strip = re.sub('\s{2,}', ' ', linestr_strip)
-        if ltype == 0: linestr_strip = re.sub("(\S)'s", r"\1 's", linestr_strip)
+        if ltype == 0: linestr_strip = term_manager.adjust_for_apos_s(linestr_strip)
 
         if linestr_strip == "" and not last_was_ws:
             ltype += 1        
