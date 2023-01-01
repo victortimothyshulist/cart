@@ -8,6 +8,10 @@ import datetime
 VERSION = ""
 CONF_DIR = "./testpackages"
 CART_RAW_ICO = 'cart_raw_ico'
+SR_CODE = "sr_code"
+GROUPS_DIR = 'groups'
+ALT_TEXT_DIR = 'alt_text'
+
 
 def sort_file(infile, outfile):
     if not os.path.isfile(infile):
@@ -797,14 +801,14 @@ if len(tp) == 0:
     exit(0)
 
 for filedbid in range(len(tp)):
-    
-    safe_rec_del(CART_RAW_ICO)
-    os.mkdir(CART_RAW_ICO)
+    for dir_to_del in (CART_RAW_ICO, SR_CODE, GROUPS_DIR, ALT_TEXT_DIR):
+        safe_rec_del(dir_to_del)
+        os.mkdir(dir_to_del)
 
-    if not os.path.isdir(CART_RAW_ICO):
-        print("\n*ERR: problem clearing out contents of directory '" + CART_RAW_ICO + "'")
-        exit(0)
-    
+        if not os.path.isdir(dir_to_del):
+            print("\n*ERR: problem clearing out contents of directory '" + dir_to_del + "'")
+            exit(1)
+
     print("----------------------------------------------------------------------------------")
     print("Using ICO files in: " + str(filedbid) + ", Db: " + tp[filedbid]['filename']) 
     
