@@ -1,10 +1,8 @@
 01JAN2023
-alt_text
 calling_tcm_from_another_script.py
 cart
 CART_CURRENT_VERSION_IS_v1.000
 cart_dump_table.py
-cart_raw_ico
 cart_raw_icox
 CART-User-Guide.odt
 c.bat
@@ -17,6 +15,8 @@ db_manager.py
 diffbydef.py
 diff.txt
 groups
+groupsa
+groupsabb
 i.bat
 ico
 ico_compiler.py
@@ -32,7 +32,6 @@ __pycache__
 results
 results_cart_tests
 setupdb.py
-sr_code
 sr_list.inf
 tcm
 TCM\ User\ Guide.odt

@@ -268,8 +268,10 @@ if __name__  == '__main__':
                     
             if not os.path.isdir(dir2create):
                 os.mkdir(dir2create)
-                print("\n* RAW_ICO_DIR ('" + dir2create + "') does not exist.  I tried to create it but failed.\n")    
-                sys.exit(0)
+                
+                if not os.path.isdir(dir2create):                    
+                    print("\n* RAW_ICO_DIR ('" + dir2create + "') does not exist.  I tried to create it but failed.\n")    
+                    sys.exit(0)
 
     if OPERATION != 'list' and OPERATION != 'create' and OPERATION != 'clear' and OPERATION != 'edit' and OPERATION != 'install' and OPERATION != 'delete':
         print("\n*INVALID operation specified ('" + OPERATION + "')\n")
