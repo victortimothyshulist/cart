@@ -214,10 +214,6 @@ groupinfo = dict()
 
 db_manager.parse_conf()
 
-# The two includes below '#CART_INCLUDE_v1.000_init_db.py' and '#CART_INCLUDE_v1.000_clear_groups.py' should be for ALL versions of CONALAUN.
-#
-#CART_INCLUDE_v1.000_init_db.py
-
 myconn = None
 
 try:    
@@ -316,12 +312,6 @@ while True:
         except KeyboardInterrupt as ex:
             break
 
-    (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR)
-    #CART_INCLUDE_v1.000_dump_tables.py
-    #CART_INCLUDE_v1.000_dump_groups.py
-
-    if parsed_ico_okay: reload_all_ICOs_from_DB(logging)
-
     try:
         SR_CODE_LINES = fetch_sr_code_lines(REG_SR_CODE_DIR)
 
@@ -333,6 +323,12 @@ while True:
                 
     except Exception as ex:
         logging.error("There was an exception thrown while loading the Special Replaceable code modules: " + str(ex))
+
+    (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR)
+    #CART_INCLUDE_v1.000_dump_tables.py
+    #CART_INCLUDE_v1.000_dump_groups.py
+     
+    if parsed_ico_okay: reload_all_ICOs_from_DB(logging)
     
 myconn.close()
 myconn = None

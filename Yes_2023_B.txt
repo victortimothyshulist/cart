@@ -34,12 +34,12 @@ _CART_INPUT_FILE = temp_cart_input.txt
 I just added that 'a' at index: 0 is ID 1
 I just added that 'a' at index: 1 is ID 2
 I just added that 'a' at index: 2 is ID 3
-I just added that 'c' at index: 0 is ID 4
-I just added that 'c' at index: 1 is ID 5
-I just added that 'c' at index: 2 is ID 6
-I just added that 'b' at index: 0 is ID 7
-I just added that 'b' at index: 1 is ID 8
-I just added that 'b' at index: 2 is ID 9
+I just added that 'b' at index: 0 is ID 4
+I just added that 'b' at index: 1 is ID 5
+I just added that 'b' at index: 2 is ID 6
+I just added that 'c' at index: 0 is ID 7
+I just added that 'c' at index: 1 is ID 8
+I just added that 'c' at index: 2 is ID 9
 I just added that 'd' at index: 0 is ID 10
 I just added that 'd' at index: 1 is ID 11
 I just added that 'd' at index: 2 is ID 12
@@ -65,25 +65,127 @@ Using ICO files in: 2, Db: synandgroups.tar.gz
 ./conalaun-cart-temp.py -T synandgroups:temp_cart_input.txt
 tar -xzf ./testpackages/files/v1.000/v1.000.tar.gz -C _temp_arc_unpack
 
-*ERR: Different results for file '_temp_arc_unpack/smol/0/classtextlines.res' -VERSUS- 'results_cart_tests/smol/0/classtextlines.res'
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synsrtosr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synsrtosr.res'
 -----------------------------------------------------------
                  DIFF OUTPUT                              
 -----------------------------------------------------------
-diff _temp_arc_unpack/smol/0/classtextlines.res results_cart_tests/smol/0/classtextlines.res > diff.txt
+diff _temp_arc_unpack/synandgroups/0/synsrtosr.res results_cart_tests/synandgroups/0/synsrtosr.res > diff.txt
 -----------------------------------------------------------
-1,12c1
-< 001|001|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
-< 002|001|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
-< 003|001|C2|000|None|None|None|b is in wife|
-< 004|001|C2|001|None|None|None|pip is syn SHE|
-< 005|001|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
-< 006|001|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
-< 007|001|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 008|001|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 009|001|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 010|001|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 011|001|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
-< 012|001|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
+1,4c1
+< 001|HE|IT|N|Y|
+< 001|HE|melanie shulist|Y|N|
+< 001|SHE|IT|N|N|
+< 001|SHE|melanie shulist|Y|Y|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synrrtorr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synrrtorr.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/synrrtorr.res results_cart_tests/synandgroups/0/synrrtorr.res > diff.txt
+-----------------------------------------------------------
+1,2c1
+< 001|002|000|Y|
+< 001|002|001|N|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/rrcatalogue.res' -VERSUS- 'results_cart_tests/synandgroups/0/rrcatalogue.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/rrcatalogue.res results_cart_tests/synandgroups/0/rrcatalogue.res > diff.txt
+-----------------------------------------------------------
+1,6c1,3
+< 001|000|a|
+< 001|001|b|
+< 001|002|c|
+< 002|000|bbb|
+< 002|001|ccc|
+< 002|002|ddd|
+---
+> 001|000|bbb|
+> 001|001|ccc|
+> 001|002|ddd|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/0/groups.res' -VERSUS- 'results_cart_tests/smol/0/groups.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/0/groups.res results_cart_tests/smol/0/groups.res > diff.txt
+-----------------------------------------------------------
+2,7d1
+< dog.txt:gracie poo
+< dog.txt:t
+< wife.txt:good
+< wifey.txt:pip
+< xx.txt:bob barker
+< yy.txt:b
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/2/groups.res' -VERSUS- 'results_cart_tests/smol/2/groups.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/2/groups.res results_cart_tests/smol/2/groups.res > diff.txt
+-----------------------------------------------------------
+2,13d1
+< dog.txt:gracie poo
+< dog.txt:t
+< object.txt:car
+< person.txt:bob
+< person.txt:tom
+< person.txt:victor
+< place.txt:ottawa
+< puppy.txt:lulu
+< wife.txt:good
+< wifey.txt:pip
+< xx.txt:bob barker
+< yy.txt:b
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/concepts/0/concepts.res' -VERSUS- 'results_cart_tests/concepts/0/concepts.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/concepts/0/concepts.res results_cart_tests/concepts/0/concepts.res > diff.txt
+-----------------------------------------------------------
+1,16c1
+< 001|line aaa :place and is good with :person|
+< 002|xxline aaa :place :person|
+< 003|aa bb cc :band ee ff :dog|
+< 004|gg hh ii :band ii :dog jj kk|
+< 005|mm nn oo :band xx yy :dog|
+< 006|x mm nn oo :band|
+< 007|y mm nn oo :band|
+< 008|yy mm nn oo :band|
+< 009|aaaa :band :dog|
+< 010|bbbb :band :dog|
+< 011|eeee :band :dog|
+< 012|ffff :band :dog|
+< 013|gggg :band :dog|
+< 014|hhhh :band :dog|
+< 015|cccc :band :dog|
+< 016|dddd :band :dog|
 ---
 > 
 -----------------------------------------------------------
@@ -204,15 +306,16 @@ diff _temp_arc_unpack/concepts/0/classtextlines.res results_cart_tests/concepts/
 < : Expected results.
 
 
-*ERR: Different results for file '_temp_arc_unpack/smol/1/class.res' -VERSUS- 'results_cart_tests/smol/1/class.res'
+*ERR: Different results for file '_temp_arc_unpack/smol/2/class.res' -VERSUS- 'results_cart_tests/smol/2/class.res'
 -----------------------------------------------------------
                  DIFF OUTPUT                              
 -----------------------------------------------------------
-diff _temp_arc_unpack/smol/1/class.res results_cart_tests/smol/1/class.res > diff.txt
+diff _temp_arc_unpack/smol/2/class.res results_cart_tests/smol/2/class.res > diff.txt
 -----------------------------------------------------------
-1,2c1
+1,3c1
 < 001|002|000|002|002|004|002|000|
 < 002|002|000|002|002|004|002|000|
+< 003|002|004|000|001|001|000|001|
 ---
 > 
 -----------------------------------------------------------
@@ -220,31 +323,13 @@ diff _temp_arc_unpack/smol/1/class.res results_cart_tests/smol/1/class.res > dif
 < : Expected results.
 
 
-*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synsrtosr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synsrtosr.res'
+*ERR: Different results for file '_temp_arc_unpack/smol/0/classtextlines.res' -VERSUS- 'results_cart_tests/smol/0/classtextlines.res'
 -----------------------------------------------------------
                  DIFF OUTPUT                              
 -----------------------------------------------------------
-diff _temp_arc_unpack/synandgroups/0/synsrtosr.res results_cart_tests/synandgroups/0/synsrtosr.res > diff.txt
+diff _temp_arc_unpack/smol/0/classtextlines.res results_cart_tests/smol/0/classtextlines.res > diff.txt
 -----------------------------------------------------------
-1,4c1
-< 001|HE|IT|N|Y|
-< 001|HE|melanie shulist|Y|N|
-< 001|SHE|IT|N|N|
-< 001|SHE|melanie shulist|Y|Y|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/2/classtextlines.res' -VERSUS- 'results_cart_tests/smol/2/classtextlines.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/2/classtextlines.res results_cart_tests/smol/2/classtextlines.res > diff.txt
------------------------------------------------------------
-1,33c1
+1,12c1
 < 001|001|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
 < 002|001|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
 < 003|001|C2|000|None|None|None|b is in wife|
@@ -257,27 +342,6 @@ diff _temp_arc_unpack/smol/2/classtextlines.res results_cart_tests/smol/2/classt
 < 010|001|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
 < 011|001|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
 < 012|001|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
-< 013|002|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
-< 014|002|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
-< 015|002|C2|000|None|None|None|b is in wife|
-< 016|002|C2|001|None|None|None|pip is syn SHE|
-< 017|002|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
-< 018|002|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
-< 019|002|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 020|002|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 021|002|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 022|002|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 023|002|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
-< 024|002|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
-< 025|003|I|000|011|None|None|one my cojack lulu:puppy@GOODDOG bojack template tom: xox victor:person and this and that car:object or this stuff ottawa:place|
-< 026|003|I|001|012|None|None|two my cojack lulu:puppy@GOODDOG bojack template tom:person@victor_shulist xox victor:person and this and that car:object or this stuff ottawa:place|
-< 027|003|C1|000|013|E|Y|+ aa my template victor: and this and that car:|
-< 028|003|C1|001|014|E|N|- bb my template victor:person@HE and this and that car:object@THAT bbb cc dd ottawa:place@PLACE|
-< 029|003|C1|002|015|I|Y|++ cc my template victor: and this and that car: dog cat bob:person@melanie_shulist horse|
-< 030|003|C1|003|016|I|N|-- dd my template victor: and this and that car:object|
-< 031|003|O1|000|014|I|None|++ bb my template victor: and this and that car: bbb cc dd ottawa:|
-< 032|003|O21|000|017|E|None|> my template ?victor: and this and that =car:|
-< 033|003|O4|000|None|None|None|xxx yyy my template victor: and this and that car:object|
 ---
 > 
 -----------------------------------------------------------
@@ -285,165 +349,15 @@ diff _temp_arc_unpack/smol/2/classtextlines.res results_cart_tests/smol/2/classt
 < : Expected results.
 
 
-*ERR: Different results for file '_temp_arc_unpack/concepts/0/conceptsymbols.res' -VERSUS- 'results_cart_tests/concepts/0/conceptsymbols.res'
+*ERR: Different results for file '_temp_arc_unpack/smol/1/class.res' -VERSUS- 'results_cart_tests/smol/1/class.res'
 -----------------------------------------------------------
                  DIFF OUTPUT                              
 -----------------------------------------------------------
-diff _temp_arc_unpack/concepts/0/conceptsymbols.res results_cart_tests/concepts/0/conceptsymbols.res > diff.txt
------------------------------------------------------------
-1,50c1
-< 001|000|000|line aaa|
-< 001|001|001|place|
-< 001|002|000|and is good with|
-< 001|003|001|person|
-< 002|000|000|xxline aaa|
-< 002|001|001|place|
-< 002|002|001|person|
-< 003|000|000|aa bb cc|
-< 003|001|001|band|
-< 003|002|000|ee ff|
-< 003|003|001|dog|
-< 004|000|000|gg hh ii|
-< 004|001|001|band|
-< 004|002|000|ii|
-< 004|003|001|dog|
-< 004|004|000|jj kk|
-< 005|000|000|mm nn oo|
-< 005|001|001|band|
-< 005|002|000|xx yy|
-< 005|003|001|dog|
-< 006|000|000|x mm nn oo|
-< 006|001|001|band|
-< 007|000|000|y mm nn oo|
-< 007|001|001|band|
-< 008|000|000|yy mm nn oo|
-< 008|001|001|band|
-< 009|000|000|aaaa|
-< 009|001|001|band|
-< 009|002|001|dog|
-< 010|000|000|bbbb|
-< 010|001|001|band|
-< 010|002|001|dog|
-< 011|000|000|eeee|
-< 011|001|001|band|
-< 011|002|001|dog|
-< 012|000|000|ffff|
-< 012|001|001|band|
-< 012|002|001|dog|
-< 013|000|000|gggg|
-< 013|001|001|band|
-< 013|002|001|dog|
-< 014|000|000|hhhh|
-< 014|001|001|band|
-< 014|002|001|dog|
-< 015|000|000|cccc|
-< 015|001|001|band|
-< 015|002|001|dog|
-< 016|000|000|dddd|
-< 016|001|001|band|
-< 016|002|001|dog|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/2/groups.res' -VERSUS- 'results_cart_tests/smol/2/groups.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/2/groups.res results_cart_tests/smol/2/groups.res > diff.txt
------------------------------------------------------------
-2,13d1
-< dog.txt:gracie poo
-< dog.txt:t
-< object.txt:car
-< person.txt:bob
-< person.txt:tom
-< person.txt:victor
-< place.txt:ottawa
-< puppy.txt:lulu
-< wife.txt:good
-< wifey.txt:pip
-< xx.txt:bob barker
-< yy.txt:b
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/0/groups.res' -VERSUS- 'results_cart_tests/smol/0/groups.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/0/groups.res results_cart_tests/smol/0/groups.res > diff.txt
------------------------------------------------------------
-2,7d1
-< dog.txt:gracie poo
-< dog.txt:t
-< wife.txt:good
-< wifey.txt:pip
-< xx.txt:bob barker
-< yy.txt:b
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/2/classextraconditions.res' -VERSUS- 'results_cart_tests/smol/2/classextraconditions.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/2/classextraconditions.res results_cart_tests/smol/2/classextraconditions.res > diff.txt
------------------------------------------------------------
-1,6c1
-< 003|C|001|000|HE|0|
-< 003|C|001|001|THAT|0|
-< 003|C|001|002|PLACE|0|
-< 003|C|002|002|melanie shulist|1|
-< 003|I|000|000|GOODDOG|0|
-< 003|I|001|001|victor shulist|1|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/srgroupmemberconditions.res' -VERSUS- 'results_cart_tests/synandgroups/0/srgroupmemberconditions.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/synandgroups/0/srgroupmemberconditions.res results_cart_tests/synandgroups/0/srgroupmemberconditions.res > diff.txt
+diff _temp_arc_unpack/smol/1/class.res results_cart_tests/smol/1/class.res > diff.txt
 -----------------------------------------------------------
 1,2c1
-< 001|HE|dog|Y|
-< 001|SHE|dog|N|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/1/concepts.res' -VERSUS- 'results_cart_tests/smol/1/concepts.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/1/concepts.res results_cart_tests/smol/1/concepts.res > diff.txt
------------------------------------------------------------
-1,10c1
-< 001|:dog :dog xxx :wifey :xx jjj kk ll :yy kk :wife ss ss|
-< 002|:yy :dog xxx :xx jjj kk ll kk :wife ss ss kk sssssssss lll ooo pp d :dog :wifey|
-< 003|one :dog ccccccc dddd eeee :xx :wife|
-< 004|two ccccccc dddd eeee :xx :wife :dog|
-< 005|three jj kk ll :dog ccccccc :dog dddd eeee :xx pp kk oo pp :wife kk :best :dog|
-< 006|four :dog jj kk ll :dog ccccccc :dog dddd eeee :xx pp kk oo pp :wife kk :best|
-< 007|five jj kk ll :dog ccccccc :dog dddd eeee :xx pp kk oo pp :wife kk :best :dog|
-< 008|six jj kk ll :dog ccccccc :dog dddd :dog eeee :xx pp kk oo pp :wife kk :best|
-< 009|seven ccccccc :wife dddd eeee :xx ss :dog vv :wifeyworld|
-< 010|eight :dog ccccccc :wife dddd eeee :xx :wifeyworld|
+< 001|002|000|002|002|004|002|000|
+< 002|002|000|002|002|004|002|000|
 ---
 > 
 -----------------------------------------------------------
@@ -588,23 +502,170 @@ diff _temp_arc_unpack/concepts/0/classextraconditions.res results_cart_tests/con
 < : Expected results.
 
 
-*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/rrcatalogue.res' -VERSUS- 'results_cart_tests/synandgroups/0/rrcatalogue.res'
+*ERR: Different results for file '_temp_arc_unpack/concepts/0/conceptsymbols.res' -VERSUS- 'results_cart_tests/concepts/0/conceptsymbols.res'
 -----------------------------------------------------------
                  DIFF OUTPUT                              
 -----------------------------------------------------------
-diff _temp_arc_unpack/synandgroups/0/rrcatalogue.res results_cart_tests/synandgroups/0/rrcatalogue.res > diff.txt
+diff _temp_arc_unpack/concepts/0/conceptsymbols.res results_cart_tests/concepts/0/conceptsymbols.res > diff.txt
 -----------------------------------------------------------
-1,6c1,3
-< 001|000|a|
-< 001|001|b|
-< 001|002|c|
-< 002|000|bbb|
-< 002|001|ccc|
-< 002|002|ddd|
+1,50c1
+< 001|000|000|line aaa|
+< 001|001|001|place|
+< 001|002|000|and is good with|
+< 001|003|001|person|
+< 002|000|000|xxline aaa|
+< 002|001|001|place|
+< 002|002|001|person|
+< 003|000|000|aa bb cc|
+< 003|001|001|band|
+< 003|002|000|ee ff|
+< 003|003|001|dog|
+< 004|000|000|gg hh ii|
+< 004|001|001|band|
+< 004|002|000|ii|
+< 004|003|001|dog|
+< 004|004|000|jj kk|
+< 005|000|000|mm nn oo|
+< 005|001|001|band|
+< 005|002|000|xx yy|
+< 005|003|001|dog|
+< 006|000|000|x mm nn oo|
+< 006|001|001|band|
+< 007|000|000|y mm nn oo|
+< 007|001|001|band|
+< 008|000|000|yy mm nn oo|
+< 008|001|001|band|
+< 009|000|000|aaaa|
+< 009|001|001|band|
+< 009|002|001|dog|
+< 010|000|000|bbbb|
+< 010|001|001|band|
+< 010|002|001|dog|
+< 011|000|000|eeee|
+< 011|001|001|band|
+< 011|002|001|dog|
+< 012|000|000|ffff|
+< 012|001|001|band|
+< 012|002|001|dog|
+< 013|000|000|gggg|
+< 013|001|001|band|
+< 013|002|001|dog|
+< 014|000|000|hhhh|
+< 014|001|001|band|
+< 014|002|001|dog|
+< 015|000|000|cccc|
+< 015|001|001|band|
+< 015|002|001|dog|
+< 016|000|000|dddd|
+< 016|001|001|band|
+< 016|002|001|dog|
 ---
-> 001|000|bbb|
-> 001|001|ccc|
-> 001|002|ddd|
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synrrtosr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synrrtosr.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/synrrtosr.res results_cart_tests/synandgroups/0/synrrtosr.res > diff.txt
+-----------------------------------------------------------
+1,4c1
+< 001|001|IT|N|Y|
+< 001|001|victor shulist|Y|Y|
+< 001|002|IT|N|N|
+< 001|002|victor shulist|Y|N|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/2/classtextlines.res' -VERSUS- 'results_cart_tests/smol/2/classtextlines.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/2/classtextlines.res results_cart_tests/smol/2/classtextlines.res > diff.txt
+-----------------------------------------------------------
+1,33c1
+< 001|001|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
+< 002|001|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
+< 003|001|C2|000|None|None|None|b is in wife|
+< 004|001|C2|001|None|None|None|pip is syn SHE|
+< 005|001|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
+< 006|001|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
+< 007|001|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 008|001|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 009|001|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 010|001|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 011|001|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
+< 012|001|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
+< 013|002|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
+< 014|002|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
+< 015|002|C2|000|None|None|None|b is in wife|
+< 016|002|C2|001|None|None|None|pip is syn SHE|
+< 017|002|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
+< 018|002|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
+< 019|002|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 020|002|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 021|002|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 022|002|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 023|002|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
+< 024|002|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
+< 025|003|I|000|011|None|None|one my cojack lulu:puppy@GOODDOG bojack template tom: xox victor:person and this and that car:object or this stuff ottawa:place|
+< 026|003|I|001|012|None|None|two my cojack lulu:puppy@GOODDOG bojack template tom:person@victor_shulist xox victor:person and this and that car:object or this stuff ottawa:place|
+< 027|003|C1|000|013|E|Y|+ aa my template victor: and this and that car:|
+< 028|003|C1|001|014|E|N|- bb my template victor:person@HE and this and that car:object@THAT bbb cc dd ottawa:place@PLACE|
+< 029|003|C1|002|015|I|Y|++ cc my template victor: and this and that car: dog cat bob:person@melanie_shulist horse|
+< 030|003|C1|003|016|I|N|-- dd my template victor: and this and that car:object|
+< 031|003|O1|000|014|I|None|++ bb my template victor: and this and that car: bbb cc dd ottawa:|
+< 032|003|O21|000|017|E|None|> my template ?victor: and this and that =car:|
+< 033|003|O4|000|None|None|None|xxx yyy my template victor: and this and that car:object|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/srgroupmemberconditions.res' -VERSUS- 'results_cart_tests/synandgroups/0/srgroupmemberconditions.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/srgroupmemberconditions.res results_cart_tests/synandgroups/0/srgroupmemberconditions.res > diff.txt
+-----------------------------------------------------------
+1,2c1
+< 001|HE|dog|Y|
+< 001|SHE|dog|N|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/1/concepts.res' -VERSUS- 'results_cart_tests/smol/1/concepts.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/1/concepts.res results_cart_tests/smol/1/concepts.res > diff.txt
+-----------------------------------------------------------
+1,10c1
+< 001|:dog :dog xxx :wifey :xx jjj kk ll :yy kk :wife ss ss|
+< 002|:yy :dog xxx :xx jjj kk ll kk :wife ss ss kk sssssssss lll ooo pp d :dog :wifey|
+< 003|one :dog ccccccc dddd eeee :xx :wife|
+< 004|two ccccccc dddd eeee :xx :wife :dog|
+< 005|three jj kk ll :dog ccccccc :dog dddd eeee :xx pp kk oo pp :wife kk :best :dog|
+< 006|four :dog jj kk ll :dog ccccccc :dog dddd eeee :xx pp kk oo pp :wife kk :best|
+< 007|five jj kk ll :dog ccccccc :dog dddd eeee :xx pp kk oo pp :wife kk :best :dog|
+< 008|six jj kk ll :dog ccccccc :dog dddd :dog eeee :xx pp kk oo pp :wife kk :best|
+< 009|seven ccccccc :wife dddd eeee :xx ss :dog vv :wifeyworld|
+< 010|eight :dog ccccccc :wife dddd eeee :xx :wifeyworld|
+---
+> 
 -----------------------------------------------------------
 > : Output from this run
 < : Expected results.
@@ -662,19 +723,90 @@ diff _temp_arc_unpack/smol/0/smolvariables.res results_cart_tests/smol/0/smolvar
 < : Expected results.
 
 
-*ERR: Different results for file '_temp_arc_unpack/smol/1/groups.res' -VERSUS- 'results_cart_tests/smol/1/groups.res'
+*ERR: Different results for file '_temp_arc_unpack/smol/1/classtextlines.res' -VERSUS- 'results_cart_tests/smol/1/classtextlines.res'
 -----------------------------------------------------------
                  DIFF OUTPUT                              
 -----------------------------------------------------------
-diff _temp_arc_unpack/smol/1/groups.res results_cart_tests/smol/1/groups.res > diff.txt
+diff _temp_arc_unpack/smol/1/classtextlines.res results_cart_tests/smol/1/classtextlines.res > diff.txt
 -----------------------------------------------------------
-2,7d1
-< dog.txt:gracie poo
-< dog.txt:t
-< wife.txt:good
-< wifey.txt:pip
-< xx.txt:bob barker
-< yy.txt:b
+1,24c1
+< 001|001|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
+< 002|001|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
+< 003|001|C2|000|None|None|None|b is in wife|
+< 004|001|C2|001|None|None|None|pip is syn SHE|
+< 005|001|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
+< 006|001|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
+< 007|001|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 008|001|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 009|001|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 010|001|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 011|001|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
+< 012|001|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
+< 013|002|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
+< 014|002|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
+< 015|002|C2|000|None|None|None|b is in wife|
+< 016|002|C2|001|None|None|None|pip is syn SHE|
+< 017|002|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
+< 018|002|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
+< 019|002|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 020|002|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 021|002|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
+< 022|002|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
+< 023|002|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
+< 024|002|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/2/classextraconditions.res' -VERSUS- 'results_cart_tests/smol/2/classextraconditions.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/2/classextraconditions.res results_cart_tests/smol/2/classextraconditions.res > diff.txt
+-----------------------------------------------------------
+1,6c1
+< 003|C|001|000|HE|0|
+< 003|C|001|001|THAT|0|
+< 003|C|001|002|PLACE|0|
+< 003|C|002|002|melanie shulist|1|
+< 003|I|000|000|GOODDOG|0|
+< 003|I|001|001|victor shulist|1|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/rrgroupmemberconditions.res' -VERSUS- 'results_cart_tests/synandgroups/0/rrgroupmemberconditions.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/synandgroups/0/rrgroupmemberconditions.res results_cart_tests/synandgroups/0/rrgroupmemberconditions.res > diff.txt
+-----------------------------------------------------------
+1,2c1
+< 001|000|dog|Y|
+< 001|001|dog|N|
+---
+> 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/0/class.res' -VERSUS- 'results_cart_tests/smol/0/class.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/0/class.res results_cart_tests/smol/0/class.res > diff.txt
+-----------------------------------------------------------
+1c1
+< 001|002|000|002|002|004|002|000|
+---
+> 
 -----------------------------------------------------------
 > : Output from this run
 < : Expected results.
@@ -699,6 +831,24 @@ diff _temp_arc_unpack/smol/0/concepts.res results_cart_tests/smol/0/concepts.res
 < 010|eight :dog ccccccc :wife dddd eeee :xx :wifeyworld|
 ---
 > 
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/smol/1/groups.res' -VERSUS- 'results_cart_tests/smol/1/groups.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/smol/1/groups.res results_cart_tests/smol/1/groups.res > diff.txt
+-----------------------------------------------------------
+2,7d1
+< dog.txt:gracie poo
+< dog.txt:t
+< wife.txt:good
+< wifey.txt:pip
+< xx.txt:bob barker
+< yy.txt:b
 -----------------------------------------------------------
 > : Output from this run
 < : Expected results.
@@ -792,156 +942,6 @@ diff _temp_arc_unpack/smol/2/smolvariables.res results_cart_tests/smol/2/smolvar
 < 031|002|None|None|None|
 < 032|000|I|None|None|
 < 032|001|T|None|None|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synrrtosr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synrrtosr.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/synandgroups/0/synrrtosr.res results_cart_tests/synandgroups/0/synrrtosr.res > diff.txt
------------------------------------------------------------
-1,4c1
-< 001|001|IT|N|Y|
-< 001|001|victor shulist|Y|Y|
-< 001|002|IT|N|N|
-< 001|002|victor shulist|Y|N|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/concepts/0/concepts.res' -VERSUS- 'results_cart_tests/concepts/0/concepts.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/concepts/0/concepts.res results_cart_tests/concepts/0/concepts.res > diff.txt
------------------------------------------------------------
-1,16c1
-< 001|line aaa :place and is good with :person|
-< 002|xxline aaa :place :person|
-< 003|aa bb cc :band ee ff :dog|
-< 004|gg hh ii :band ii :dog jj kk|
-< 005|mm nn oo :band xx yy :dog|
-< 006|x mm nn oo :band|
-< 007|y mm nn oo :band|
-< 008|yy mm nn oo :band|
-< 009|aaaa :band :dog|
-< 010|bbbb :band :dog|
-< 011|eeee :band :dog|
-< 012|ffff :band :dog|
-< 013|gggg :band :dog|
-< 014|hhhh :band :dog|
-< 015|cccc :band :dog|
-< 016|dddd :band :dog|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/2/class.res' -VERSUS- 'results_cart_tests/smol/2/class.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/2/class.res results_cart_tests/smol/2/class.res > diff.txt
------------------------------------------------------------
-1,3c1
-< 001|002|000|002|002|004|002|000|
-< 002|002|000|002|002|004|002|000|
-< 003|002|004|000|001|001|000|001|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/synrrtorr.res' -VERSUS- 'results_cart_tests/synandgroups/0/synrrtorr.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/synandgroups/0/synrrtorr.res results_cart_tests/synandgroups/0/synrrtorr.res > diff.txt
------------------------------------------------------------
-1,2c1
-< 001|002|000|Y|
-< 001|002|001|N|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/0/class.res' -VERSUS- 'results_cart_tests/smol/0/class.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/0/class.res results_cart_tests/smol/0/class.res > diff.txt
------------------------------------------------------------
-1c1
-< 001|002|000|002|002|004|002|000|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/smol/1/classtextlines.res' -VERSUS- 'results_cart_tests/smol/1/classtextlines.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/smol/1/classtextlines.res results_cart_tests/smol/1/classtextlines.res > diff.txt
------------------------------------------------------------
-1,24c1
-< 001|001|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
-< 002|001|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
-< 003|001|C2|000|None|None|None|b is in wife|
-< 004|001|C2|001|None|None|None|pip is syn SHE|
-< 005|001|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
-< 006|001|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
-< 007|001|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 008|001|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 009|001|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 010|001|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 011|001|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
-< 012|001|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
-< 013|002|I|000|001|None|None|t:dog gracie_poo:dog xxx pip:wifey bob_barker:xx jjj kk ll b:yy kk good:wife ss ss|
-< 014|002|I|001|002|None|None|b:yy gracie_poo:dog xxx bob_barker:xx jjj kk ll kk good:wife ss ss kk sssssssss lll ooo pp d t:dog pip:|
-< 015|002|C2|000|None|None|None|b is in wife|
-< 016|002|C2|001|None|None|None|pip is syn SHE|
-< 017|002|O1|000|003|E|None|+ one SHE:dog ccccccc dddd eeee bob_barker: "melanie_is_best":wife|
-< 018|002|O1|001|004|I|None|++ two ccccccc dddd eeee bob_barker: "melanie_is_best":wife SHE:dog|
-< 019|002|O21|000|005|E|None|> three jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 020|002|O21|001|006|I|None|>> four =SHE:dog jj kk ll ?SHE:dog ccccccc ?t: dddd eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 021|002|O22|002|007|E|None|+> five jj kk ll =SHE:dog ccccccc =t: dddd eeee ?bob_barker: pp kk oo pp ?"melanie_is_best":wife kk ="victor_and_melanie":best ?SHE:dog|
-< 022|002|O22|003|008|I|None|++> six jj kk ll ?SHE:dog ccccccc ?t: dddd =SHE:dog eeee =bob_barker: pp kk oo pp ="melanie_is_best":wife kk ?"victor_and_melanie":best|
-< 023|002|O3|000|009|E|None|- seven ccccccc *:wife dddd eeee bob_barker: ss SHE:dog vv "melanie_is_best":wifeyworld|
-< 024|002|O3|001|010|I|None|-- eight SHE:dog ccccccc *:wife dddd eeee bob_barker: "melanie_is_best":wifeyworld|
----
-> 
------------------------------------------------------------
-> : Output from this run
-< : Expected results.
-
-
-*ERR: Different results for file '_temp_arc_unpack/synandgroups/0/rrgroupmemberconditions.res' -VERSUS- 'results_cart_tests/synandgroups/0/rrgroupmemberconditions.res'
------------------------------------------------------------
-                 DIFF OUTPUT                              
------------------------------------------------------------
-diff _temp_arc_unpack/synandgroups/0/rrgroupmemberconditions.res results_cart_tests/synandgroups/0/rrgroupmemberconditions.res > diff.txt
------------------------------------------------------------
-1,2c1
-< 001|000|dog|Y|
-< 001|001|dog|N|
 ---
 > 
 -----------------------------------------------------------

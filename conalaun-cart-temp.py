@@ -133,93 +133,77 @@ def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FIL
 
 
 def cartlog(area, message):
-    global _cart_area_rrrelations
-    global _cart_area_rrgroupmemberconditions
-    global _cart_area_synsrtosr
-    global _cart_area_smolvariables
-    global _cart_area_synrrtorr
-    global _cart_area_class
-    global _cart_area_rrcatalogue
-    global _cart_area_classtextlines
-    global _cart_area_srgroupmemberconditions
-    global _cart_area_conceptsymbols
-    global _cart_area_groups
-    global _cart_area_synrrtosr
-    global _cart_area_classextraconditions
     global _cart_area_concepts
+    global _cart_area_synrrtorr
+    global _cart_area_classtextlines
+    global _cart_area_synrrtosr
+    global _cart_area_srgroupmemberconditions
+    global _cart_area_rrgroupmemberconditions
+    global _cart_area_class
+    global _cart_area_synsrtosr
+    global _cart_area_groups
+    global _cart_area_smolvariables
+    global _cart_area_classextraconditions
+    global _cart_area_rrcatalogue
+    global _cart_area_rrrelations
+    global _cart_area_conceptsymbols
 
     known_area = False
     ref = None
 
     cartlogdirandfile = _CART_RESULTS_DIR + "/" + str(_CART_FILEDB) + "/" + str(_CART_INPUT_LINE_NUMBER) + "/" + area + ".res"
 
-    if area == "rrrelations":
-        ref = _cart_area_rrrelations
-        known_area = True
-    elif area == "rrgroupmemberconditions":
-        ref = _cart_area_rrgroupmemberconditions
-        known_area = True
-    elif area == "synsrtosr":
-        ref = _cart_area_synsrtosr
-        known_area = True
-    elif area == "smolvariables":
-        ref = _cart_area_smolvariables
+    if area == "concepts":
+        ref = _cart_area_concepts
         known_area = True
     elif area == "synrrtorr":
         ref = _cart_area_synrrtorr
         known_area = True
-    elif area == "class":
-        ref = _cart_area_class
-        known_area = True
-    elif area == "rrcatalogue":
-        ref = _cart_area_rrcatalogue
-        known_area = True
     elif area == "classtextlines":
         ref = _cart_area_classtextlines
-        known_area = True
-    elif area == "srgroupmemberconditions":
-        ref = _cart_area_srgroupmemberconditions
-        known_area = True
-    elif area == "conceptsymbols":
-        ref = _cart_area_conceptsymbols
-        known_area = True
-    elif area == "groups":
-        ref = _cart_area_groups
         known_area = True
     elif area == "synrrtosr":
         ref = _cart_area_synrrtosr
         known_area = True
+    elif area == "srgroupmemberconditions":
+        ref = _cart_area_srgroupmemberconditions
+        known_area = True
+    elif area == "rrgroupmemberconditions":
+        ref = _cart_area_rrgroupmemberconditions
+        known_area = True
+    elif area == "class":
+        ref = _cart_area_class
+        known_area = True
+    elif area == "synsrtosr":
+        ref = _cart_area_synsrtosr
+        known_area = True
+    elif area == "groups":
+        ref = _cart_area_groups
+        known_area = True
+    elif area == "smolvariables":
+        ref = _cart_area_smolvariables
+        known_area = True
     elif area == "classextraconditions":
         ref = _cart_area_classextraconditions
         known_area = True
-    elif area == "concepts":
-        ref = _cart_area_concepts
+    elif area == "rrcatalogue":
+        ref = _cart_area_rrcatalogue
+        known_area = True
+    elif area == "rrrelations":
+        ref = _cart_area_rrrelations
+        known_area = True
+    elif area == "conceptsymbols":
+        ref = _cart_area_conceptsymbols
         known_area = True
     if((area == 'class') and (_CART_FILEDB not in ('smol'))):
         return
-    if((area == 'classtextlines') and (_CART_FILEDB not in ('smol', 'concepts'))):
+    if((area == 'classtextlines') and (_CART_FILEDB not in ('smol'))):
         return
     if((area == 'smolvariables') and (_CART_FILEDB not in ('smol'))):
         return
-    if((area == 'concepts') and (_CART_FILEDB not in ('smol', 'concepts'))):
+    if((area == 'concepts') and (_CART_FILEDB not in ('smol'))):
         return
     if((area == 'groups') and (_CART_FILEDB not in ('smol'))):
-        return
-    if((area == 'conceptsymbols') and (_CART_FILEDB not in ('concepts'))):
-        return
-    if((area == 'rrgroupmemberconditions') and (_CART_FILEDB not in ('synandgroups'))):
-        return
-    if((area == 'srgroupmemberconditions') and (_CART_FILEDB not in ('synandgroups'))):
-        return
-    if((area == 'synsrtosr') and (_CART_FILEDB not in ('synandgroups'))):
-        return
-    if((area == 'synrrtosr') and (_CART_FILEDB not in ('synandgroups'))):
-        return
-    if((area == 'synrrtorr') and (_CART_FILEDB not in ('synandgroups'))):
-        return
-    if((area == 'rrcatalogue') and (_CART_FILEDB not in ('synandgroups'))):
-        return
-    if((area == 'rrrelations') and (_CART_FILEDB not in ('synandgroups'))):
         return
 
     if not known_area:
@@ -230,20 +214,20 @@ def cartlog(area, message):
         try:
             ref = open(cartlogdirandfile, "a")
 
-            if area == "rrrelations": _cart_area_rrrelations = ref
-            if area == "rrgroupmemberconditions": _cart_area_rrgroupmemberconditions = ref
-            if area == "synsrtosr": _cart_area_synsrtosr = ref
-            if area == "smolvariables": _cart_area_smolvariables = ref
-            if area == "synrrtorr": _cart_area_synrrtorr = ref
-            if area == "class": _cart_area_class = ref
-            if area == "rrcatalogue": _cart_area_rrcatalogue = ref
-            if area == "classtextlines": _cart_area_classtextlines = ref
-            if area == "srgroupmemberconditions": _cart_area_srgroupmemberconditions = ref
-            if area == "conceptsymbols": _cart_area_conceptsymbols = ref
-            if area == "groups": _cart_area_groups = ref
-            if area == "synrrtosr": _cart_area_synrrtosr = ref
-            if area == "classextraconditions": _cart_area_classextraconditions = ref
             if area == "concepts": _cart_area_concepts = ref
+            if area == "synrrtorr": _cart_area_synrrtorr = ref
+            if area == "classtextlines": _cart_area_classtextlines = ref
+            if area == "synrrtosr": _cart_area_synrrtosr = ref
+            if area == "srgroupmemberconditions": _cart_area_srgroupmemberconditions = ref
+            if area == "rrgroupmemberconditions": _cart_area_rrgroupmemberconditions = ref
+            if area == "class": _cart_area_class = ref
+            if area == "synsrtosr": _cart_area_synsrtosr = ref
+            if area == "groups": _cart_area_groups = ref
+            if area == "smolvariables": _cart_area_smolvariables = ref
+            if area == "classextraconditions": _cart_area_classextraconditions = ref
+            if area == "rrcatalogue": _cart_area_rrcatalogue = ref
+            if area == "rrrelations": _cart_area_rrrelations = ref
+            if area == "conceptsymbols": _cart_area_conceptsymbols = ref
 
         except Exception as ex:
             print("\n\n*ERR: cannot open file '" + cartlogdirandfile + "' for writing.\n")
@@ -293,20 +277,20 @@ _CART_INPUT_FILE = ""
 _CART_INPUT_LINE_NUMBER = -1
 _CART_RESULTS_DIR = "results_cart_tests" # must be same as in cart.py
 CART_RAW_ICO = "cart_raw_ico"
-_cart_area_rrrelations = None
-_cart_area_rrgroupmemberconditions = None
-_cart_area_synsrtosr = None
-_cart_area_smolvariables = None
-_cart_area_synrrtorr = None
-_cart_area_class = None
-_cart_area_rrcatalogue = None
-_cart_area_classtextlines = None
-_cart_area_srgroupmemberconditions = None
-_cart_area_conceptsymbols = None
-_cart_area_groups = None
-_cart_area_synrrtosr = None
-_cart_area_classextraconditions = None
 _cart_area_concepts = None
+_cart_area_synrrtorr = None
+_cart_area_classtextlines = None
+_cart_area_synrrtosr = None
+_cart_area_srgroupmemberconditions = None
+_cart_area_rrgroupmemberconditions = None
+_cart_area_class = None
+_cart_area_synsrtosr = None
+_cart_area_groups = None
+_cart_area_smolvariables = None
+_cart_area_classextraconditions = None
+_cart_area_rrcatalogue = None
+_cart_area_rrrelations = None
+_cart_area_conceptsymbols = None
 
 CON_LIST_FILE = "constant_strings.dat"
 ALT_TEXT_DIR = "./alt_text"
@@ -408,48 +392,48 @@ while True:
 
     if TESTING:
         _CART_INPUT_LINE_NUMBER += 1
-        if bool(_cart_area_rrrelations):
-            _cart_area_rrrelations.close()
-            _cart_area_rrrelations = None
-        if bool(_cart_area_rrgroupmemberconditions):
-            _cart_area_rrgroupmemberconditions.close()
-            _cart_area_rrgroupmemberconditions = None
-        if bool(_cart_area_synsrtosr):
-            _cart_area_synsrtosr.close()
-            _cart_area_synsrtosr = None
-        if bool(_cart_area_smolvariables):
-            _cart_area_smolvariables.close()
-            _cart_area_smolvariables = None
-        if bool(_cart_area_synrrtorr):
-            _cart_area_synrrtorr.close()
-            _cart_area_synrrtorr = None
-        if bool(_cart_area_class):
-            _cart_area_class.close()
-            _cart_area_class = None
-        if bool(_cart_area_rrcatalogue):
-            _cart_area_rrcatalogue.close()
-            _cart_area_rrcatalogue = None
-        if bool(_cart_area_classtextlines):
-            _cart_area_classtextlines.close()
-            _cart_area_classtextlines = None
-        if bool(_cart_area_srgroupmemberconditions):
-            _cart_area_srgroupmemberconditions.close()
-            _cart_area_srgroupmemberconditions = None
-        if bool(_cart_area_conceptsymbols):
-            _cart_area_conceptsymbols.close()
-            _cart_area_conceptsymbols = None
-        if bool(_cart_area_groups):
-            _cart_area_groups.close()
-            _cart_area_groups = None
-        if bool(_cart_area_synrrtosr):
-            _cart_area_synrrtosr.close()
-            _cart_area_synrrtosr = None
-        if bool(_cart_area_classextraconditions):
-            _cart_area_classextraconditions.close()
-            _cart_area_classextraconditions = None
         if bool(_cart_area_concepts):
             _cart_area_concepts.close()
             _cart_area_concepts = None
+        if bool(_cart_area_synrrtorr):
+            _cart_area_synrrtorr.close()
+            _cart_area_synrrtorr = None
+        if bool(_cart_area_classtextlines):
+            _cart_area_classtextlines.close()
+            _cart_area_classtextlines = None
+        if bool(_cart_area_synrrtosr):
+            _cart_area_synrrtosr.close()
+            _cart_area_synrrtosr = None
+        if bool(_cart_area_srgroupmemberconditions):
+            _cart_area_srgroupmemberconditions.close()
+            _cart_area_srgroupmemberconditions = None
+        if bool(_cart_area_rrgroupmemberconditions):
+            _cart_area_rrgroupmemberconditions.close()
+            _cart_area_rrgroupmemberconditions = None
+        if bool(_cart_area_class):
+            _cart_area_class.close()
+            _cart_area_class = None
+        if bool(_cart_area_synsrtosr):
+            _cart_area_synsrtosr.close()
+            _cart_area_synsrtosr = None
+        if bool(_cart_area_groups):
+            _cart_area_groups.close()
+            _cart_area_groups = None
+        if bool(_cart_area_smolvariables):
+            _cart_area_smolvariables.close()
+            _cart_area_smolvariables = None
+        if bool(_cart_area_classextraconditions):
+            _cart_area_classextraconditions.close()
+            _cart_area_classextraconditions = None
+        if bool(_cart_area_rrcatalogue):
+            _cart_area_rrcatalogue.close()
+            _cart_area_rrcatalogue = None
+        if bool(_cart_area_rrrelations):
+            _cart_area_rrrelations.close()
+            _cart_area_rrrelations = None
+        if bool(_cart_area_conceptsymbols):
+            _cart_area_conceptsymbols.close()
+            _cart_area_conceptsymbols = None
 
         if _CART_INPUT_LINE_NUMBER == len(cart_input_lines):
             break
@@ -489,6 +473,18 @@ while True:
         except KeyboardInterrupt as ex:
             break
 
+    try:
+        SR_CODE_LINES = fetch_sr_code_lines(REG_SR_CODE_DIR)
+
+        # Commenting out the next 4 lines--  I anticipate that we'll be passing dict "SR_CODE_LINES" to another function in another module to use.
+        #for SR_INFO in SR_CODE_LINES.items():
+        #    exec(SR_INFO[1])
+        #for K in SR_VARIABLES.keys():
+        #    print("Value of SR '" + K + "' = " + str(SR_VARIABLES[K]))
+
+    except Exception as ex:
+        logging.error("There was an exception thrown while loading the Special Replaceable code modules: " + str(ex))
+
     (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR)
     cartlog("class", cart_dump_table.dumptable(myconn, "class", ""))
     cartlog("classtextlines", cart_dump_table.dumptable(myconn, "class_text_lines", ""))
@@ -517,61 +513,49 @@ while True:
 
     if parsed_ico_okay: reload_all_ICOs_from_DB(logging)
 
-    try:
-        SR_CODE_LINES = fetch_sr_code_lines(REG_SR_CODE_DIR)
-
-        # Commenting out the next 4 lines--  I anticipate that we'll be passing dict "SR_CODE_LINES" to another function in another module to use.
-        #for SR_INFO in SR_CODE_LINES.items():
-        #    exec(SR_INFO[1])
-        #for K in SR_VARIABLES.keys():
-        #    print("Value of SR '" + K + "' = " + str(SR_VARIABLES[K]))
-
-    except Exception as ex:
-        logging.error("There was an exception thrown while loading the Special Replaceable code modules: " + str(ex))
-
 myconn.close()
 myconn = None
 if TESTING:
-    if bool(_cart_area_rrrelations):
-        _cart_area_rrrelations.close()
-        _cart_area_rrrelations = None
-    if bool(_cart_area_rrgroupmemberconditions):
-        _cart_area_rrgroupmemberconditions.close()
-        _cart_area_rrgroupmemberconditions = None
-    if bool(_cart_area_synsrtosr):
-        _cart_area_synsrtosr.close()
-        _cart_area_synsrtosr = None
-    if bool(_cart_area_smolvariables):
-        _cart_area_smolvariables.close()
-        _cart_area_smolvariables = None
-    if bool(_cart_area_synrrtorr):
-        _cart_area_synrrtorr.close()
-        _cart_area_synrrtorr = None
-    if bool(_cart_area_class):
-        _cart_area_class.close()
-        _cart_area_class = None
-    if bool(_cart_area_rrcatalogue):
-        _cart_area_rrcatalogue.close()
-        _cart_area_rrcatalogue = None
-    if bool(_cart_area_classtextlines):
-        _cart_area_classtextlines.close()
-        _cart_area_classtextlines = None
-    if bool(_cart_area_srgroupmemberconditions):
-        _cart_area_srgroupmemberconditions.close()
-        _cart_area_srgroupmemberconditions = None
-    if bool(_cart_area_conceptsymbols):
-        _cart_area_conceptsymbols.close()
-        _cart_area_conceptsymbols = None
-    if bool(_cart_area_groups):
-        _cart_area_groups.close()
-        _cart_area_groups = None
-    if bool(_cart_area_synrrtosr):
-        _cart_area_synrrtosr.close()
-        _cart_area_synrrtosr = None
-    if bool(_cart_area_classextraconditions):
-        _cart_area_classextraconditions.close()
-        _cart_area_classextraconditions = None
     if bool(_cart_area_concepts):
         _cart_area_concepts.close()
         _cart_area_concepts = None
+    if bool(_cart_area_synrrtorr):
+        _cart_area_synrrtorr.close()
+        _cart_area_synrrtorr = None
+    if bool(_cart_area_classtextlines):
+        _cart_area_classtextlines.close()
+        _cart_area_classtextlines = None
+    if bool(_cart_area_synrrtosr):
+        _cart_area_synrrtosr.close()
+        _cart_area_synrrtosr = None
+    if bool(_cart_area_srgroupmemberconditions):
+        _cart_area_srgroupmemberconditions.close()
+        _cart_area_srgroupmemberconditions = None
+    if bool(_cart_area_rrgroupmemberconditions):
+        _cart_area_rrgroupmemberconditions.close()
+        _cart_area_rrgroupmemberconditions = None
+    if bool(_cart_area_class):
+        _cart_area_class.close()
+        _cart_area_class = None
+    if bool(_cart_area_synsrtosr):
+        _cart_area_synsrtosr.close()
+        _cart_area_synsrtosr = None
+    if bool(_cart_area_groups):
+        _cart_area_groups.close()
+        _cart_area_groups = None
+    if bool(_cart_area_smolvariables):
+        _cart_area_smolvariables.close()
+        _cart_area_smolvariables = None
+    if bool(_cart_area_classextraconditions):
+        _cart_area_classextraconditions.close()
+        _cart_area_classextraconditions = None
+    if bool(_cart_area_rrcatalogue):
+        _cart_area_rrcatalogue.close()
+        _cart_area_rrcatalogue = None
+    if bool(_cart_area_rrrelations):
+        _cart_area_rrrelations.close()
+        _cart_area_rrrelations = None
+    if bool(_cart_area_conceptsymbols):
+        _cart_area_conceptsymbols.close()
+        _cart_area_conceptsymbols = None
 logging.info("Program terminating.")
