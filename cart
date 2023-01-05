@@ -46,6 +46,12 @@ def usage():
     print("\n")
     exit(0)
 
+# pre-process to see if '-D' is on command line
+DEBUG = False
+if '-D' in sys.argv: 
+    DEBUG = True
+    sys.argv.remove('-D')
+
 if len(sys.argv) == 2:
     if 'VERSION'  in os.environ.keys():
         VERSION = os.environ['VERSION']
@@ -453,8 +459,7 @@ print("\n------------- VERSION: " + TEST_PKG)
 print("------------- OPERATION: " + OPERATION)
 
 print("* * * * If you have just copied CART and CONALAUN to Linux box, make sure you have done a 'dos2unix' on all scripts!\n")
-print("* * * * (Note): The scripts 'setupdb.py' and 'clearKB.py', which CART calls, are maintained as part of CONALAUN, not CART.\nPress enter:\n")
-input()
+print("* * * * (Note): The scripts 'setupdb.py' and 'clearKB.py', which CART calls, are maintained as part of CONALAUN, not CART.\n")
 
 if TEST_PKG[-5::] != '.conf':
     TEST_PKG_FP = CONF_DIR + "/" + TEST_PKG + ".conf"
@@ -792,7 +797,7 @@ if CURRENT:
         exit(1)
 
     sort_all_files(TEST_RESULT_DIR)
-    print("\nDone.  Output from cartlog() calls placed in " + outforcurrent + "\n")
+    print("\nDone : Output from cartlog() calls placed in " + outforcurrent + "\n")
     print("Directory state wasn't changed.\n")
     exit(0)
 
@@ -877,13 +882,17 @@ for filedbid in range(len(tp)):
         exit(0)
 
     conalaun_start_cmd = CONALAUN_PROGRAM_TEMP + " -T " + filename_no_ext_fsdb + ":" + CART_INPUT_FILE
-    print(conalaun_start_cmd)
+    if DEBUG:  
+        print("\n\n\t\t--- PAUSED ---\n")
+        print("\t\tOK- Please open '" + conalaun_start_cmd + "' in your debugger (VS Code, or other), with the\n\t\tspecified arguments, do your debugging, and press enter to continue. . .") 
+        input()       
+    else:
+        print(conalaun_start_cmd)
+        res = os.system(conalaun_start_cmd)
     
-    res = os.system(conalaun_start_cmd)
-    
-    if res != 0:
-        print("\n*ERR: problem running CONALAUN ('" + conalaun_start_cmd + "')")
-        exit(0)
+        if res != 0:
+            print("\n*ERR: problem running CONALAUN ('" + conalaun_start_cmd + "')")
+            exit(0)
     
 safe_rec_del(CART_RAW_ICO)
 os.mkdir(CART_RAW_ICO)
