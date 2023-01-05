@@ -417,6 +417,10 @@ def load_config(file: str, dir: str) -> None:
             filedb['input_ordered_list'].append('/PAUSE')
         data.append(filedb)
 
+    for area in areas:
+        if area not in areatofsset.keys():
+            areatofsset[area] = set()
+
     return (areas, data, areatofsset)
 
 
