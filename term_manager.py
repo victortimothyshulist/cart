@@ -52,6 +52,7 @@ def load_group_contents(logging, grp_dn):
                 for gr_entry in GF.readlines():
                     gr_entry = gr_entry.strip()
                     gr_entry = adjust_for_apos_s(gr_entry)
+                    gr_entry = gr_entry.replace(" ", "_")
 
                     if gr_entry != "": groupinfo[gr_file].add(gr_entry)
                 

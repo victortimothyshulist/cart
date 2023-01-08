@@ -36,8 +36,46 @@
 012|001|None|*|None|
 012|002|None|None|None|
 012|003|None|melanie is best|Y|
-019|000|None|None|None|
-019|001|None|None|None|
-019|002|None|None|None|
-020|000|I|None|None|
-020|001|T|None|None|
+017|000|None|SHE|N|
+017|001|None|None|None|
+017|002|None|melanie is best|Y|
+018|000|None|None|None|
+018|001|None|melanie is best|Y|
+018|002|None|SHE|N|
+019|000|T|SHE|N|
+019|001|T|None|None|
+019|002|I|None|None|
+019|003|I|melanie is best|Y|
+019|004|T|victor and melanie|Y|
+019|005|I|SHE|N|
+020|000|T|SHE|N|
+020|001|I|SHE|N|
+020|002|I|None|None|
+020|003|T|None|None|
+020|004|T|melanie is best|Y|
+020|005|I|victor and melanie|Y|
+021|000|T|SHE|N|
+021|001|T|None|None|
+021|002|I|None|None|
+021|003|I|melanie is best|Y|
+021|004|T|victor and melanie|Y|
+021|005|I|SHE|N|
+022|000|I|SHE|N|
+022|001|I|None|None|
+022|002|T|SHE|N|
+022|003|T|None|None|
+022|004|T|melanie is best|Y|
+022|005|I|victor and melanie|Y|
+023|000|None|*|None|
+023|001|None|None|None|
+023|002|None|SHE|N|
+023|003|None|melanie is best|Y|
+024|000|None|SHE|N|
+024|001|None|*|None|
+024|002|None|None|None|
+024|003|None|melanie is best|Y|
+031|000|None|None|None|
+031|001|None|None|None|
+031|002|None|None|None|
+032|000|I|None|None|
+032|001|T|None|None|

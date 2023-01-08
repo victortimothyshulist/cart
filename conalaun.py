@@ -288,6 +288,19 @@ if TESTING:
         cart_input_lines = cart_input_fh.readlines()
 
 while True:    
+    
+    try:
+        SR_CODE_LINES = fetch_sr_code_lines(REG_SR_CODE_DIR)
+
+        # Commenting out the next 4 lines--  I anticipate that we'll be passing dict "SR_CODE_LINES" to another function in another module to use.
+        #for SR_INFO in SR_CODE_LINES.items():
+        #    exec(SR_INFO[1])
+        #for K in SR_VARIABLES.keys():
+        #    print("Value of SR '" + K + "' = " + str(SR_VARIABLES[K]))
+                
+    except Exception as ex:
+        logging.error("There was an exception thrown while loading the Special Replaceable code modules: " + str(ex))
+
     lui = None
         
     if TESTING:
@@ -311,18 +324,6 @@ while True:
             
         except KeyboardInterrupt as ex:
             break
-
-    try:
-        SR_CODE_LINES = fetch_sr_code_lines(REG_SR_CODE_DIR)
-
-        # Commenting out the next 4 lines--  I anticipate that we'll be passing dict "SR_CODE_LINES" to another function in another module to use.
-        #for SR_INFO in SR_CODE_LINES.items():
-        #    exec(SR_INFO[1])
-        #for K in SR_VARIABLES.keys():
-        #    print("Value of SR '" + K + "' = " + str(SR_VARIABLES[K]))
-                
-    except Exception as ex:
-        logging.error("There was an exception thrown while loading the Special Replaceable code modules: " + str(ex))
 
     (parsed_ico_okay, ico_last_mod, groupinfo) = process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FILENAME, myconn, groupinfo, CON_LIST_FILE, logging, GROUP_DIR_NAME, ALT_TEXT_DIR)
     #CART_INCLUDE_v1.000_dump_tables.py
