@@ -4,7 +4,7 @@
 
 ####  after we do that...  put the following line  in "term_manager.py"  at line # 111 .. just before "mycursor = "
 
-##       #CART_INCLUDE_v1.000_dump_tables.py
+##       #CART_INCLUDE_v1.000_dump_lexicon_dict.py
 ##
 
 ##    then take out the above comment
