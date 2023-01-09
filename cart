@@ -12,6 +12,67 @@ SR_CODE = "sr_code"
 GROUPS_DIR = 'groups'
 ALT_TEXT_DIR = 'alt_text'
 
+# What set of files do we need to scan for '#CART_INCLUDE' and replace with testing code?
+# specify them in variable 'FILES_TO_SCAN' below.
+
+# > For 'FILES_TO_SCAN' variable below -- PLEASE DO --NOT--- put the '.py' suffix in the name.
+# > Also, do NOT include 'conalaun.py' - it is automaticaly scanned.
+
+FILES_TO_SCAN = ['term_manager',] # >>>>>> PLEASE DO --NOT--- put the '.py' suffix in the name.
+# ^---------- read above note for this variable
+
+def generate_temp_version(file, TEST_PKG_NO_EXT, CONF_DIR):    
+    find_include_regex  = r"^(\s*)#\s*CART_INCLUDE_" + TEST_PKG_NO_EXT + "_(.+\.py)$"
+    with_py_suffix = file + '.py'
+    temp_cart_includes = dict()
+    code_lines_orig = list()
+    code_lines_temp = list()
+    
+    try:
+        with open(with_py_suffix, 'r') as IH:
+            code_lines_orig = IH.readlines()
+
+    except Exception as ex:
+        print("\n*ERR: cannot read the program code in '" + with_py_suffix + "' - " + str(ex))
+        exit(0)
+    
+    for linenum in range(len(code_lines_orig)):
+        stline = code_lines_orig[linenum].rstrip()
+    
+        mo = re.match(find_include_regex, stline)
+        if bool(mo):
+            ws_for_inc_line = mo.group(1)
+            inc_fn = mo.group(2)
+            inc_fn_fp = CONF_DIR + "/files/" + TEST_PKG_NO_EXT + "/" + inc_fn
+
+            if not os.path.isfile(inc_fn_fp):
+                print("\n*ERR: include file mentioned in line '" + stline + "' does not exist.  - " + inc_fn_fp + " does not exist!  This is in the file '" + with_py_suffix + "'\n")
+                exit(0)
+
+            try:
+                with open(inc_fn_fp, 'r') as fh:
+                    include_file_lines = fh.readlines()
+                    temp_cart_includes[linenum] = (ws_for_inc_line, include_file_lines)
+
+            except Exception as ex:
+                print("\n*ERR: could not load file '" + inc_fn_fp + "' - check if I have permission to open it.  File '" + with_py_suffix + "' has an include for it.  Exception is: " + str(ex) + "\n")
+                exit(0)
+
+    for linenum in range(len(code_lines_orig)):
+        stline = code_lines_orig[linenum].rstrip()
+
+        if linenum in temp_cart_includes.keys():
+                ind_ws = temp_cart_includes[linenum][0]
+                for codeline in temp_cart_includes[linenum][1]:
+                    code_lines_temp.append(ind_ws + codeline.rstrip())
+        else:
+            code_lines_temp.append(stline)
+
+    print("VEXVEXVEX--------------------" + with_py_suffix + "-----------------------------------------")
+    for xxx in code_lines_temp:
+        print(xxx)
+    print("--ENDVEXVEX")
+
 
 def sort_file(infile, outfile):
     if not os.path.isfile(infile):
@@ -497,8 +558,11 @@ if len(areas) == 0:
     print("\n*ERR: config file does not specify any areas.   Please add 'areas=' line.\n")
     exit(0)
 
-
 cart_area_to_fsdb_validation_code = create_area_validation_code(areatofsset)
+
+for file in FILES_TO_SCAN:
+    generate_temp_version(file, TEST_PKG_NO_EXT, CONF_DIR)
+
 
 # CREATE CART-runnable version of conalaun
 # OH = output handle
@@ -519,7 +583,6 @@ try:
 except Exception as ex:
     print("\n*ERR: cannot read in the CONALAUN program code in '" + CONALAUN_PROGRAM + "' - " + str(ex))
     exit(0)
-
 
 cart_includes = dict()
 

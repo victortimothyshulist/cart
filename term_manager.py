@@ -109,7 +109,7 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
 
             lexicon_dict[tl_term_in_ssid]['synsetid'] = ssid
 
-    #CART_INCLUDE_v1.000_dump_lexicon_dict.py    
+    #CART_INCLUDE_v1.000_dump_lexicon_dict.py            
     
     mycursor = myconn.cursor()
     longest_term_len = 0
