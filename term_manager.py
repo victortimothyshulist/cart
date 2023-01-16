@@ -1,6 +1,8 @@
 import os
 import re
 
+cartlog = None
+
 def adjust_for_apos_s(instr):
     # if input (instr), contains any cases of sequence of: (1) non-space (call it 'x), (2) apostrope ('), (3) letter 's', (4) space
     # then change that to: (1) value of 'x', (2) space (3) apostrope ('), (4) letter 's', (5) space

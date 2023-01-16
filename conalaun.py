@@ -13,6 +13,45 @@ import db_manager
 import term_manager
 import time
 
+##################  INTERFACE CODE TO CART ##################
+TESTING = False
+_CART_FILEDB = ""
+_CART_INPUT_FILE = ""
+_CART_INPUT_LINE_NUMBER = -1
+_CART_RESULTS_DIR = "results_cart_tests" # must be same as in cart.py
+#__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE
+#__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE
+
+def cartlog(area, message):
+    #__CART_REPLACED_LINE_02_DO_NOT_REMOVE_THIS_LINE
+
+    known_area = False
+    ref = None
+
+    cartlogdirandfile = _CART_RESULTS_DIR + "/" + str(_CART_FILEDB) + "/" + str(_CART_INPUT_LINE_NUMBER) + "/" + area + ".res"
+   
+    #__CART_REPLACED_LINE_03_DO_NOT_REMOVE_THIS_LINE
+    #__CART_REPLACED_LINE_07_DO_NOT_REMOVE_THIS_LINE
+
+    if not known_area:
+        print("\n*ERR: called cartlog() with unknown area ('" + area + "').  Check your config file for valid areas.\n")
+        exit(1)
+
+    if ref == None:
+        try:
+            ref = open(cartlogdirandfile, "a")
+
+            #__CART_REPLACED_LINE_04_DO_NOT_REMOVE_THIS_LINE
+
+        except Exception as ex:
+            print("\n\n*ERR: cannot open file '" + cartlogdirandfile + "' for writing.\n")
+            print("You probably called cartlog() in the wrong place, such as after _CART_INPUT_LINE_NUMBER was incremented past its maximum value.\n")
+            exit(1)
+
+    ref.write(message + "\n")
+    
+term_manager.cartlog = cartlog
+
 
 def fetch_sr_code_lines(dn):
     code_lines = dict()
@@ -131,36 +170,7 @@ def process_ico_file_if_it_exists(CLASS_FILE_NAME, ico_last_mod, REG_SR_LIST_FIL
     else:
         return (False, ico_last_mod, groupinfo)
 
-
-def cartlog(area, message):
-    #__CART_REPLACED_LINE_02_DO_NOT_REMOVE_THIS_LINE
-
-    known_area = False
-    ref = None
-
-    cartlogdirandfile = _CART_RESULTS_DIR + "/" + str(_CART_FILEDB) + "/" + str(_CART_INPUT_LINE_NUMBER) + "/" + area + ".res"
-   
-    #__CART_REPLACED_LINE_03_DO_NOT_REMOVE_THIS_LINE
-    #__CART_REPLACED_LINE_07_DO_NOT_REMOVE_THIS_LINE
-
-    if not known_area:
-        print("\n*ERR: called cartlog() with unknown area ('" + area + "').  Check your config file for valid areas.\n")
-        exit(1)
-
-    if ref == None:
-        try:
-            ref = open(cartlogdirandfile, "a")
-
-            #__CART_REPLACED_LINE_04_DO_NOT_REMOVE_THIS_LINE
-
-        except Exception as ex:
-            print("\n\n*ERR: cannot open file '" + cartlogdirandfile + "' for writing.\n")
-            print("You probably called cartlog() in the wrong place, such as after _CART_INPUT_LINE_NUMBER was incremented past its maximum value.\n")
-            exit(1)
-
-    ref.write(message + "\n")
     
-
 def notes():
     print("\nTAKE care of the comment: #TO DO  TO DO TO DO --  Go and check that all \"return\" statements in this function return False for error and only when get to end of function do we return True")
     print("\nVIP: very important: for E.R. diagram explanation doc -- smol_variables table - for RR there is no entry, instead 'rr_relations' must be consulted.  *NO* rr_relations entry for O-4 (TOL) lines though. not needed")
@@ -193,15 +203,6 @@ logging.info("Program starting.")
 #print("--------- press enter -----")
 #input()
 print("\n--- Control-C to exit ---(User Guide Later)---")
-
-##################  INTERFACE CODE TO CART ##################
-TESTING = False
-_CART_FILEDB = ""
-_CART_INPUT_FILE = ""
-_CART_INPUT_LINE_NUMBER = -1
-_CART_RESULTS_DIR = "results_cart_tests" # must be same as in cart.py
-#__CART_REPLACED_LINE_10_DO_NOT_REMOVE_THIS_LINE
-#__CART_REPLACED_LINE_01_DO_NOT_REMOVE_THIS_LINE
 
 CON_LIST_FILE = "constant_strings.dat"
 ALT_TEXT_DIR = "./alt_text"

@@ -4,7 +4,6 @@ import sys
 import re
 import datetime
 
-
 VERSION = ""
 CONF_DIR = "./testpackages"
 CART_RAW_ICO = 'cart_raw_ico'
@@ -19,6 +18,8 @@ ALT_TEXT_DIR = 'alt_text'
 # > Also, do NOT include 'conalaun.py' - it is automaticaly scanned.
 
 FILES_TO_SCAN = ['term_manager',] # >>>>>> PLEASE DO --NOT--- put the '.py' suffix in the name.
+# All names of files in FILES_TO_SCAN should contain only lowercase/uppercase letters and underscore.
+
 # ^---------- read above note for this variable
 
 def generate_temp_version(file, TEST_PKG_NO_EXT, CONF_DIR):    
@@ -28,7 +29,7 @@ def generate_temp_version(file, TEST_PKG_NO_EXT, CONF_DIR):
     code_lines_orig = list()
     code_lines_temp = list()
     
-    try:
+    try:    
         with open(with_py_suffix, 'r') as IH:
             code_lines_orig = IH.readlines()
 
@@ -49,7 +50,7 @@ def generate_temp_version(file, TEST_PKG_NO_EXT, CONF_DIR):
                 print("\n*ERR: include file mentioned in line '" + stline + "' does not exist.  - " + inc_fn_fp + " does not exist!  This is in the file '" + with_py_suffix + "'\n")
                 exit(0)
 
-            try:
+            try:                
                 with open(inc_fn_fp, 'r') as fh:
                     include_file_lines = fh.readlines()
                     temp_cart_includes[linenum] = (ws_for_inc_line, include_file_lines)
@@ -67,11 +68,21 @@ def generate_temp_version(file, TEST_PKG_NO_EXT, CONF_DIR):
                     code_lines_temp.append(ind_ws + codeline.rstrip())
         else:
             code_lines_temp.append(stline)
+    try:
+        with_py_suffix_temp = file + '_temp.py'
+        if os.path.isfile(with_py_suffix_temp):
+            os.remove(with_py_suffix_temp)
+            if os.path.isfile(with_py_suffix_temp):
+                print("\n*ERR: could not remove previous instance of file '" + with_py_suffix_temp + "'")
+                exit(0)
 
-    print("VEXVEXVEX--------------------" + with_py_suffix + "-----------------------------------------")
-    for xxx in code_lines_temp:
-        print(xxx)
-    print("--ENDVEXVEX")
+        with open(with_py_suffix_temp, 'w') as of:
+            for line in code_lines_temp:
+                of.write(line + "\n")
+
+    except Exception as ex:
+        print("\n*ERR: Problem writing to file '" + with_py_suffix_temp + "' - error was: " + str(ex))
+        exit(0)
 
 
 def sort_file(infile, outfile):
@@ -609,10 +620,11 @@ leading_space_id_09 = ''
 leading_space_id_10 = ''
 
 find_include_regex  = r"^(\s*)#\s*CART_INCLUDE_" + TEST_PKG_NO_EXT + "_(.+\.py)$"
+import_line_regex = r"^import\s+(.+?)\s*$"
 
 for linenum in range(len(code_lines)):
     stline = code_lines[linenum].rstrip()
-   
+           
     mo = re.match(find_include_regex, stline)
     if bool(mo):
         ws_for_inc_line = mo.group(1)
@@ -727,6 +739,17 @@ if line_number_of_id_10 == None:
 
 for linenum in range(len(code_lines)):
     stline = code_lines[linenum].rstrip()
+
+    # replace all calls to original imported file, to new, CART modified file:
+    for file in FILES_TO_SCAN:
+         stline = re.sub(r"^(.*)\b" + file + r"\.(.*)$", r"\1" + file + r"_temp.\2" , stline)
+
+    mo = re.match(import_line_regex, stline)
+    if bool(mo):
+        imported_file = mo.group(1)
+        if imported_file in FILES_TO_SCAN:
+            test_code_lines.append("import " + imported_file + '_temp')
+            continue
 
     if linenum == line_number_of_id_01:
         for area in areas:
@@ -847,6 +870,12 @@ if CURRENT:
                 exit(0)
             lineind += 1
 
+        dir_filedb_linenum = outforcurrent + "/-1"
+        os.mkdir(dir_filedb_linenum)
+        if not os.path.isdir(dir_filedb_linenum):
+            print("\n*ERR: problem creating directory: " + dir_filedb_linenum)
+            exit(0)
+
     make_exec_cmd = "chmod +x " + CONALAUN_PROGRAM_TEMP
     res = os.system(make_exec_cmd)
 
@@ -927,6 +956,12 @@ for filedbid in range(len(tp)):
     with open(CART_INPUT_FILE, 'w') as fh:
         lineind = 0
      
+        dir_filedb_linenum = dir_filedbid + "/-1"
+        os.mkdir(dir_filedb_linenum)
+        if not os.path.isdir(dir_filedb_linenum):
+            print("\n*ERR: problem creating directory: " + dir_filedb_linenum)
+            exit(0)
+
         for line in tp[filedbid]['input_ordered_list']:
             fh.write(line + "\n")
             dir_filedb_linenum = dir_filedbid + "/" + str(lineind)
