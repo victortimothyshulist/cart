@@ -1,2 +1,0 @@
-# Get list of terms that have 'a' at index=0 (so 'a' as FIRST charactor)
- select term_text from global_term_catalogue where termid IN (SELECT term_id FROM char_pos_term_id  where char_pos_map_ref = (SELECT id FROM char_pos_map where char_value='a' and position_value=0)) 
