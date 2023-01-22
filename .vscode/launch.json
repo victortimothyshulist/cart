@@ -11,19 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args" : ["-T", "lexicon_dict:temp_cart_input.txt"]
+            "args" : ["-T", "term_id_assign:temp_cart_input.txt"]
         },
-        {
-            "name": "VS : Normal Debugging",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "args": [
-                "test",
-                "-D"
-            ]
-        }
     ]
 }

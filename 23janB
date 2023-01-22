@@ -1,0 +1,102 @@
+
+VERSION: v1.000
+OPERATION: clear
+
+*Clearing (cart_raw_ico, sr_code, groups, alt_text)
+
+Completed successfully.
+
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+
+--- Control-C to exit ---(User Guide Later)---
+
+------------- VERSION: v1.000
+------------- OPERATION: test
+* * * * If you have just copied CART and CONALAUN to Linux box, make sure you have done a 'dos2unix' on all scripts!
+
+* * * * (Note): The scripts 'setupdb.py' and 'clearKB.py', which CART calls, are maintained as part of CONALAUN, not CART.
+
+
+--------------- RUNNING TEST PACKAGE: v1.000 ---------------
+
+OPERATION: test
+
+----------------------------------------------------------------------------------
+Using ICO files in: 0, Db: reject_term_multi_syn_set.tar.gz
+./conalaun-cart-temp.py -T reject_term_multi_syn_set:temp_cart_input.txt
+tar -xzf ./testpackages/files/v1.000/v1.000.tar.gz -C _temp_arc_unpack
+
+*ERR: File: 'smol/0/class.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/0/concepts.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/2/concepts.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/synrrtorr.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/1/classtextlines.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/2/groups.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'concepts/0/classextraconditions.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/synrrtosr.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'concepts/0/concepts.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/1/concepts.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/0/classextraconditions.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/0/groups.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'concepts/0/conceptsymbols.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/2/smolvariables.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/rrrelations.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/1/classextraconditions.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'concepts/0/classtextlines.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'lexicon_dict/-1/lexicon.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/0/smolvariables.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/1/class.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/1/groups.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/srgroupmemberconditions.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/rrgroupmemberconditions.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/0/classtextlines.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/2/classtextlines.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/synsrtosr.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'lexicon_dict/0/lexicon.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'synandgroups/0/rrcatalogue.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/2/classextraconditions.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/2/class.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+*ERR: File: 'smol/1/smolvariables.res' is in '_temp_arc_unpack', but not in 'results_cart_tests'
+
+---------------------------------------------------
+*** Regression testing failed ***
+---------------------------------------------------

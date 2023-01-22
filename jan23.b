@@ -1,0 +1,352 @@
+
+VERSION: v1.000
+OPERATION: clear
+
+*Clearing (cart_raw_ico, sr_code, groups, alt_text)
+
+Completed successfully.
+
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = smol
+_CART_INPUT_FILE = temp_cart_input.txt
+I just added that 'j' at index: 0 is ID 1
+I just added that 'j' at index: 1 is ID 2
+I just added that 'j' at index: 2 is ID 3
+I just added that 's' at index: 0 is ID 4
+I just added that 's' at index: 1 is ID 5
+I just added that 's' at index: 3 is ID 6
+I just added that 's' at index: 4 is ID 7
+I just added that 's' at index: 9 is ID 8
+I just added that 's' at index: 10 is ID 9
+I just added that 's' at index: 11 is ID 10
+I just added that 's' at index: 12 is ID 11
+I just added that 's' at index: 13 is ID 12
+I just added that 's' at index: 14 is ID 13
+I just added that 's' at index: 15 is ID 14
+I just added that 's' at index: 16 is ID 15
+I just added that 's' at index: 17 is ID 16
+I just added that 'x' at index: 0 is ID 17
+I just added that 'x' at index: 1 is ID 18
+I just added that 'x' at index: 2 is ID 19
+I just added that 'k' at index: 0 is ID 20
+I just added that 'k' at index: 1 is ID 21
+I just added that 'k' at index: 4 is ID 22
+I just added that 'k' at index: 5 is ID 23
+I just added that 'k' at index: 6 is ID 24
+I just added that 'k' at index: 7 is ID 25
+I just added that 'k' at index: 10 is ID 26
+I just added that 'k' at index: 11 is ID 27
+I just added that 'g' at index: 0 is ID 28
+I just added that 't' at index: 0 is ID 29
+I just added that 'p' at index: 0 is ID 30
+I just added that 'p' at index: 2 is ID 31
+I just added that 'p' at index: 7 is ID 32
+I just added that 'p' at index: 27 is ID 33
+I just added that 'p' at index: 28 is ID 34
+I just added that 'b' at index: 0 is ID 35
+I just added that 'b' at index: 2 is ID 36
+I just added that 'b' at index: 4 is ID 37
+I just added that 'r' at index: 1 is ID 38
+I just added that 'r' at index: 6 is ID 39
+I just added that 'r' at index: 9 is ID 40
+I just added that 'i' at index: 1 is ID 41
+I just added that 'i' at index: 4 is ID 42
+I just added that 'o' at index: 1 is ID 43
+I just added that 'o' at index: 2 is ID 44
+I just added that 'o' at index: 8 is ID 45
+I just added that 'o' at index: 9 is ID 46
+I just added that 'o' at index: 23 is ID 47
+I just added that 'o' at index: 24 is ID 48
+I just added that 'o' at index: 25 is ID 49
+I just added that ' ' at index: 2 is ID 50
+I just added that ' ' at index: 3 is ID 51
+I just added that ' ' at index: 5 is ID 52
+I just added that ' ' at index: 6 is ID 53
+I just added that ' ' at index: 8 is ID 54
+I just added that ' ' at index: 9 is ID 55
+I just added that ' ' at index: 18 is ID 56
+I just added that ' ' at index: 22 is ID 57
+I just added that ' ' at index: 26 is ID 58
+I just added that ' ' at index: 29 is ID 59
+I just added that 'a' at index: 2 is ID 60
+I just added that 'a' at index: 5 is ID 61
+I just added that 'c' at index: 3 is ID 62
+I just added that 'd' at index: 3 is ID 63
+I just added that 'd' at index: 30 is ID 64
+I just added that 'e' at index: 5 is ID 65
+I just added that 'e' at index: 8 is ID 66
+I just added that 'l' at index: 7 is ID 67
+I just added that 'l' at index: 8 is ID 68
+I just added that 'l' at index: 19 is ID 69
+I just added that 'l' at index: 20 is ID 70
+I just added that 'l' at index: 21 is ID 71
+Cool, I already had that 't' at index: 0 was ID 29
+I just added that 't' at index: 1 is ID 72
+I just added that 't' at index: 2 is ID 73
+I just added that 't' at index: 3 is ID 74
+I just added that 't' at index: 4 is ID 75
+I just added that 't' at index: 7 is ID 76
+I just added that 't' at index: 9 is ID 77
+I just added that 't' at index: 13 is ID 78
+I just added that 't' at index: 16 is ID 79
+Cool, I already had that 'b' at index: 0 was ID 35
+Cool, I already had that 'b' at index: 2 was ID 36
+I just added that 'o' at index: 0 is ID 80
+Cool, I already had that 'o' at index: 1 was ID 43
+Cool, I already had that 'o' at index: 2 was ID 44
+I just added that 'o' at index: 4 is ID 81
+Cool, I already had that 'o' at index: 8 was ID 45
+I just added that 'a' at index: 0 is ID 82
+I just added that 'a' at index: 1 is ID 83
+I just added that 'a' at index: 3 is ID 84
+Cool, I already had that 'a' at index: 5 was ID 61
+I just added that 'a' at index: 9 is ID 85
+I just added that 'a' at index: 10 is ID 86
+I just added that 'a' at index: 12 is ID 87
+I just added that 'a' at index: 15 is ID 88
+Cool, I already had that 'x' at index: 0 was ID 17
+Cool, I already had that 'x' at index: 2 was ID 19
+I just added that 'l' at index: 0 is ID 89
+I just added that 'l' at index: 2 is ID 90
+I just added that 'l' at index: 11 is ID 91
+I just added that 'v' at index: 0 is ID 92
+I just added that 'c' at index: 0 is ID 93
+I just added that 'c' at index: 2 is ID 94
+I just added that 'c' at index: 4 is ID 95
+I just added that 'c' at index: 7 is ID 96
+I just added that 'c' at index: 11 is ID 97
+I just added that 'w' at index: 1 is ID 98
+I just added that 'w' at index: 4 is ID 99
+I just added that 'n' at index: 1 is ID 100
+I just added that 'n' at index: 10 is ID 101
+Cool, I already had that 'r' at index: 1 was ID 38
+I just added that 'r' at index: 2 is ID 102
+I just added that 'r' at index: 5 is ID 103
+I just added that 'u' at index: 1 is ID 104
+I just added that 'u' at index: 3 is ID 105
+I just added that 'u' at index: 10 is ID 106
+Cool, I already had that 'i' at index: 1 was ID 41
+I just added that 'i' at index: 5 is ID 107
+I just added that 'i' at index: 6 is ID 108
+Cool, I already had that 'j' at index: 2 was ID 3
+I just added that 'j' at index: 9 is ID 109
+I just added that 'e' at index: 2 is ID 110
+Cool, I already had that 'e' at index: 8 was ID 66
+I just added that 'e' at index: 14 is ID 111
+I just added that 'd' at index: 2 is ID 112
+I just added that 'd' at index: 11 is ID 113
+Cool, I already had that ' ' at index: 2 was ID 50
+Cool, I already had that ' ' at index: 3 was ID 51
+Cool, I already had that ' ' at index: 6 was ID 53
+I just added that ' ' at index: 7 is ID 114
+Cool, I already had that ' ' at index: 8 was ID 54
+I just added that ' ' at index: 12 is ID 115
+I just added that 'm' at index: 2 is ID 116
+I just added that 'm' at index: 4 is ID 117
+I just added that 'm' at index: 9 is ID 118
+I just added that 'h' at index: 4 is ID 119
+I just added that 'h' at index: 5 is ID 120
+I just added that 'h' at index: 14 is ID 121
+I just added that 'y' at index: 5 is ID 122
+Cool, I already had that 'k' at index: 5 was ID 23
+I just added that 'k' at index: 12 is ID 123
+I just added that 's' at index: 6 is ID 124
+I just added that 's' at index: 7 is ID 125
+I just added that 's' at index: 8 is ID 126
+I just added that 'p' at index: 10 is ID 127
+I just added that 'f' at index: 11 is ID 128
+I just added that 'f' at index: 12 is ID 129
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = concepts
+_CART_INPUT_FILE = temp_cart_input.txt
+I just added that 'a' at index: 0 is ID 1
+I just added that 'a' at index: 3 is ID 2
+I just added that 'a' at index: 5 is ID 3
+I just added that 'a' at index: 6 is ID 4
+I just added that 'a' at index: 7 is ID 5
+I just added that 'l' at index: 0 is ID 6
+I just added that 'o' at index: 0 is ID 7
+I just added that 'o' at index: 1 is ID 8
+I just added that 'o' at index: 8 is ID 9
+I just added that 'o' at index: 9 is ID 10
+I just added that 'b' at index: 0 is ID 11
+I just added that 'b' at index: 2 is ID 12
+I just added that 'v' at index: 0 is ID 13
+I just added that 'n' at index: 1 is ID 14
+I just added that 'n' at index: 2 is ID 15
+I just added that 'i' at index: 1 is ID 16
+I just added that 'i' at index: 4 is ID 17
+I just added that 'i' at index: 13 is ID 18
+I just added that 't' at index: 1 is ID 19
+I just added that 't' at index: 2 is ID 20
+I just added that 't' at index: 6 is ID 21
+I just added that 't' at index: 14 is ID 22
+I just added that 'd' at index: 2 is ID 23
+I just added that 'd' at index: 10 is ID 24
+I just added that 'u' at index: 2 is ID 25
+I just added that 'c' at index: 2 is ID 26
+I just added that ' ' at index: 3 is ID 27
+I just added that ' ' at index: 4 is ID 28
+I just added that ' ' at index: 6 is ID 29
+I just added that ' ' at index: 11 is ID 30
+I just added that 'e' at index: 3 is ID 31
+I just added that 'e' at index: 5 is ID 32
+I just added that 'r' at index: 3 is ID 33
+I just added that 'w' at index: 4 is ID 34
+I just added that 'w' at index: 12 is ID 35
+I just added that 'g' at index: 4 is ID 36
+I just added that 'g' at index: 7 is ID 37
+I just added that 's' at index: 5 is ID 38
+I just added that 'h' at index: 15 is ID 39
+I just added that 'e' at index: 0 is ID 40
+I just added that 'e' at index: 1 is ID 41
+I just added that 'i' at index: 0 is ID 42
+Cool, I already had that 'i' at index: 1 was ID 16
+I just added that 'i' at index: 6 is ID 43
+I just added that 'i' at index: 7 is ID 44
+I just added that 'j' at index: 0 is ID 45
+I just added that 'j' at index: 1 is ID 46
+Cool, I already had that 'a' at index: 0 was ID 1
+I just added that 'a' at index: 1 is ID 47
+I just added that 'g' at index: 0 is ID 48
+I just added that 'g' at index: 1 is ID 49
+I just added that 'd' at index: 0 is ID 50
+I just added that 'd' at index: 1 is ID 51
+I just added that 'c' at index: 0 is ID 52
+I just added that 'c' at index: 1 is ID 53
+I just added that 'c' at index: 6 is ID 54
+I just added that 'c' at index: 7 is ID 55
+I just added that ' ' at index: 2 is ID 56
+I just added that ' ' at index: 5 is ID 57
+I just added that 'f' at index: 3 is ID 58
+I just added that 'f' at index: 4 is ID 59
+I just added that 'k' at index: 3 is ID 60
+I just added that 'k' at index: 4 is ID 61
+I just added that 'b' at index: 3 is ID 62
+I just added that 'b' at index: 4 is ID 63
+I just added that 'h' at index: 3 is ID 64
+I just added that 'h' at index: 4 is ID 65
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = synandgroups
+_CART_INPUT_FILE = temp_cart_input.txt
+I just added that 'l' at index: 0 is ID 1
+I just added that 'a' at index: 0 is ID 2
+I just added that 'c' at index: 0 is ID 3
+I just added that 'b' at index: 0 is ID 4
+I just added that 'i' at index: 1 is ID 5
+I just added that 'n' at index: 2 is ID 6
+I just added that 'e' at index: 3 is ID 7
+Cool, I already had that 'a' at index: 0 was ID 2
+I just added that 'a' at index: 1 is ID 8
+I just added that 'a' at index: 2 is ID 9
+Cool, I already had that 'b' at index: 0 was ID 4
+I just added that 'b' at index: 1 is ID 10
+I just added that 'b' at index: 2 is ID 11
+Cool, I already had that 'c' at index: 0 was ID 3
+I just added that 'c' at index: 1 is ID 12
+I just added that 'c' at index: 2 is ID 13
+I just added that 'd' at index: 0 is ID 14
+I just added that 'd' at index: 1 is ID 15
+I just added that 'd' at index: 2 is ID 16
+I just added that 'n' at index: 1 is ID 17
+I just added that ' ' at index: 3 is ID 18
+I just added that 'w' at index: 4 is ID 19
+I just added that 'i' at index: 5 is ID 20
+I just added that 't' at index: 6 is ID 21
+I just added that 'h' at index: 7 is ID 22
+Dropping database...
+--- Later: add a feature that verifies all tables exist before exiting.
+Creating database...
+
+* Successfully created CONALAUN database 'development_ce '!
+
+--- Control-C to exit ---(User Guide Later)---
+I just added that 'm' at index: 0 is ID 1
+I just added that 'o' at index: 1 is ID 2
+I just added that 'n' at index: 2 is ID 3
+I just added that 'd' at index: 3 is ID 4
+I just added that 'a' at index: 4 is ID 5
+I just added that 'a' at index: 7 is ID 6
+I just added that 'y' at index: 5 is ID 7
+I just added that ' ' at index: 6 is ID 8
+I just added that '4' at index: 7 is ID 9
+I just added that '5' at index: 7 is ID 10
+I just added that '3' at index: 7 is ID 11
+I just added that '2' at index: 7 is ID 12
+I just added that '1' at index: 7 is ID 13
+I just added that '1' at index: 8 is ID 14
+I just added that '1' at index: 9 is ID 15
+I just added that '9' at index: 8 is ID 16
+I just added that '8' at index: 8 is ID 17
+I just added that '7' at index: 8 is ID 18
+I just added that '0' at index: 9 is ID 19
+_CART_FILEDB = lexicon_dict
+_CART_INPUT_FILE = temp_cart_input.txt
+Cool, I already had that 'm' at index: 0 was ID 1
+I just added that 'b' at index: 0 is ID 20
+I just added that 'b' at index: 1 is ID 21
+I just added that 'x' at index: 0 is ID 22
+I just added that 'a' at index: 0 is ID 23
+I just added that 'a' at index: 1 is ID 24
+Cool, I already had that 'a' at index: 4 was ID 5
+Cool, I already had that 'a' at index: 7 was ID 6
+I just added that 'z' at index: 0 is ID 25
+I just added that 'y' at index: 0 is ID 26
+Cool, I already had that 'y' at index: 5 was ID 7
+Cool, I already had that 'o' at index: 1 was ID 2
+Cool, I already had that 'n' at index: 2 was ID 3
+Cool, I already had that 'd' at index: 3 was ID 4
+Cool, I already had that ' ' at index: 6 was ID 8
+I just added that '6' at index: 8 is ID 27
+
+------------- VERSION: v1.000
+------------- OPERATION: test
+* * * * If you have just copied CART and CONALAUN to Linux box, make sure you have done a 'dos2unix' on all scripts!
+
+* * * * (Note): The scripts 'setupdb.py' and 'clearKB.py', which CART calls, are maintained as part of CONALAUN, not CART.
+
+
+--------------- RUNNING TEST PACKAGE: v1.000 ---------------
+
+OPERATION: test
+
+----------------------------------------------------------------------------------
+Using ICO files in: 0, Db: smol.tar.gz
+./conalaun-cart-temp.py -T smol:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 1, Db: concepts.tar.gz
+./conalaun-cart-temp.py -T concepts:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 2, Db: synandgroups.tar.gz
+./conalaun-cart-temp.py -T synandgroups:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 3, Db: lexicon_dict.tar.gz
+./conalaun-cart-temp.py -T lexicon_dict:temp_cart_input.txt
+tar -xzf ./testpackages/files/v1.000/v1.000.tar.gz -C _temp_arc_unpack
+
+---------------------------------------------------
+* Regression testing * PASSED *
+---------------------------------------------------
