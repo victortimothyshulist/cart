@@ -2,6 +2,8 @@ import os
 import re
 
 cartlog = None
+variable_fetch = None
+dump_table = None
 
 def adjust_for_apos_s(instr):
     # if input (instr), contains any cases of sequence of: (1) non-space (call it 'x), (2) apostrope ('), (3) letter 's', (4) space
@@ -14,7 +16,7 @@ def adjust_for_apos_s(instr):
 
         if x == y: break
         instr = y
- 
+
     return instr
 
 
@@ -27,21 +29,21 @@ def get_existing_global_term_list(myconn, logging):
         records = mycursor.fetchall()
         for record in records:
             all_existing[record[1]] = record[0]
-    
+
     except Exception as ex:
-        logging.error("Exception thrown: " + str(ex)) 
+        logging.error("Exception thrown: " + str(ex))
         raise ex
     finally:
         mycursor.close()
 
     return all_existing
-        
+
 
 def load_group_contents(logging, grp_dn, spaces2underscore = True):
     logging.info("Loading group contents from '" + grp_dn + "'")
     groupinfo = dict()
 
-    try:        
+    try:
         for gr_file in os.listdir(grp_dn):
             orig_gr_file = gr_file
             if not os.path.isfile(grp_dn + "/" + gr_file): continue
@@ -57,7 +59,7 @@ def load_group_contents(logging, grp_dn, spaces2underscore = True):
                     if spaces2underscore: gr_entry = gr_entry.replace(" ", "_")
 
                     if gr_entry != "": groupinfo[gr_file].add(gr_entry)
-                
+
     except Exception as ex:
         logging.error("Exception thrown in load_group_contents(): " + str(ex))
         raise ex
@@ -73,7 +75,7 @@ def normalize_text(intext):
     return intext
 
 
-def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, existing_terms):    
+def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, existing_terms):
     new_and_existing_terms = dict() # union set of: (1) data read from database and (2) data read from files.
     lexicon_dict = dict()
 
@@ -92,10 +94,10 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
             tl_term_in_grp = normalize_text(term_in_grp)
 
             if tl_term_in_grp not in lexicon_dict.keys():
-                
+
                 lexicon_dict[tl_term_in_grp] = {'text': tl_term_in_grp, 'groups': {grp_name}, 'constant_strings.dat': False, 'synsetid': ''}
                 continue
-                                 
+
             lexicon_dict[tl_term_in_grp]['groups'].add(grp_name)
 
     # Stage 3 - Find what "Synonym Set ID" <term> is in.
@@ -105,21 +107,32 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
             tl_term_in_ssid = normalize_text(term_in_ssid)
 
             if tl_term_in_ssid not in lexicon_dict.keys():
-                
+
                 lexicon_dict[tl_term_in_ssid] = {'text': tl_term_in_ssid, 'groups': set(), 'constant_strings.dat': False, 'synsetid': ssid}
                 continue
 
             lexicon_dict[tl_term_in_ssid]['synsetid'] = ssid
 
-    #CART_INCLUDE_v1.000_dump_lexicon_dict.py            
+    _CART_lex = ""
+    for _CART_lex_txt in sorted(lexicon_dict.keys()):
+       _CART_lex_grps = ""
     
+       for _CART_lex_grp in sorted(lexicon_dict[_CART_lex_txt]['groups']):
+          _CART_lex_grps += _CART_lex_grp + ','
+    
+       _CART_lex_grps = _CART_lex_grps[0:-1]
+    
+       _CART_lex += _CART_lex_txt + ':GROUPS=' + _CART_lex_grps + ':constant_strings=' + str(lexicon_dict[_CART_lex_txt]['constant_strings.dat']) + ':symbolset=' + str(lexicon_dict[_CART_lex_txt]['synsetid']) + "\n"
+    
+    cartlog("lexicon", _CART_lex)
+
     mycursor = myconn.cursor()
     longest_term_len = 0
     only_new_terms = list()
 
     char_position_cache = dict()
     id_char_pos = dict()
-    
+
     from_files_set = set(lexicon_dict.keys())
     from_database = set(existing_terms.keys())
 
@@ -129,15 +142,15 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
         if len(deleted_terms) > 0:
             logging.info("Detected that some terms have been deleted.  That is, terms exist in the database table 'global_term_catalogue' but do not exist anywhere in disk files.  Removing unnecesary terms from database...")
             logging.info("The terms in question are as follows: " + str(deleted_terms))
-            
+
             term_id_lst = ''
-            
+
             for term_text in deleted_terms:
                 term_id_lst += (str(existing_terms[term_text]) + ',')
 
             term_id_lst = term_id_lst[0:-1]
             sql = 'select distinct(char_pos_map_ref) from char_pos_term_id where term_id in (' + term_id_lst + ')'
-            logging.info("Getting list of 'char_pos_map_ref' values that are associated with these terms, using the query: [" + sql + "]")            
+            logging.info("Getting list of 'char_pos_map_ref' values that are associated with these terms, using the query: [" + sql + "]")
             mycursor.execute(sql)
             fetched_records = list(mycursor.fetchall())
 
@@ -148,7 +161,7 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
             for record in fetched_records:
 
                 char_pos_map_ref = record[0]
-                sql_for_char_pos_term_id = 'select count(*) from char_pos_term_id where char_pos_map_ref = ' + str(char_pos_map_ref)        
+                sql_for_char_pos_term_id = 'select count(*) from char_pos_term_id where char_pos_map_ref = ' + str(char_pos_map_ref)
 
                 logging.info("Checking if ID of '"  + str(char_pos_map_ref) + "' is still needed or not, using query: [" + sql_for_char_pos_term_id + "]")
                 mycursor.execute(sql_for_char_pos_term_id)
@@ -166,20 +179,22 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
                     mycursor.execute(sql)
                 else:
                     logging.info("We still need ID value of " + str(char_pos_map_ref) + " - Because query '" + sql_for_char_pos_term_id + "' returned a value of " + str(count) + ".  I will NOT remove this ID.")
-            
+
             sql = 'delete from global_term_catalogue where termid in (' + term_id_lst + ')'
             logging.info("Removing unneeded terms in table 'global_term_catalogue' using SQL: [" + sql + "]")
             mycursor.execute(sql)
-                                
+
         for term_text in lexicon_dict.keys():
-            
+
             if term_text in existing_terms.keys():
-                new_and_existing_terms[term_text] = existing_terms[term_text]                
+                new_and_existing_terms[term_text] = existing_terms[term_text]
                 continue
 
             only_new_terms.append(term_text)
             if len(term_text) > longest_term_len: longest_term_len = len(term_text)
 
+        # We sort so that the mapping of term text to ID is deterministric - so ERAF matches with latest test results (CART)
+        for term_text in sorted(only_new_terms):
             mycursor.execute('INSERT INTO global_term_catalogue(term_text) VALUES("' + term_text + '")')
             new_and_existing_terms[term_text] = mycursor.lastrowid
 
@@ -196,7 +211,7 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
                 if str_i not in char_position_cache[char_at].keys(): char_position_cache[char_at][str_i] = set()
 
                 (char_position_cache[char_at][str_i]).add(new_and_existing_terms[new_term])
-        
+
         mycursor.execute("SELECT id, char_value, position_value FROM char_pos_map")
         for record in mycursor.fetchall():
             (db_id, db_char, db_pos) = (record[0], record[1], record[2])
@@ -204,24 +219,24 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
             if record[1] == '': db_char = ' ' # mySQL does an 'Auto-trim' i think. When saving to a CHAR(1) and pushing just a space, it saves it as an empty string.
             # Thus we are correcting for that above : if we see empty string coming back from the db, make it a space.
 
-            if db_char not in id_char_pos.keys(): id_char_pos[db_char] = dict()            
-            id_char_pos[db_char][str(db_pos)] = db_id                    
-                
+            if db_char not in id_char_pos.keys(): id_char_pos[db_char] = dict()
+            id_char_pos[db_char][str(db_pos)] = db_id
+
         for ch in char_position_cache.keys():
-                                    
+
             for idx in char_position_cache[ch].keys():
 
                 Need_to_Insert = False
 
-                if ch not in id_char_pos.keys(): 
+                if ch not in id_char_pos.keys():
                     Need_to_Insert = True
                     id_char_pos[ch] = dict()
                 elif idx not in id_char_pos[ch].keys():
                     Need_to_Insert = True
-                
+
                 if Need_to_Insert:
-                    # ASSERTION                    
-                    
+                    # ASSERTION
+
                     if ch == '':
                         raise Exception("Trying to insert empty string into table 'char_pos_map'")
 
@@ -229,7 +244,7 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
                     logging.info("Executing SQL: [" + sql + "]")
                     mycursor.execute(sql)
                     id_char_pos[ch][idx] = mycursor.lastrowid
-                    print("I just added that '" + ch + "' at index: " + idx + ' is ID ' + str(id_char_pos[ch][idx]))                    
+                    print("I just added that '" + ch + "' at index: " + idx + ' is ID ' + str(id_char_pos[ch][idx]))
                 else:
                     print("Cool, I already had that '" + ch + "' at index: " + idx + ' was ID ' + str(id_char_pos[ch][idx]))
 
@@ -237,7 +252,7 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
                     sql = 'INSERT INTO char_pos_term_id(char_pos_map_ref, term_id) VALUES(' + str(id_char_pos[ch][idx]) + ', ' + str(term_id) + ')'
                     logging.info("Executing SQL: [" + sql + "]")
                     mycursor.execute(sql)
-                                                                                        
+
     except Exception as ex:
         logging.error("Exception thrown in build_lexicon(): Error was: " + str(ex))
         raise ex
@@ -265,7 +280,7 @@ def load_alt_text(logging, rl, basepath, alt_text_path, ref):
                 if key_wo_base[0] == '/': key_wo_base = key_wo_base[1:]
 
                 ref[key_wo_base] = set()
-            
+
                 with open(key, 'r') as fh:
                     for term in fh.readlines():
                         term = term.strip()
@@ -276,12 +291,12 @@ def load_alt_text(logging, rl, basepath, alt_text_path, ref):
                         term = re.sub('\s{2,}', ' ', term)
                         term = re.sub('\t', '', term)
                         term = adjust_for_apos_s(term)
-                                                
-                        if term in term in ref[key_wo_base]:                        
+
+                        if term in term in ref[key_wo_base]:
                             logging.info("Term '" + term + "' mentioned more than once in file '" + key + "'.  It's okay, I ignored duplicates, but you may want to fix.")
-                                                    
+
                         ref[key_wo_base].add(term)
-                        
+
             if os.path.isdir(key):
                 load_alt_text(logging, rl + 1, basepath, key, ref)
 
@@ -315,8 +330,8 @@ def get_constant_file_contents(logging, fn):
     con_file_con = set()
 
     if not os.path.isfile(fn): return con_file_con
-    try:    
-    
+    try:
+
         with open(fn, 'r') as fh:
             for linestr in fh:
                 linestr = linestr.strip()
@@ -329,19 +344,19 @@ def get_constant_file_contents(logging, fn):
         logging.error("Problem in get_constant_file_contents(): " + str(ex))
         raise ex
 
-    logging.info("Successfully loaded constant file '" + fn + "'")        
+    logging.info("Successfully loaded constant file '" + fn + "'")
     return con_file_con
 
 
-def update_fast_string_scan_cache(myconn, logging, cons_file, grp_dir, alt_dir, called_on_Load = False):    
-    # called_on_Load = True # if called before the 'input loop' is started.  Input loop = continously getting input from user. 
+def update_fast_string_scan_cache(myconn, logging, cons_file, grp_dir, alt_dir, called_on_Load = False):
+    # called_on_Load = True # if called before the 'input loop' is started.  Input loop = continously getting input from user.
     # called_on_Load = False, if called after processing an ICO file.
 
     alt_text = dict()
 
     try:
 
-        groupinfo = load_group_contents(logging, grp_dir, False)        
+        groupinfo = load_group_contents(logging, grp_dir, False)
         constantinfo = get_constant_file_contents(logging, cons_file)
         load_alt_text(logging, 0, alt_dir, alt_dir, alt_text)
 
@@ -349,35 +364,29 @@ def update_fast_string_scan_cache(myconn, logging, cons_file, grp_dir, alt_dir, 
         for atid in alt_text.keys():
             for term in alt_text[atid]:
                 if term in saw_member_in_syn_set.keys():
-                    logging.error("In synonym set database - term '" + term + "' came up twice! First in '" + saw_member_in_syn_set[term] + "' and second in '" + atid + "'.  Please fix.")                    
+                    _CART_lst_synsets = list()
+                    _CART_lst_synsets.append(saw_member_in_syn_set[term])
+                    _CART_lst_synsets.append(atid)
+                    _CART_lst_synsets_sorted = sorted(_CART_lst_synsets)
+                    
+                    cartlog("multsynset", "In synonym set database - term '" + term + "' came up twice! All terms can only belong to zero or at most one synonym set. The syn sets it belongs to are: " + str(_CART_lst_synsets_sorted))
+                    
+                    
+                    logging.error("In synonym set database - term '" + term + "' came up twice! First in '" + saw_member_in_syn_set[term] + "' and second in '" + atid + "'.  Please fix.")
                     raise Exception("Term in two different synonym sets")
 
                 else:
-                    saw_member_in_syn_set[term] = atid        
-        
+                    saw_member_in_syn_set[term] = atid
+
         existing_global_terms = get_existing_global_term_list(myconn, logging)
 
         # naet : new and existing terms.
         (lex, naet) = build_lexicon(myconn, logging, constantinfo, groupinfo, alt_text, existing_global_terms)
 
-        #for TERM in naet.keys():
-        #    is_new = False
-        #    the_id = naet[TERM]
-        #    if TERM not in existing_global_terms.keys(): is_new = True
-
-            #print("VS TERM: [" + TERM + "], NEW:[" + str(is_new) + "], ID:[" + str(the_id) + "]")
-
-        #print("\n--------------- [START] : THIS OUTPUT TO BE PUT IN CART ERAF ----------------------")
-        #for v in lex.values():
-        #    print(">>> " + str(v))
-        #print("\n---------------- [END] : THIS OUTPUT TO BE PUT IN CART ERAF ----------------------")
-        #print("~~~~~~~~~~~~~~-------------------")
-        #print(str(constantinfo))
-
-        #len_ptr = dict()
-
-
-
+        if not called_on_Load:
+            cartlog("termidset",dump_table(myconn, "global_term_catalogue", ""))
+        
+        
 
     except Exception as ex:
         raise Exception(str(ex))

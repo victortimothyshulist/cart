@@ -1,0 +1,5 @@
+
+./tcm clear
+./clearKB.py -YES
+./setupdb.py
+cart create
