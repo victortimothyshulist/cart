@@ -85,7 +85,7 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
         tl_term = normalize_text(term)
 
         if tl_term not in lexicon_dict.keys():
-            lexicon_dict[tl_term] = {'text': tl_term, 'groups': set(), 'constant_strings.dat': True, 'synsetid': ''}
+            lexicon_dict[tl_term] = {'text': tl_term, 'groups': set(), 'constant_strings.dat': True, 'synsetids': set()}
 
     # Stage 2 - scan all groups.
 
@@ -95,12 +95,12 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
 
             if tl_term_in_grp not in lexicon_dict.keys():
 
-                lexicon_dict[tl_term_in_grp] = {'text': tl_term_in_grp, 'groups': {grp_name}, 'constant_strings.dat': False, 'synsetid': ''}
+                lexicon_dict[tl_term_in_grp] = {'text': tl_term_in_grp, 'groups': {grp_name}, 'constant_strings.dat': False, 'synsetids': set()}
                 continue
 
             lexicon_dict[tl_term_in_grp]['groups'].add(grp_name)
 
-    # Stage 3 - Find what "Synonym Set ID" <term> is in.
+    # Stage 3 - Find what "Synonym Sets ID" <term> is in.
 
     for ssid in alt_textref.keys():
         for term_in_ssid in alt_textref[ssid]:
@@ -108,10 +108,10 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
 
             if tl_term_in_ssid not in lexicon_dict.keys():
 
-                lexicon_dict[tl_term_in_ssid] = {'text': tl_term_in_ssid, 'groups': set(), 'constant_strings.dat': False, 'synsetid': ssid}
+                lexicon_dict[tl_term_in_ssid] = {'text': tl_term_in_ssid, 'groups': set(), 'constant_strings.dat': False, 'synsetids': {ssid}}
                 continue
 
-            lexicon_dict[tl_term_in_ssid]['synsetid'] = ssid
+            lexicon_dict[tl_term_in_ssid]['synsetids'].add(ssid)
 
     _CART_lex = ""
     for _CART_lex_txt in sorted(lexicon_dict.keys()):
@@ -120,9 +120,13 @@ def build_lexicon(myconn, logging, constantref, groupinforef, alt_textref, exist
        for _CART_lex_grp in sorted(lexicon_dict[_CART_lex_txt]['groups']):
           _CART_lex_grps += _CART_lex_grp + ','
     
+       _CART_lex_synsets = ""
+       for _CART_synset in sorted(lexicon_dict[_CART_lex_txt]['synsetids']):
+          _CART_lex_synsets += _CART_synset
+    
        _CART_lex_grps = _CART_lex_grps[0:-1]
     
-       _CART_lex += _CART_lex_txt + ':GROUPS=' + _CART_lex_grps + ':constant_strings=' + str(lexicon_dict[_CART_lex_txt]['constant_strings.dat']) + ':symbolset=' + str(lexicon_dict[_CART_lex_txt]['synsetid']) + "\n"
+       _CART_lex += _CART_lex_txt + ':GROUPS=' + _CART_lex_grps + ':constant_strings=' + str(lexicon_dict[_CART_lex_txt]['constant_strings.dat']) + ':symbolsets=' + _CART_lex_synsets + "\n"
     
     cartlog("lexicon", _CART_lex)
 
@@ -359,24 +363,6 @@ def update_fast_string_scan_cache(myconn, logging, cons_file, grp_dir, alt_dir, 
         groupinfo = load_group_contents(logging, grp_dir, False)
         constantinfo = get_constant_file_contents(logging, cons_file)
         load_alt_text(logging, 0, alt_dir, alt_dir, alt_text)
-
-        saw_member_in_syn_set = dict()
-        for atid in alt_text.keys():
-            for term in alt_text[atid]:
-                if term in saw_member_in_syn_set.keys():
-                    _CART_lst_synsets = list()
-                    _CART_lst_synsets.append(saw_member_in_syn_set[term])
-                    _CART_lst_synsets.append(atid)
-                    _CART_lst_synsets_sorted = sorted(_CART_lst_synsets)
-                    
-                    cartlog("multsynset", "In synonym set database - term '" + term + "' came up twice! All terms can only belong to zero or at most one synonym set. The syn sets it belongs to are: " + str(_CART_lst_synsets_sorted))
-                    
-                    
-                    logging.error("In synonym set database - term '" + term + "' came up twice! First in '" + saw_member_in_syn_set[term] + "' and second in '" + atid + "'.  Please fix.")
-                    raise Exception("Term in two different synonym sets")
-
-                else:
-                    saw_member_in_syn_set[term] = atid
 
         existing_global_terms = get_existing_global_term_list(myconn, logging)
 
