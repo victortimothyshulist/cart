@@ -263,6 +263,18 @@ if __name__  == '__main__':
     NAME = ""
     PATH_AND_FILE = ""
 
+    if OPERATION == 'create': 
+
+       if os.path.isfile("constant_strings.dat"): 
+          os.remove("constant_strings.dat")
+
+          if os.path.isfile("constant_strings.dat"):
+                print("**ERR: could not remove 'constant_strings.dat'")
+                sys.exit(0)
+
+          print("\n*INFO: I removed 'constant_strings.dat' - Press enter.\n")
+          input()
+
     if (OPERATION == 'clear' or OPERATION == 'create'):
         for dir2create in (RAW_ICO_DIR, SR_CODE, GROUPS_DIR, ALT_TEXT_DIR):
                     
