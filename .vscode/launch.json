@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args" : ["-T", "term_id_assign:temp_cart_input.txt"]
+            "args" : ["-T", "no_delete_term_if_used:temp_cart_input.txt"]
         },
     ]
 }

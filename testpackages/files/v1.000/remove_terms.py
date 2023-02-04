@@ -5,7 +5,6 @@
 # (3) in a synonym set
 
 if _CART_INPUT_LINE_NUMBER == 1 and _CART_FILEDB == 'no_delete_term_if_used':
-
    # Test 1 - keep 'abc', it's removed from two places, but still exists in ICO (constant)
    #
    os.remove("alt_text/aa/test1.txt")
