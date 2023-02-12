@@ -15,3 +15,4 @@ for _CART_lex_txt in sorted(lexicon_dict.keys()):
    _CART_lex += _CART_lex_txt + ':GROUPS=' + _CART_lex_grps + ':constant_strings=' + str(lexicon_dict[_CART_lex_txt]['constant_strings.dat']) + ':symbolsets=' + _CART_lex_synsets + "\n"
 
 cartlog("lexicon", _CART_lex)
+
