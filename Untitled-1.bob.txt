@@ -1,0 +1,50 @@
+# t:A - table 'char_pos_map'
+# t:B - table 'char_pos_term_id'
+# t:C - table 'global_term_catalogue.
+# *NOTE* : need a new column in t:C - "len" - for the # of letters in the term_text column.
+
+# st = list(), en = list()
+# st[0] to st[n], en[0] to en[n] and clen[0] to clen[n], where n = number of spaces in input, (when all leading and trailing space removed and normalized one-or-more-space to single space)
+# st[0] = start index of the current term - the current term that includes only the current word (no previous words connected by space)
+# st[1] = start index of the current term - the current term that includes BOTH the current word and ONE previous word, connected by a space.
+# st[2] = start index of the current term - the current term that includes BOTH the current word and the TWO previous words, connected by a space.
+# en[0] = end index of the current term - the current term that includes only the current word (no previous words connected by space)
+# en[1] = end index of the current term - the current term that includes BOTH the current word and ONE previous word, connected by a space.
+# en[2] = end index of the current term - the current term that includes BOTH the current word and the TWO previous words, connected by a space.
+# clen[0] = length of the current term - the current term that includes only the current word (no previous words connected by space)
+# clen[1] = length of the current term - the current term that includes BOTH the current word and ONE previous word, connected by a space.
+# clen[2] = start index of the current term - the current term that includes BOTH the current word and the TWO previous words, connected by a space.
+
+def find_all_terms(lui):
+   # if there are zero spaces in lui, call another func (TBD), then return
+  
+   # nsp : get count of # of spaces in lui, after normalization, and place into 'nsp'.
+   # initialize: st[0] to st[nsp], en[0] to en[nsp] and clen[0] to clen[nsp] all to 0.
+   # note: length of st, en, and clen is (nsp + 1).  (b/c: index[0] to index[nsp] is (nsp+1) entries.
+
+   term_refs_1 = list()
+   term_refs_2 = list()
+      
+   i = 0# (to len(lui))
+   tc = lui[i]
+
+   if i == 0:
+     # call below "GET TERMS"
+      for all rows in t:A -THAT-
+                i == t:A[position_value] AND tc == t:A[char_value]
+      for each row found by the above conditionin t:A, take the "t:A.[<id>]", and then...
+	     do:   term_refs_1.append( t:B[char_pos_map_ref == t:A[<id>] )
+     clen[0] += 1
+      continue # for the "if i == 0" above.
+
+    # Check if any terms are fully matched (all their charactors were found)
+    if tc == ' ' OR  i == len(lui) - 1:
+       # if tc is <space> or we're at last charactor of input string.
+       go through each term id in terms_ref_1 , find corresponding row in t:C,
+       and, for each specific row, look at the "len" column, and 
+      # if "len" == clen
+
+   # Do same as "GET TERMS" above, but this time place into "terms_ref_2"
+   temp = term_refs_1 -intersection-  term_refs_2
+   term_refs_1 = temp
+   clen += 1

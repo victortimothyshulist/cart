@@ -1,0 +1,109 @@
+# t:A - table 'char_pos_map'
+# t:B - table 'char_pos_term_id'
+# t:C - table 'global_term_catalogue.
+#
+# *NOTE* : need a new column in t:C - "len" - for the # of letters in the term_text column.
+
+# clen[0] = length of the current term - the current term that includes only the current word (no previous words connected by space)
+# clen[1] = length of the current term - the current term that includes BOTH the current word and ONE previous word, connected by a space.
+# clen[2] = start index of the current term - the current term that includes BOTH the current word and the TWO previous words, connected by a space.
+
+lui = input()
+t:A = LOAD FROM table 'char_pos_map'
+t:B = LOAD FROM table 'char_pos_term_id'
+t:C = LOAD FROM table 'global_term_catalogue.
+
+find_all_terms(lui, t:A, t:B, t:C)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+def find_all_terms(lui, t:A, t:B, t:C):
+   # if there are zero spaces in lui, call another func (TBD), then return
+
+   # nsp : get count of # of spaces in lui, after normalization, and place into 'nsp'.
+   # initialize: st[0] to st[nsp], en[0] to en[nsp] and clen[0] to clen[nsp] all to 0.
+   # note: length of st, en, and clen is (nsp + 1).  (b/c: index[0] to index[nsp] is (nsp+1) entries.
+
+   lui_li = len(lui) - 1
+   nsp = lui.count(' ')
+   
+   st = [0] * (nsp + 1)
+   en = [0] * (nsp + 1)
+   clen = [0] * (nsp + 1)
+
+   clen[0] = 0
+
+   if nsp == 0:
+      print("do a simpler process.... WIP")
+      return
+
+   cwn = 0 # current word number (basically how many spaces have we seen so far)
+
+   term_refs_1 = list()
+   term_refs_2 = list()
+
+   for i in range(0, len(lui)):
+      tc = lui[i]
+
+      if clen[0] == 0:
+         term_refs_1 = get_next_eligible_terms(i, tc, clen, cwn, t:A, t:B, st, en, lui_li, lui)
+         clen[0] = 1
+         continue
+
+      if len(term_refs_1) > 0:
+         term_refs_2 = get_next_eligible_terms(i, tc, clen, cwn, t:A, t:B, st, en, lui_li, lui)
+         temp = term_refs_1 -intersection-  term_refs_2
+         term_refs_1 = temp
+
+      if tc == ' ':
+         cwn += 1
+         for idx in range(cwn, 0, -1): clen[idx] = clen[idx - 1]      
+         clen[0] = 0         
+         continue
+
+      clen[0] += 1
+
+
+def get_next_eligible_terms(i, tc, clen, cwn, t:A, t:B, st, en, lui_li, lui)
+   new_list = ()
+
+   for each ROW in t:A
+
+      for icwn in range(cwn + 1): # TO DO - verify exact end index by thought experiment and testing.
+         total_prev = 0
+
+         for jcwn in range(icwn):
+            # plus 1, why? because clen[] gives highest index - not length.
+            # need to add 1 to highest index to get actual length.
+            total_prev += clen[jcwn + 1] + 1
+
+         total_prev += icwn
+         total_len_matches = None
+
+         if ROW['char_value'] == tc and ROW['position_value'] == clen[0] + total_prev:
+
+            for term_id in t:B[ROW['id']]:
+               # Is the current term fully matched?
+               # if it is (the current length is equal to this specific term's length, then it is)
+               # if so, print it to screen for now OR push it to another 'completed' list that this
+               # function will return.
+
+               total_len_matches = True
+
+               if t:C[term_id].len > clen[0] + toal_prev + 1:
+                  total_len_matches = False
+
+               at_word_boundry = False  
+
+               if i == lui_li:
+                  at_word_boundry = True
+               elif lui[i + 1] == ' ':
+                  at_word_boundry = True
+
+               if not at_word_boundry or not total_len_matches:
+                  new_list.append(term_id)
+               elif t:C[term_id].len == clen[0] + total_prev + 1:                  
+                  print("Found a term !!!! it is [" + t:C[term_id].termtext + ' located at start=' + st[icwn] + ', end= ' + en[icwn])               
+
+   return (new_list)

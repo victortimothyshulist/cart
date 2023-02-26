@@ -1,0 +1,29 @@
+		
+----  before each FSDB -- in CART tests,   CART should call  ./clearKB.py  -YES
+
+-- Then, a given FSDB, v1.000.conf  CART_INCLUDE file shoud do a ( IF  LINE NUMBER == 1, "un-tar the sr_list.inf file and alt_text")
+		 
+/1/ cart    if exists  sr list info, delete before installing next fsdb
+        delete sr_list.inf
+         same for alt text directory
+         same for constant_strings.dat
+        same for groups
+
+/2/ cart include  v1.000-move.py     that checks if fsdb is xxxxx  and line input is 1  do a tar zxf which installs    1) alt  text dir  2) sr_list.inf ,  3) groups  
+
+			*THE ONLY THING that should **NOT** *be in an FSDB is  "constant_strings.dat" -->> cuz that is the result of a previous compile.
+			*THE ONLY THING that should **NOT** *be in an FSDB is  "constant_strings.dat" -->> cuz that is the result of a previous compile.
+			*THE ONLY THING that should **NOT** *be in an FSDB is  "constant_strings.dat" -->> cuz that is the result of a previous compile.
+			*THE ONLY THING that should **NOT** *be in an FSDB is  "constant_strings.dat" -->> cuz that is the result of a previous compile.
+			*THE ONLY THING that should **NOT** *be in an FSDB is  "constant_strings.dat" -->> cuz that is the result of a previous compile.
+
+/3/   start dev-ing in real file/dir ... make new module
+
+/4/ start new cart fsdb   ...  for existing fast str scan code
+
+/5/ check on changed load group code    spaces to underscore????
+
+/6/ file manifest with md/sha256 ..  if cart test pass   then asks "Do you want to update file manifest??"
+         only when run conalaun from NOT under cart...  calculates all md5 of files and compares with manifest ... fails to start if any md5 differs
+
+------- if md5 of ico compiler differs ....  gives warning  to manually retest validation logic   syntax check of ico files... and create cart test cases.

@@ -1,0 +1,253 @@
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = smol
+_CART_INPUT_FILE = temp_cart_input.txt
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = concepts
+_CART_INPUT_FILE = temp_cart_input.txt
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = synandgroups
+_CART_INPUT_FILE = temp_cart_input.txt
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = lexicon_dict
+_CART_INPUT_FILE = temp_cart_input.txt
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = term_id_assign
+_CART_INPUT_FILE = temp_cart_input.txt
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = no_delete_term_if_used
+_CART_INPUT_FILE = temp_cart_input.txt
+HERE WE ARE_CART_FILEDB = no_delete_term_if_used
+Dropping database...
+Creating database...
+
+* Successfully created CONALAUN database 'ai_conalaun_dev '!
+
+--- Control-C to exit ---(User Guide Later)---
+_CART_FILEDB = fssc
+_CART_INPUT_FILE = temp_cart_input.txt
+
+------------- VERSION: v1.000
+------------- OPERATION: test
+* * * * If you have just copied CART and CONALAUN to Linux box, make sure you have done a 'dos2unix' on all scripts!
+
+* * * * (Note): The scripts 'setupdb.py' and 'clearKB.py', which CART calls, are maintained as part of CONALAUN, not CART.
+
+
+--------------- RUNNING TEST PACKAGE: v1.000 ---------------
+
+OPERATION: test
+
+----------------------------------------------------------------------------------
+Using ICO files in: 0, Db: smol.tar.gz
+./conalaun-cart-temp.py -T smol:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 1, Db: concepts.tar.gz
+./conalaun-cart-temp.py -T concepts:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 2, Db: synandgroups.tar.gz
+./conalaun-cart-temp.py -T synandgroups:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 3, Db: lexicon_dict.tar.gz
+./conalaun-cart-temp.py -T lexicon_dict:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 4, Db: term_id_assign.tar.gz
+./conalaun-cart-temp.py -T term_id_assign:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 5, Db: no_delete_term_if_used.tar.gz
+./conalaun-cart-temp.py -T no_delete_term_if_used:temp_cart_input.txt
+----------------------------------------------------------------------------------
+Using ICO files in: 6, Db: fssc.tar.gz
+./conalaun-cart-temp.py -T fssc:temp_cart_input.txt
+tar -xzf ./testpackages/files/v1.000/v1.000.tar.gz -C _temp_arc_unpack
+
+*ERR: Different results for file '_temp_arc_unpack/term_id_assign/1/termidset.res' -VERSUS- 'results_cart_tests/term_id_assign/1/termidset.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/term_id_assign/1/termidset.res results_cart_tests/term_id_assign/1/termidset.res > diff.txt
+-----------------------------------------------------------
+1,14c1,14
+< 001|abc def|
+< 002|ghi|
+< 003|x|
+< 004|y|
+< 005|z|
+< 006|abc def ghi|
+< 007|ghij|
+< 008|yy|
+< 009|def ghi|
+< 010|zz|
+< 011|ghij xox|
+< 012|victor and melanie|
+< 013|xx|
+< 014|ziz|
+---
+> 001|abc def|007|
+> 002|ghi|003|
+> 003|x|001|
+> 004|y|001|
+> 005|z|001|
+> 006|abc def ghi|011|
+> 007|ghij|004|
+> 008|yy|002|
+> 009|def ghi|007|
+> 010|zz|002|
+> 011|ghij xox|008|
+> 012|victor and melanie|018|
+> 013|xx|002|
+> 014|ziz|003|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/no_delete_term_if_used/0/nodelete.res' -VERSUS- 'results_cart_tests/no_delete_term_if_used/0/nodelete.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/no_delete_term_if_used/0/nodelete.res results_cart_tests/no_delete_term_if_used/0/nodelete.res > diff.txt
+-----------------------------------------------------------
+1,8c1,8
+< 001|abc|
+< 002|def|
+< 003|ghi|
+< 004|z|
+< 005|bob|
+< 006|bobby|
+< 007|x|
+< 008|y|
+---
+> 001|abc|003|
+> 002|def|003|
+> 003|ghi|003|
+> 004|z|001|
+> 005|bob|003|
+> 006|bobby|005|
+> 007|x|001|
+> 008|y|001|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/term_id_assign/0/termidset.res' -VERSUS- 'results_cart_tests/term_id_assign/0/termidset.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/term_id_assign/0/termidset.res results_cart_tests/term_id_assign/0/termidset.res > diff.txt
+-----------------------------------------------------------
+1,23c1,23
+< 001|abc def|
+< 001|abc def|
+< 001|abc def|
+< 002|ghi|
+< 002|ghi|
+< 002|ghi|
+< 003|x|
+< 003|x|
+< 003|x|
+< 004|y|
+< 004|y|
+< 004|y|
+< 005|z|
+< 005|z|
+< 005|z|
+< 006|abc def ghi|
+< 006|abc def ghi|
+< 007|ghij|
+< 007|ghij|
+< 008|yy|
+< 008|yy|
+< 009|def ghi|
+< 010|zz|
+---
+> 001|abc def|007|
+> 001|abc def|007|
+> 001|abc def|007|
+> 002|ghi|003|
+> 002|ghi|003|
+> 002|ghi|003|
+> 003|x|001|
+> 003|x|001|
+> 003|x|001|
+> 004|y|001|
+> 004|y|001|
+> 004|y|001|
+> 005|z|001|
+> 005|z|001|
+> 005|z|001|
+> 006|abc def ghi|011|
+> 006|abc def ghi|011|
+> 007|ghij|004|
+> 007|ghij|004|
+> 008|yy|002|
+> 008|yy|002|
+> 009|def ghi|007|
+> 010|zz|002|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+*ERR: Different results for file '_temp_arc_unpack/no_delete_term_if_used/1/nodelete.res' -VERSUS- 'results_cart_tests/no_delete_term_if_used/1/nodelete.res'
+-----------------------------------------------------------
+                 DIFF OUTPUT                              
+-----------------------------------------------------------
+diff _temp_arc_unpack/no_delete_term_if_used/1/nodelete.res results_cart_tests/no_delete_term_if_used/1/nodelete.res > diff.txt
+-----------------------------------------------------------
+1,8c1,8
+< 001|abc|
+< 002|def|
+< 003|ghi|
+< 005|bob|
+< 006|bobby|
+< 007|x|
+< 008|y|
+< 009|aaa|
+---
+> 001|abc|003|
+> 002|def|003|
+> 003|ghi|003|
+> 005|bob|003|
+> 006|bobby|005|
+> 007|x|001|
+> 008|y|001|
+> 009|aaa|003|
+-----------------------------------------------------------
+> : Output from this run
+< : Expected results.
+
+
+---------------------------------------------------
+*** Regression testing failed ***
+---------------------------------------------------
